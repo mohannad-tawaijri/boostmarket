@@ -10,6 +10,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { UploadModule } from './upload/upload.module';
 import { ChatModule } from './chat/chat.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -27,5 +28,6 @@ import { FavoritesModule } from './favorites/favorites.module';
     ChatModule,
     FavoritesModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

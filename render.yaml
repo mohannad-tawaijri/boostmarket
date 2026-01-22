@@ -1,0 +1,28 @@
+databases:
+  - name: boost-db
+    plan: free
+    databaseName: boost_marketplace
+    user: boost_user
+    region: oregon
+
+services:
+  - type: web
+    name: boost-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma migrate deploy && npm run start:prod
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: boost-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://boost-rosy-rho.vercel.app
