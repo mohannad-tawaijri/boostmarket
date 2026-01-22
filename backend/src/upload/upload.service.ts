@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 export class UploadService {
   constructor(private configService: ConfigService) {}
 
-  async uploadImage(file: Express.Multer.File): Promise<string> {
+  async uploadImage(file: any): Promise<string> {
     // TODO: Integrate with Cloudinary or other cloud storage
     // For now, return a placeholder
     return `https://placeholder.com/upload/${file.filename}`;

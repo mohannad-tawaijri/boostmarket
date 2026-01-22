@@ -57,5 +57,8 @@
     "@types/node": "^24.10.1",
     "@types/passport-jwt": "^4.0.1",
     "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
