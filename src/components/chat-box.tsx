@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { User, Message, Conversation } from "@/types";
+import { API_URL } from "@/lib/config";
 
 interface ChatBoxProps {
   otherUser: User;
@@ -35,7 +36,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
       const token = localStorage.getItem("authToken");
       
       // Create or get conversation
-      const convResponse = await fetch("http://localhost:3001/chat/conversations", {
+      const convResponse = await fetch(`${API_URL}/chat/conversations`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
 
       // Get messages
       const messagesResponse = await fetch(
-        `http://localhost:3001/chat/conversations/${convData.id}/messages`,
+        `${API_URL}/chat/conversations/${convData.id}/messages`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,7 +74,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:3001/chat/conversations/${conversation.id}/messages`,
+        `${API_URL}/chat/conversations/${conversation.id}/messages`,
         {
           method: "POST",
           headers: {

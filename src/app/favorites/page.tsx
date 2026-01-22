@@ -6,6 +6,7 @@ import { Heart, Trash2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
 import { useAuth } from "@/contexts/auth-context";
+import { API_URL } from "@/lib/config";
 
 export default function FavoritesPage() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function FavoritesPage() {
   const fetchFavorites = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:3001/favorites", {
+      const response = await fetch(`${API_URL}/favorites`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +42,7 @@ export default function FavoritesPage() {
   const removeFavorite = async (serviceId: string) => {
     try {
       const token = localStorage.getItem("authToken");
-      await fetch(`http://localhost:3001/favorites/${serviceId}`, {
+      await fetch(`${API_URL}/favorites/${serviceId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

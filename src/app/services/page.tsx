@@ -7,6 +7,7 @@ import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2 } from "lu
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
 import { Service, GameCategory, GAME_NAMES } from "@/types";
+import { API_URL } from "@/lib/config";
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest First" },
@@ -43,7 +44,7 @@ export default function ServicesPage() {
       if (selectedGame) params.append("game", selectedGame);
       if (sortBy) params.append("sortBy", sortBy);
 
-      const response = await fetch(`http://localhost:3001/services?${params}`);
+      const response = await fetch(`${API_URL}/services?${params}`);
       const data = await response.json();
       setServices(data);
     } catch (error) {

@@ -6,6 +6,7 @@ import { Plus, Sparkles, Gamepad2, DollarSign, Clock, FileText, Tag } from "luci
 import { Button } from "@/components/ui/button";
 import { GameCategory, ServiceCategory, GAME_NAMES, CATEGORY_NAMES } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
+import { API_URL } from "@/lib/config";
 
 export default function CreateOfferPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function CreateOfferPage() {
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:3001/services", {
+      const response = await fetch(`${API_URL}/services`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

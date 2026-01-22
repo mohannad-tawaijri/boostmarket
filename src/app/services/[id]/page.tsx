@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import ChatBox from "@/components/chat-box";
 import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
+import { API_URL } from "@/lib/config";
 
 export default function ServiceDetailPage() {
   const params = useParams();
@@ -29,7 +30,7 @@ export default function ServiceDetailPage() {
 
   const fetchService = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/services/${params.id}`);
+      const response = await fetch(`${API_URL}/services/${params.id}`);
       const data = await response.json();
       setService(data);
     } catch (error) {
@@ -43,7 +44,7 @@ export default function ServiceDetailPage() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        `http://localhost:3001/favorites/${params.id}/check`,
+        `${API_URL}/favorites/${params.id}/check`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +67,7 @@ export default function ServiceDetailPage() {
     try {
       const token = localStorage.getItem("authToken");
       const method = isFavorite ? "DELETE" : "POST";
-      await fetch(`http://localhost:3001/favorites/${params.id}`, {
+      await fetch(`${API_URL}/favorites/${params.id}`, {
         method,
         headers: {
           Authorization: `Bearer ${token}`,
