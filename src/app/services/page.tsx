@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2 } from "lucide-react";
@@ -17,7 +17,7 @@ const SORT_OPTIONS = [
   { value: "price_high", label: "Price: High to Low" },
 ];
 
-export default function ServicesPage() {
+function ServicesContent() {
   const searchParams = useSearchParams();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
@@ -201,5 +201,24 @@ export default function ServicesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ServicesLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="text-center">
+        <div className="inline-block w-16 h-16 rounded-full border-4 border-indigo-500/30 border-t-indigo-500 animate-spin"></div>
+        <p className="mt-6 text-gray-400">Loading services...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<ServicesLoading />}>
+      <ServicesContent />
+    </Suspense>
   );
 }
