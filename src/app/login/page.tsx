@@ -37,7 +37,7 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.access_token, data.user);
+        login(data.token, data.user);
         router.push("/");
       } else {
         setError(data.message || "Invalid email or password");
