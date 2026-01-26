@@ -18,8 +18,11 @@ COPY . .
 # Build
 RUN npm run build
 
-# Expose port
-EXPOSE 3001
+# Prune dev dependencies for smaller image
+RUN npm prune --production
 
-# Start command
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
+# Expose port
+EXPOSE 10000
+
+# Start command - using node directly for proper signal handling
+CMD ["node", "dist/main.js"]
