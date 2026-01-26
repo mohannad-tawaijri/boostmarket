@@ -22,6 +22,11 @@ export class OrdersController {
     return this.ordersService.findAll(req.user.id, role);
   }
 
+  @Get('my')
+  findMy(@Request() req) {
+    return this.ordersService.findAllByUser(req.user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
     return this.ordersService.findOne(id, req.user.id);

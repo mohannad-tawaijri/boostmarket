@@ -36,6 +36,12 @@ export class ServicesController {
     });
   }
 
+  @Get('my')
+  @UseGuards(JwtAuthGuard)
+  findMy(@Request() req) {
+    return this.servicesService.findByUser(req.user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.servicesService.findOne(id);

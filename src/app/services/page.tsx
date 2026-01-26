@@ -57,7 +57,8 @@ function ServicesContent() {
   const filteredServices = services.filter((service) =>
     searchQuery
       ? service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        service.description.toLowerCase().includes(searchQuery.toLowerCase())
+        service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (service.booster?.name && service.booster.name.toLowerCase().includes(searchQuery.toLowerCase()))
       : true
   );
 

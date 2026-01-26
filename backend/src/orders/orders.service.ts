@@ -116,4 +116,41 @@ export class OrdersService {
       },
     });
   }
+
+  async findAllByUser(userId: string) {
+    return this.prisma.order.findMany({
+      where: {
+        OR: [
+          { buyerId: userId },
+          { boosterId: userId },
+        ],
+      },
+      include: {
+        service: {
+          select: {
+            id: true,
+            title: true,
+            game: true,
+          },
+        },
+        buyer: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        booster: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

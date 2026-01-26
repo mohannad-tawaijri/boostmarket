@@ -165,4 +165,19 @@ export class ServicesService {
       where: { id },
     });
   }
+
+  async findByUser(userId: string) {
+    return this.prisma.service.findMany({
+      where: { boosterId: userId },
+      include: {
+        _count: {
+          select: {
+            reviews: true,
+            favorites: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

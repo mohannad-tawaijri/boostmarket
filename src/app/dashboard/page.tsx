@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
+import { API_URL } from '@/lib/config';
 import { 
   ShoppingBag, 
   DollarSign, 
@@ -13,22 +14,82 @@ import {
   ArrowRight,
   Gamepad2,
   TrendingUp,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from 'lucide-react';
 
-// Orders and offers will be fetched from the API
-const mockOrders: { id: number; service: string; status: string; price: number; date: string }[] = [];
-const mockOffers: { id: number; title: string; game: string; orders: number; earnings: number }[] = [];
+interface Order {
+  id: string;
+  service: { title: string };
+  status: string;
+  totalPrice: number;
+  createdAt: string;
+}
+
+interface Offer {
+  id: string;
+  title: string;
+  game: string;
+  price: number;
+  orders?: Order[];
+}
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'offers'>('overview');
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch user's offers (services they created)
+        const servicesRes = await fetch(`${API_URL}/services/my`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (servicesRes.ok) {
+          const servicesData = await servicesRes.json();
+          setOffers(servicesData);
+        }
+
+        // Fetch user's orders
+        const ordersRes = await fetch(`${API_URL}/orders/my`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (ordersRes.ok) {
+          const ordersData = await ordersRes.json();
+          setOrders(ordersData);
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const totalEarnings = offers.reduce((sum, offer) => {
+    const offerOrders = offer.orders || [];
+    return sum + offerOrders.filter(o => o.status === 'COMPLETED').reduce((s, o) => s + o.totalPrice, 0);
+  }, 0);
+
+  const inProgressOrders = orders.filter(o => o.status === 'IN_PROGRESS').length;
+  const completedOrders = orders.filter(o => o.status === 'COMPLETED').length;
 
   const stats = [
-    { label: 'Total Orders', value: '0', icon: ShoppingBag, color: 'from-blue-500 to-cyan-500' },
-    { label: 'Total Earnings', value: '$0', icon: DollarSign, color: 'from-green-500 to-emerald-500' },
-    { label: 'In Progress', value: '0', icon: Clock, color: 'from-yellow-500 to-orange-500' },
-    { label: 'Completed', value: '0', icon: CheckCircle, color: 'from-purple-500 to-pink-500' },
+    { label: 'Total Orders', value: orders.length.toString(), icon: ShoppingBag, color: 'from-blue-500 to-cyan-500' },
+    { label: 'My Offers', value: offers.length.toString(), icon: DollarSign, color: 'from-green-500 to-emerald-500' },
+    { label: 'In Progress', value: inProgressOrders.toString(), icon: Clock, color: 'from-yellow-500 to-orange-500' },
+    { label: 'Completed', value: completedOrders.toString(), icon: CheckCircle, color: 'from-purple-500 to-pink-500' },
   ];
 
   const getStatusBadge = (status: string) => {
@@ -118,20 +179,34 @@ export default function DashboardPage() {
                   View all <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="space-y-4">
-                {mockOrders.slice(0, 3).map((order) => (
-                  <div key={order.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
-                    <div>
-                      <p className="text-white font-medium text-sm">{order.service}</p>
-                      <p className="text-gray-500 text-xs">{order.date}</p>
+              {loading ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                </div>
+              ) : orders.length === 0 ? (
+                <div className="text-center py-8">
+                  <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                  <p className="text-gray-400">No orders yet</p>
+                  <Link href="/services">
+                    <Button variant="outline" size="sm" className="mt-3">Browse Services</Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {orders.slice(0, 3).map((order) => (
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                      <div>
+                        <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
+                        <p className="text-gray-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      <div className="text-right">
+                        {getStatusBadge(order.status)}
+                        <p className="text-gray-400 text-sm mt-1">${order.totalPrice}</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      {getStatusBadge(order.status)}
-                      <p className="text-gray-400 text-sm mt-1">${order.price}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Quick Actions */}
@@ -165,62 +240,94 @@ export default function DashboardPage() {
 
         {activeTab === 'orders' && (
           <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-800/50">
-                  <tr>
-                    <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
-                    <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
-                    <th className="text-left text-gray-400 font-medium px-6 py-4">Price</th>
-                    <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
-                    <th className="text-left text-gray-400 font-medium px-6 py-4">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800">
-                  {mockOrders.map((order) => (
-                    <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
-                      <td className="px-6 py-4 text-white">{order.service}</td>
-                      <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                      <td className="px-6 py-4 text-gray-300">${order.price}</td>
-                      <td className="px-6 py-4 text-gray-400">{order.date}</td>
-                      <td className="px-6 py-4">
-                        <Button variant="outline" size="sm">View Details</Button>
-                      </td>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+              </div>
+            ) : orders.length === 0 ? (
+              <div className="text-center py-12">
+                <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                <p className="text-gray-400 mb-4">You haven't placed any orders yet</p>
+                <Link href="/services">
+                  <Button>Browse Services</Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-800/50">
+                    <tr>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Price</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800">
+                    {orders.map((order) => (
+                      <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
+                        <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
+                        <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
+                        <td className="px-6 py-4 text-gray-300">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4">
+                          <Button variant="outline" size="sm">View Details</Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
         {activeTab === 'offers' && (
           <div className="space-y-4">
-            {mockOffers.map((offer) => (
-              <div key={offer.id} className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 flex items-center justify-between">
-                <div>
-                  <h3 className="text-white font-semibold text-lg">{offer.title}</h3>
-                  <p className="text-gray-400">{offer.game}</p>
-                </div>
-                <div className="flex items-center gap-8">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-white">{offer.orders}</p>
-                    <p className="text-gray-500 text-sm">Orders</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-green-400">${offer.earnings}</p>
-                    <p className="text-gray-500 text-sm">Earnings</p>
-                  </div>
-                  <Button variant="outline">Edit Offer</Button>
-                </div>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
               </div>
-            ))}
-            <Link href="/create-offer">
-              <div className="bg-slate-900/30 border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 transition-colors cursor-pointer">
-                <Plus className="w-12 h-12 text-gray-500 mb-2" />
-                <p className="text-gray-400">Create New Offer</p>
+            ) : offers.length === 0 ? (
+              <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-12 text-center">
+                <Gamepad2 className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">No offers yet</h3>
+                <p className="text-gray-400 mb-6">Start selling your boosting services today!</p>
+                <Link href="/create-offer">
+                  <Button className="gap-2">
+                    <Plus className="w-4 h-4" />
+                    Create Your First Offer
+                  </Button>
+                </Link>
               </div>
-            </Link>
+            ) : (
+              <>
+                {offers.map((offer) => (
+                  <div key={offer.id} className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-white font-semibold text-lg">{offer.title}</h3>
+                      <p className="text-gray-400">{offer.game}</p>
+                    </div>
+                    <div className="flex items-center gap-8">
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-white">${offer.price}</p>
+                        <p className="text-gray-500 text-sm">Price</p>
+                      </div>
+                      <Link href={`/services/${offer.id}`}>
+                        <Button variant="outline">View Offer</Button>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+                <Link href="/create-offer">
+                  <div className="bg-slate-900/30 border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 transition-colors cursor-pointer">
+                    <Plus className="w-12 h-12 text-gray-500 mb-2" />
+                    <p className="text-gray-400">Create New Offer</p>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
