@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, X, Search, User, ShoppingCart, Shield } from "lucide-react";
+import { Menu, X, Search, User, ShoppingCart, Shield, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuth } from "@/contexts/auth-context";
 import Logo from "./logo";
@@ -83,6 +83,11 @@ export default function Navbar() {
                   <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-slate-800">
                     Dashboard
                   </Button>
+                </Link>
+                <Link href="/messages">
+                  <button className="p-2 hover:bg-slate-800 rounded-full relative transition-colors" title="Messages">
+                    <MessageSquare className="w-5 h-5 text-gray-400" />
+                  </button>
                 </Link>
                 <Link href="/orders">
                   <button className="p-2 hover:bg-slate-800 rounded-full relative transition-colors">
@@ -200,6 +205,13 @@ export default function Navbar() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
+                  </Link>
+                  <Link
+                    href="/messages"
+                    className="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Messages
                   </Link>
                   <Link
                     href="/orders"

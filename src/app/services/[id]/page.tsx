@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ChatBox from "@/components/chat-box";
 import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import { API_URL } from "@/lib/config";
@@ -17,7 +16,6 @@ export default function ServiceDetailPage() {
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -92,8 +90,16 @@ export default function ServiceDetailPage() {
       router.push("/login");
       return;
     }
-    setShowChat(true);
+    // Don't allow messaging yourself
+    if (user.id === service?.boosterId) {
+      return;
+    }
+    // Navigate to messages page with booster's user ID
+    router.push(`/messages?userId=${service?.boosterId}&serviceId=${service?.id}`);
   };
+
+  // Check if user is the booster
+  const isOwnService = user?.id === service?.boosterId;
 
   // Game-specific gradient colors
   const gameGradients: Record<string, string> = {
@@ -238,18 +244,29 @@ export default function ServiceDetailPage() {
                 <p className="text-gray-400 text-sm">One-time payment</p>
               </div>
 
-              <Button className="w-full mb-3 py-6 text-lg" size="lg" onClick={handleOrderNow}>
-                Order Now
-              </Button>
+              {isOwnService ? (
+                <div className="text-center text-gray-400 py-4">
+                  <p>This is your offer</p>
+                  <Link href="/dashboard" className="text-indigo-400 hover:underline text-sm">
+                    Manage in Dashboard
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Button className="w-full mb-3 py-6 text-lg" size="lg" onClick={handleOrderNow}>
+                    Order Now
+                  </Button>
 
-              <Button
-                variant="outline"
-                className="w-full py-5"
-                onClick={handleContactBooster}
-              >
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Contact Booster
-              </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full py-5"
+                    onClick={handleContactBooster}
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Contact Booster
+                  </Button>
+                </>
+              )
 
               <div className="mt-6 pt-6 border-t border-slate-700">
                 <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
@@ -284,15 +301,6 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* Chat Box */}
-      {showChat && service.booster && (
-        <ChatBox
-          otherUser={service.booster}
-          serviceId={service.id}
-          onClose={() => setShowChat(false)}
-        />
-      )}
     </div>
   );
 }
