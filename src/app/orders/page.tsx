@@ -14,7 +14,9 @@ import {
   ChevronUp,
   Gamepad2,
   ArrowRight,
-  Loader2
+  Loader2,
+  Star,
+  X
 } from 'lucide-react';
 
 interface Order {
@@ -25,6 +27,7 @@ interface Order {
   totalPrice: number;
   createdAt: string;
   requirements?: any;
+  review?: { id: string; rating: number; comment?: string };
 }
 
 export default function OrdersPage() {
@@ -32,32 +35,78 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'IN_PROGRESS' | 'COMPLETED' | 'PENDING' | 'CANCELLED'>('all');
+  
+  // Review modal state
+  const [reviewModalOrder, setReviewModalOrder] = useState<Order | null>(null);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(`${API_URL}/orders?role=buyer`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setOrders(data);
-        }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
+
+  const fetchOrders = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/orders?role=buyer`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setOrders(data);
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitReview = async () => {
+    if (!reviewModalOrder) return;
+    
+    setSubmittingReview(true);
+    const token = localStorage.getItem('authToken');
+    
+    try {
+      const response = await fetch(`${API_URL}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId: reviewModalOrder.id,
+          serviceId: reviewModalOrder.service.id,
+          boosterId: reviewModalOrder.booster.id,
+          rating: reviewRating,
+          comment: reviewComment || undefined,
+        }),
+      });
+
+      if (response.ok) {
+        // Close modal and refresh orders
+        setReviewModalOrder(null);
+        setReviewRating(5);
+        setReviewComment('');
+        fetchOrders();
+      } else {
+        const error = await response.json();
+        alert(error.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   const getStatusConfig = (status: string) => {
     switch (status) {
@@ -171,6 +220,12 @@ export default function OrdersPage() {
                           <statusConfig.icon className={`w-4 h-4 ${statusConfig.color}`} />
                           <span className={`text-sm font-medium ${statusConfig.color}`}>{statusConfig.label}</span>
                         </div>
+                        {order.status === 'COMPLETED' && !order.review && (
+                          <div className="hidden sm:flex items-center gap-1 text-yellow-400">
+                            <Star className="w-4 h-4" />
+                            <span className="text-xs">Needs review</span>
+                          </div>
+                        )}
                         <div className="text-right hidden sm:block">
                           <p className="text-white font-semibold">${order.totalPrice}</p>
                           <p className="text-gray-500 text-sm">{new Date(order.createdAt).toLocaleDateString()}</p>
@@ -203,10 +258,32 @@ export default function OrdersPage() {
                       </div>
 
                       <div className="flex flex-wrap gap-3 mt-6">
-                        <Button variant="outline" className="gap-2">
-                          <MessageSquare className="w-4 h-4" />
-                          Message Booster
-                        </Button>
+                        <Link href={`/messages?userId=${order.booster?.id}&serviceId=${order.service?.id}`}>
+                          <Button variant="outline" className="gap-2">
+                            <MessageSquare className="w-4 h-4" />
+                            Message Booster
+                          </Button>
+                        </Link>
+                        {order.status === 'COMPLETED' && !order.review && (
+                          <Button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReviewModalOrder(order);
+                            }}
+                            className="gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400"
+                          >
+                            <Star className="w-4 h-4" />
+                            Leave Review
+                          </Button>
+                        )}
+                        {order.review && (
+                          <div className="flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-lg">
+                            <CheckCircle className="w-4 h-4 text-green-400" />
+                            <span className="text-green-400 text-sm font-medium">
+                              Reviewed ({order.review.rating}/5)
+                            </span>
+                          </div>
+                        )}
                         <Link href={`/services/${order.service?.id}`}>
                           <Button variant="ghost" className="gap-2">
                             View Service
@@ -222,6 +299,104 @@ export default function OrdersPage() {
           )}
         </div>
       </div>
+
+      {/* Review Modal */}
+      {reviewModalOrder && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-white">Leave a Review</h2>
+              <button
+                onClick={() => {
+                  setReviewModalOrder(null);
+                  setReviewRating(5);
+                  setReviewComment('');
+                }}
+                className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-gray-400 text-sm mb-1">Service</p>
+              <p className="text-white font-medium">{reviewModalOrder.service.title}</p>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-gray-400 text-sm mb-1">Booster</p>
+              <p className="text-white font-medium">{reviewModalOrder.booster.name}</p>
+            </div>
+
+            {/* Star Rating */}
+            <div className="mb-6">
+              <p className="text-gray-400 text-sm mb-3">Your Rating</p>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setReviewRating(star)}
+                    className="p-1 transition-transform hover:scale-110"
+                  >
+                    <Star
+                      className={`w-8 h-8 ${
+                        star <= reviewRating
+                          ? 'text-yellow-400 fill-yellow-400'
+                          : 'text-gray-600'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              <p className="text-sm text-gray-500 mt-2">
+                {reviewRating === 1 && 'Poor'}
+                {reviewRating === 2 && 'Fair'}
+                {reviewRating === 3 && 'Good'}
+                {reviewRating === 4 && 'Very Good'}
+                {reviewRating === 5 && 'Excellent'}
+              </p>
+            </div>
+
+            {/* Comment */}
+            <div className="mb-6">
+              <label className="text-gray-400 text-sm mb-2 block">Comment (optional)</label>
+              <textarea
+                value={reviewComment}
+                onChange={(e) => setReviewComment(e.target.value)}
+                placeholder="Share your experience with this booster..."
+                rows={4}
+                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setReviewModalOrder(null);
+                  setReviewRating(5);
+                  setReviewComment('');
+                }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={submitReview}
+                disabled={submittingReview}
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600"
+              >
+                {submittingReview ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  'Submit Review'
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

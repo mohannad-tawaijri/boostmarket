@@ -65,6 +65,13 @@ export class OrdersService {
             avatar: true,
           },
         },
+        review: {
+          select: {
+            id: true,
+            rating: true,
+            comment: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

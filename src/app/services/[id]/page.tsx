@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2 } from "lucide-react";
+import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory } from "@/types";
+import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory, Review } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import { API_URL } from "@/lib/config";
 
@@ -14,12 +14,14 @@ export default function ServiceDetailPage() {
   const router = useRouter();
   const { user } = useAuth();
   const [service, setService] = useState<Service | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     if (params.id) {
       fetchService();
+      fetchReviews();
       if (user) {
         checkFavorite();
       }
@@ -35,6 +37,18 @@ export default function ServiceDetailPage() {
       console.error("Error fetching service:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`${API_URL}/reviews/service/${params.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setReviews(data);
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
     }
   };
 
@@ -225,7 +239,7 @@ export default function ServiceDetailPage() {
               </div>
 
               {/* What's Included */}
-              <div>
+              <div className="mb-8">
                 <h3 className="text-lg font-semibold text-white mb-4">What's Included</h3>
                 <div className="space-y-3">
                   {["Professional boosting service", "Real-time progress updates", "Account safety guaranteed", "24/7 customer support"].map((item, index) => (
@@ -235,6 +249,66 @@ export default function ServiceDetailPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Reviews Section */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">
+                    Reviews {reviews.length > 0 && `(${reviews.length})`}
+                  </h3>
+                  {reviews.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                      <span className="text-white font-semibold">
+                        {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {reviews.length === 0 ? (
+                  <div className="bg-slate-700/30 rounded-xl p-6 text-center">
+                    <Star className="w-10 h-10 text-gray-600 mx-auto mb-3" />
+                    <p className="text-gray-400">No reviews yet</p>
+                    <p className="text-gray-500 text-sm">Be the first to review after completing an order!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {reviews.map((review) => (
+                      <div key={review.id} className="bg-slate-700/30 rounded-xl p-4 border border-slate-600/50">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                              {review.reviewer?.name?.charAt(0) || "U"}
+                            </div>
+                            <div>
+                              <p className="text-white font-medium">{review.reviewer?.name || "User"}</p>
+                              <p className="text-gray-500 text-xs">
+                                {new Date(review.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-4 h-4 ${
+                                  star <= review.rating
+                                    ? 'text-yellow-400 fill-yellow-400'
+                                    : 'text-gray-600'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {review.comment && (
+                          <p className="text-gray-300 text-sm">{review.comment}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
