@@ -43,7 +43,8 @@ export default function LoginPage() {
         setError(data.message || "Invalid email or password");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      console.error("Login error:", err);
+      setError("Connection error. If using Brave, try disabling Shields for this site.");
     } finally {
       setLoading(false);
     }
