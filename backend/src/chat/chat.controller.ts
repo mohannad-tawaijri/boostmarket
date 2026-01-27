@@ -52,9 +52,9 @@ export class ChatController {
   sendMessage(
     @Request() req,
     @Param('id') conversationId: string,
-    @Body('content') content: string,
+    @Body() data: { content?: string; imageUrl?: string },
   ) {
-    return this.chatService.sendMessageHttp(req.user.id, conversationId, content);
+    return this.chatService.sendMessageHttp(req.user.id, conversationId, data.content, data.imageUrl);
   }
 
   @Get('unread-count')

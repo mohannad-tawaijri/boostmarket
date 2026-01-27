@@ -14,7 +14,9 @@ import {
   User as UserIcon,
   Search,
   Wifi,
-  WifiOff
+  WifiOff,
+  Image as ImageIcon,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,7 +28,8 @@ interface User {
 
 interface Message {
   id: string;
-  content: string;
+  content?: string;
+  imageUrl?: string;
   senderId: string;
   createdAt: string;
   sender?: User;
@@ -52,7 +55,11 @@ function MessagesContent() {
   const [loading, setLoading] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check for userId param to start new conversation
   const targetUserId = searchParams.get('userId');
@@ -172,15 +179,75 @@ function MessagesContent() {
     await loadMessages(conversation.id);
     markAsRead(conversation.id);
     refreshUnreadCount();
+    // Clear any pending image when switching conversations
+    setSelectedImage(null);
+    setImagePreview(null);
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image must be less than 5MB');
+        return;
+      }
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const clearSelectedImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    const token = localStorage.getItem('authToken');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.url;
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+    return null;
   };
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !activeConversation || sendingMessage) return;
+    if ((!newMessage.trim() && !selectedImage) || !activeConversation || sendingMessage) return;
 
     setSendingMessage(true);
     const token = localStorage.getItem('authToken');
 
     try {
+      let imageUrl: string | undefined;
+
+      // Upload image first if selected
+      if (selectedImage) {
+        setUploadingImage(true);
+        const uploadedUrl = await uploadImage(selectedImage);
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        }
+        setUploadingImage(false);
+      }
+
       const response = await fetch(
         `${API_URL}/chat/conversations/${activeConversation.id}/messages`,
         {
@@ -189,7 +256,10 @@ function MessagesContent() {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ content: newMessage }),
+          body: JSON.stringify({ 
+            content: newMessage.trim() || undefined, 
+            imageUrl 
+          }),
         }
       );
 
@@ -201,12 +271,14 @@ function MessagesContent() {
           return [...prev, message];
         });
         setNewMessage('');
+        clearSelectedImage();
         await fetchConversations(); // Update last message in list
       }
     } catch (error) {
       console.error('Error sending message:', error);
     } finally {
       setSendingMessage(false);
+      setUploadingImage(false);
     }
   };
 
@@ -384,14 +456,25 @@ function MessagesContent() {
                           className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-[70%] px-4 py-2 rounded-2xl ${
+                            className={`max-w-[70%] rounded-2xl overflow-hidden ${
                               isOwn
                                 ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
                                 : 'bg-slate-800 text-gray-200'
                             }`}
                           >
-                            <p>{message.content}</p>
-                            <p className={`text-xs mt-1 ${isOwn ? 'text-white/60' : 'text-gray-500'}`}>
+                            {message.imageUrl && (
+                              <a href={message.imageUrl} target="_blank" rel="noopener noreferrer">
+                                <img 
+                                  src={message.imageUrl} 
+                                  alt="Shared image" 
+                                  className="max-w-full max-h-64 object-contain cursor-pointer hover:opacity-90"
+                                />
+                              </a>
+                            )}
+                            {message.content && (
+                              <p className={`px-4 py-2 ${message.imageUrl ? 'pt-1' : ''}`}>{message.content}</p>
+                            )}
+                            <p className={`text-xs px-4 pb-2 ${isOwn ? 'text-white/60' : 'text-gray-500'}`}>
                               {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>
                           </div>
@@ -404,7 +487,39 @@ function MessagesContent() {
 
                 {/* Message Input */}
                 <div className="p-4 border-t border-slate-800">
+                  {/* Image Preview */}
+                  {imagePreview && (
+                    <div className="mb-3 relative inline-block">
+                      <img 
+                        src={imagePreview} 
+                        alt="Preview" 
+                        className="max-h-32 rounded-lg border border-slate-700"
+                      />
+                      <button
+                        onClick={clearSelectedImage}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
                   <div className="flex gap-2">
+                    {/* Hidden file input */}
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageSelect}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    {/* Image upload button */}
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-3 py-3 bg-slate-800 border border-slate-700 rounded-xl text-gray-400 hover:text-white hover:bg-slate-700 transition-colors"
+                      title="Send image"
+                    >
+                      <ImageIcon className="w-5 h-5" />
+                    </button>
                     <input
                       type="text"
                       value={newMessage}
@@ -415,7 +530,7 @@ function MessagesContent() {
                     />
                     <Button 
                       onClick={sendMessage} 
-                      disabled={!newMessage.trim() || sendingMessage}
+                      disabled={(!newMessage.trim() && !selectedImage) || sendingMessage}
                       className="px-4"
                     >
                       {sendingMessage ? (
@@ -425,6 +540,9 @@ function MessagesContent() {
                       )}
                     </Button>
                   </div>
+                  {uploadingImage && (
+                    <p className="text-xs text-indigo-400 mt-2">Uploading image...</p>
+                  )}
                 </div>
               </>
             ) : (

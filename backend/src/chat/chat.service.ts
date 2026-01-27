@@ -85,7 +85,7 @@ export class ChatService {
     });
   }
 
-  async sendMessageHttp(userId: string, conversationId: string, content: string) {
+  async sendMessageHttp(userId: string, conversationId: string, content?: string, imageUrl?: string) {
     // Verify user is part of conversation
     const participant = await this.prisma.conversationParticipant.findFirst({
       where: {
@@ -118,7 +118,8 @@ export class ChatService {
         conversationId,
         senderId: userId,
         receiverId: otherParticipant.userId,
-        content,
+        content: content || null,
+        imageUrl: imageUrl || null,
       },
       include: {
         sender: {
@@ -281,7 +282,7 @@ export class ChatService {
   }
 
   // WebSocket gateway sendMessage (conversationId first)
-  async sendMessage(conversationId: string, userId: string, content: string) {
+  async sendMessage(conversationId: string, userId: string, content?: string, imageUrl?: string) {
     // Verify user is part of conversation
     const participant = await this.prisma.conversationParticipant.findFirst({
       where: {
@@ -314,7 +315,8 @@ export class ChatService {
         conversationId,
         senderId: userId,
         receiverId: otherParticipant.userId,
-        content,
+        content: content || null,
+        imageUrl: imageUrl || null,
       },
       include: {
         sender: {
