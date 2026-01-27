@@ -90,12 +90,15 @@ export default function ServiceDetailPage() {
       router.push("/login");
       return;
     }
+    if (!service || !service.boosterId) {
+      return;
+    }
     // Don't allow messaging yourself
-    if (user.id === service?.boosterId) {
+    if (user.id === service.boosterId) {
       return;
     }
     // Navigate to messages page with booster's user ID
-    router.push(`/messages?userId=${service?.boosterId}&serviceId=${service?.id}`);
+    router.push(`/messages?userId=${service.boosterId}&serviceId=${service.id}`);
   };
 
   // Check if user is the booster

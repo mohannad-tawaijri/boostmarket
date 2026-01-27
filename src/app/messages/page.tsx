@@ -59,8 +59,9 @@ function MessagesContent() {
   }, []);
 
   useEffect(() => {
-    if (targetUserId && user && targetUserId !== user.id) {
-      startNewConversation(targetUserId, serviceId || undefined);
+    // Only start new conversation if we have a valid targetUserId
+    if (targetUserId && targetUserId !== 'undefined' && user && targetUserId !== user.id) {
+      startNewConversation(targetUserId, serviceId && serviceId !== 'undefined' ? serviceId : undefined);
     }
   }, [targetUserId, user]);
 
