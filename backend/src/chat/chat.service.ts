@@ -6,19 +6,45 @@ export class ChatService {
   constructor(private prisma: PrismaService) {}
 
   async createConversation(userId: string, otherUserId: string, serviceId?: string) {
-    // Check if conversation already exists between these users
+    // Check if conversation already exists between these two specific users
+    // Each user-to-user pair gets one conversation (not per service)
     const existingConversation = await this.prisma.conversation.findFirst({
       where: {
+        AND: [
+          {
+            participants: {
+              some: {
+                userId: userId,
+              },
+            },
+          },
+          {
+            participants: {
+              some: {
+                userId: otherUserId,
+              },
+            },
+          },
+        ],
+      },
+      include: {
         participants: {
-          every: {
-            userId: {
-              in: [userId, otherUserId],
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
             },
           },
         },
-      },
-      include: {
-        participants: true,
+        service: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
     });
 
@@ -49,11 +75,17 @@ export class ChatService {
             },
           },
         },
+        service: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
     });
   }
 
-  async sendMessage(userId: string, conversationId: string, content: string) {
+  async sendMessageHttp(userId: string, conversationId: string, content: string) {
     // Verify user is part of conversation
     const participant = await this.prisma.conversationParticipant.findFirst({
       where: {
@@ -195,5 +227,112 @@ export class ChatService {
         read: false,
       },
     });
+  }
+
+  async getConversation(conversationId: string, userId: string) {
+    const conversation = await this.prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        participants: {
+          some: {
+            userId,
+          },
+        },
+      },
+      include: {
+        participants: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    });
+
+    if (!conversation) {
+      throw new NotFoundException('Conversation not found');
+    }
+
+    return conversation;
+  }
+
+  async markMessagesAsRead(conversationId: string, userId: string) {
+    await this.prisma.message.updateMany({
+      where: {
+        conversationId,
+        receiverId: userId,
+        read: false,
+      },
+      data: {
+        read: true,
+      },
+    });
+  }
+
+  // WebSocket gateway sendMessage (conversationId first)
+  async sendMessage(conversationId: string, userId: string, content: string) {
+    // Verify user is part of conversation
+    const participant = await this.prisma.conversationParticipant.findFirst({
+      where: {
+        conversationId,
+        userId,
+      },
+    });
+
+    if (!participant) {
+      throw new ForbiddenException('You are not part of this conversation');
+    }
+
+    // Get the other participant
+    const otherParticipant = await this.prisma.conversationParticipant.findFirst({
+      where: {
+        conversationId,
+        userId: {
+          not: userId,
+        },
+      },
+    });
+
+    if (!otherParticipant) {
+      throw new NotFoundException('Conversation participant not found');
+    }
+
+    // Create message
+    const message = await this.prisma.message.create({
+      data: {
+        conversationId,
+        senderId: userId,
+        receiverId: otherParticipant.userId,
+        content,
+      },
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+
+    // Update conversation lastMessageAt
+    await this.prisma.conversation.update({
+      where: { id: conversationId },
+      data: { lastMessageAt: new Date() },
+    });
+
+    return message;
   }
 }

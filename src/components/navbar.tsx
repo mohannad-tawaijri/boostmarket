@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, X, Search, User, ShoppingCart, Shield, MessageSquare } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuth } from "@/contexts/auth-context";
+import { useSocket } from "@/contexts/socket-context";
 import Logo from "./logo";
 
 export default function Navbar() {
@@ -13,6 +14,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const { user, logout } = useAuth();
+  const { unreadCount } = useSocket();
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -87,6 +89,11 @@ export default function Navbar() {
                 <Link href="/messages">
                   <button className="p-2 hover:bg-slate-800 rounded-full relative transition-colors" title="Messages">
                     <MessageSquare className="w-5 h-5 text-gray-400" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
                   </button>
                 </Link>
                 <Link href="/orders">
@@ -208,10 +215,15 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/messages"
-                    className="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-lg transition-colors"
+                    className="text-gray-300 hover:text-white hover:bg-slate-800/50 px-3 py-2 rounded-lg transition-colors flex items-center justify-between"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Messages
+                    <span>Messages</span>
+                    {unreadCount > 0 && (
+                      <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
                   </Link>
                   <Link
                     href="/orders"

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
+import { useSocket } from '@/contexts/socket-context';
 import { Button } from '@/components/ui/button';
 import { API_URL } from '@/lib/config';
 import { 
@@ -11,7 +12,9 @@ import {
   ArrowLeft,
   Loader2,
   User as UserIcon,
-  Search
+  Search,
+  Wifi,
+  WifiOff
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -40,6 +43,7 @@ interface Conversation {
 
 function MessagesContent() {
   const { user } = useAuth();
+  const { isConnected, joinConversation, leaveConversation, onNewMessage, markAsRead, refreshUnreadCount } = useSocket();
   const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
@@ -57,6 +61,36 @@ function MessagesContent() {
   useEffect(() => {
     fetchConversations();
   }, []);
+
+  // Handle WebSocket real-time messages
+  useEffect(() => {
+    const unsubscribe = onNewMessage((message: Message) => {
+      // Check if this message is for the active conversation
+      if (activeConversation) {
+        setMessages(prev => {
+          // Avoid duplicates
+          if (prev.some(m => m.id === message.id)) return prev;
+          return [...prev, message];
+        });
+      }
+      // Refresh conversation list to update last message
+      fetchConversations();
+    });
+
+    return () => unsubscribe();
+  }, [activeConversation, onNewMessage]);
+
+  // Join/leave conversation room when active conversation changes
+  useEffect(() => {
+    if (activeConversation) {
+      joinConversation(activeConversation.id);
+      markAsRead(activeConversation.id);
+      
+      return () => {
+        leaveConversation(activeConversation.id);
+      };
+    }
+  }, [activeConversation?.id, joinConversation, leaveConversation, markAsRead]);
 
   useEffect(() => {
     // Only start new conversation if we have a valid targetUserId
@@ -136,6 +170,8 @@ function MessagesContent() {
   const selectConversation = async (conversation: Conversation) => {
     setActiveConversation(conversation);
     await loadMessages(conversation.id);
+    markAsRead(conversation.id);
+    refreshUnreadCount();
   };
 
   const sendMessage = async () => {
@@ -159,7 +195,11 @@ function MessagesContent() {
 
       if (response.ok) {
         const message = await response.json();
-        setMessages([...messages, message]);
+        setMessages(prev => {
+          // Avoid duplicates (WebSocket might have already added it)
+          if (prev.some(m => m.id === message.id)) return prev;
+          return [...prev, message];
+        });
         setNewMessage('');
         await fetchConversations(); // Update last message in list
       }
@@ -209,14 +249,30 @@ function MessagesContent() {
     <div className="min-h-screen bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <Link href="/dashboard">
-            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-          </Link>
-          <h1 className="text-2xl font-bold text-white">Messages</h1>
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+            <h1 className="text-2xl font-bold text-white">Messages</h1>
+          </div>
+          {/* Connection Status */}
+          <div className="flex items-center gap-2 text-sm">
+            {isConnected ? (
+              <>
+                <Wifi className="w-4 h-4 text-green-400" />
+                <span className="text-green-400 hidden sm:inline">Live</span>
+              </>
+            ) : (
+              <>
+                <WifiOff className="w-4 h-4 text-yellow-400" />
+                <span className="text-yellow-400 hidden sm:inline">Connecting...</span>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Main Content */}

@@ -54,7 +54,7 @@ export class ChatController {
     @Param('id') conversationId: string,
     @Body('content') content: string,
   ) {
-    return this.chatService.sendMessage(req.user.id, conversationId, content);
+    return this.chatService.sendMessageHttp(req.user.id, conversationId, content);
   }
 
   @Get('unread-count')
