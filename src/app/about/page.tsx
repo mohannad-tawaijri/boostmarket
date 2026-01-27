@@ -42,13 +42,6 @@ export default function AboutPage() {
     },
   ];
 
-  const team = [
-    { name: 'Alex Chen', role: 'Founder & CEO', game: 'Ex-Pro LoL Player' },
-    { name: 'Sarah Kim', role: 'Head of Operations', game: 'Radiant Valorant' },
-    { name: 'Mike Johnson', role: 'Lead Developer', game: 'Global Elite CS2' },
-    { name: 'Emma Davis', role: 'Community Manager', game: 'Top 500 OW2' },
-  ];
-
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
@@ -150,32 +143,6 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{value.title}</h3>
                 <p className="text-gray-400 text-sm">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Meet the Team</h2>
-            <p className="text-gray-400">The gamers behind BoostMarket</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <div
-                key={index}
-                className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 text-center hover:border-indigo-500/30 transition-all group"
-              >
-                <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Gamepad2 className="w-10 h-10 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-white">{member.name}</h3>
-                <p className="text-indigo-400 text-sm">{member.role}</p>
-                <p className="text-gray-500 text-sm mt-1">{member.game}</p>
               </div>
             ))}
           </div>
