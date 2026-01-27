@@ -90,19 +90,22 @@ export default function ServiceDetailPage() {
       router.push("/login");
       return;
     }
-    if (!service || !service.boosterId) {
+    // Get booster ID from either boosterId or booster.id
+    const boosterId = service?.boosterId || service?.booster?.id;
+    if (!service || !boosterId) {
       return;
     }
     // Don't allow messaging yourself
-    if (user.id === service.boosterId) {
+    if (user.id === boosterId) {
       return;
     }
     // Navigate to messages page with booster's user ID
-    router.push(`/messages?userId=${service.boosterId}&serviceId=${service.id}`);
+    router.push(`/messages?userId=${boosterId}&serviceId=${service.id}`);
   };
 
   // Check if user is the booster
-  const isOwnService = user?.id === service?.boosterId;
+  const boosterId = service?.boosterId || service?.booster?.id;
+  const isOwnService = user?.id === boosterId;
 
   // Game-specific gradient colors
   const gameGradients: Record<string, string> = {
