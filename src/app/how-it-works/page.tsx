@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
                 <div className={`flex-1 text-center md:text-left ${index % 2 === 1 ? 'md:text-right' : ''}`}>
                   <span className="text-6xl font-bold text-slate-800">{step.number}</span>
                   <h3 className="text-2xl font-bold text-white mt-2 mb-4">{step.title}</h3>
-                  <p className="text-gray-400 text-lg max-w-lg">{step.description}</p>
+                  <p className={`text-gray-400 text-lg max-w-lg ${index % 2 === 1 ? 'md:ml-auto' : ''}`}>{step.description}</p>
                 </div>
 
                 {/* Connector (hidden on last item) */}

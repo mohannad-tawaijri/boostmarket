@@ -320,7 +320,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 ))}
-                <Link href="/create-offer">
+                <Link href="/create-offer" className="mt-4 block">
                   <div className="bg-slate-900/30 border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 transition-colors cursor-pointer">
                     <Plus className="w-12 h-12 text-gray-500 mb-2" />
                     <p className="text-gray-400">Create New Offer</p>
