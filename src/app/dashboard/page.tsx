@@ -24,6 +24,10 @@ interface Order {
   status: string;
   totalPrice: number;
   createdAt: string;
+  buyerId: string;
+  boosterId: string;
+  buyer?: { id: string; name: string };
+  booster?: { id: string; name: string };
 }
 
 interface Offer {
@@ -36,8 +40,9 @@ interface Offer {
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'offers'>('overview');
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'customer-orders' | 'offers'>('overview');
+  const [myOrders, setMyOrders] = useState<Order[]>([]); // Orders I placed (as buyer)
+  const [customerOrders, setCustomerOrders] = useState<Order[]>([]); // Orders on my services (as booster)
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,13 +64,22 @@ export default function DashboardPage() {
           setOffers(servicesData);
         }
 
-        // Fetch user's orders
-        const ordersRes = await fetch(`${API_URL}/orders/my`, {
+        // Fetch orders I placed (as buyer)
+        const myOrdersRes = await fetch(`${API_URL}/orders?role=buyer`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        if (ordersRes.ok) {
-          const ordersData = await ordersRes.json();
-          setOrders(ordersData);
+        if (myOrdersRes.ok) {
+          const myOrdersData = await myOrdersRes.json();
+          setMyOrders(myOrdersData);
+        }
+
+        // Fetch orders on my services (as booster/seller)
+        const customerOrdersRes = await fetch(`${API_URL}/orders?role=booster`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (customerOrdersRes.ok) {
+          const customerOrdersData = await customerOrdersRes.json();
+          setCustomerOrders(customerOrdersData);
         }
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -77,18 +91,17 @@ export default function DashboardPage() {
     fetchData();
   }, []);
 
-  const totalEarnings = offers.reduce((sum, offer) => {
-    const offerOrders = offer.orders || [];
-    return sum + offerOrders.filter(o => o.status === 'COMPLETED').reduce((s, o) => s + o.totalPrice, 0);
-  }, 0);
+  const totalEarnings = customerOrders
+    .filter(o => o.status === 'COMPLETED')
+    .reduce((sum, o) => sum + o.totalPrice, 0);
 
-  const inProgressOrders = orders.filter(o => o.status === 'IN_PROGRESS').length;
-  const completedOrders = orders.filter(o => o.status === 'COMPLETED').length;
+  const inProgressOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'IN_PROGRESS').length;
+  const completedOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'COMPLETED').length;
 
   const stats = [
-    { label: 'Total Orders', value: orders.length.toString(), icon: ShoppingBag, color: 'from-blue-500 to-cyan-500' },
-    { label: 'My Offers', value: offers.length.toString(), icon: DollarSign, color: 'from-green-500 to-emerald-500' },
-    { label: 'In Progress', value: inProgressOrders.toString(), icon: Clock, color: 'from-yellow-500 to-orange-500' },
+    { label: 'Orders Placed', value: myOrders.length.toString(), icon: ShoppingBag, color: 'from-blue-500 to-cyan-500' },
+    { label: 'Customer Orders', value: customerOrders.length.toString(), icon: DollarSign, color: 'from-green-500 to-emerald-500' },
+    { label: 'My Offers', value: offers.length.toString(), icon: Gamepad2, color: 'from-yellow-500 to-orange-500' },
     { label: 'Completed', value: completedOrders.toString(), icon: CheckCircle, color: 'from-purple-500 to-pink-500' },
   ];
 
@@ -147,16 +160,17 @@ export default function DashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-slate-800 pb-4">
+        <div className="flex gap-2 mb-6 border-b border-slate-800 pb-4 overflow-x-auto">
           {[
             { id: 'overview', label: 'Overview', icon: TrendingUp },
-            { id: 'orders', label: 'My Orders', icon: ShoppingBag },
+            { id: 'orders', label: 'Orders I Placed', icon: ShoppingBag },
+            { id: 'customer-orders', label: 'Customer Orders', icon: DollarSign },
             { id: 'offers', label: 'My Offers', icon: Gamepad2 },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-slate-800'
@@ -183,7 +197,7 @@ export default function DashboardPage() {
                 <div className="flex justify-center py-8">
                   <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
                 </div>
-              ) : orders.length === 0 ? (
+              ) : [...myOrders, ...customerOrders].length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
                   <p className="text-gray-400">No orders yet</p>
@@ -193,7 +207,7 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {orders.slice(0, 3).map((order) => (
+                  {[...myOrders, ...customerOrders].slice(0, 3).map((order) => (
                     <div key={order.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
                       <div>
                         <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
@@ -240,14 +254,18 @@ export default function DashboardPage() {
 
         {activeTab === 'orders' && (
           <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-800">
+              <h2 className="text-lg font-semibold text-white">Orders I Placed</h2>
+              <p className="text-gray-400 text-sm">Services you purchased from other boosters</p>
+            </div>
             {loading ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
               </div>
-            ) : orders.length === 0 ? (
+            ) : myOrders.length === 0 ? (
               <div className="text-center py-12">
                 <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">You haven't placed any orders yet</p>
+                <p className="text-gray-400 mb-4">You haven't purchased any services yet</p>
                 <Link href="/services">
                   <Button>Browse Services</Button>
                 </Link>
@@ -258,21 +276,71 @@ export default function DashboardPage() {
                   <thead className="bg-slate-800/50">
                     <tr>
                       <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Booster</th>
                       <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
                       <th className="text-left text-gray-400 font-medium px-6 py-4">Price</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800">
+                    {myOrders.map((order) => (
+                      <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
+                        <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
+                        <td className="px-6 py-4 text-gray-300">{order.booster?.name || 'Booster'}</td>
+                        <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
+                        <td className="px-6 py-4 text-gray-300">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'customer-orders' && (
+          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-800">
+              <h2 className="text-lg font-semibold text-white">Customer Orders</h2>
+              <p className="text-gray-400 text-sm">Orders from customers who purchased your services</p>
+            </div>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+              </div>
+            ) : customerOrders.length === 0 ? (
+              <div className="text-center py-12">
+                <DollarSign className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                <p className="text-gray-400 mb-2">No customer orders yet</p>
+                <p className="text-gray-500 text-sm mb-4">Create an offer and start selling your services!</p>
+                <Link href="/create-offer">
+                  <Button>Create an Offer</Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-800/50">
+                    <tr>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Customer</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
+                      <th className="text-left text-gray-400 font-medium px-6 py-4">Earnings</th>
                       <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
                       <th className="text-left text-gray-400 font-medium px-6 py-4">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
-                    {orders.map((order) => (
+                    {customerOrders.map((order) => (
                       <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
+                        <td className="px-6 py-4 text-gray-300">{order.buyer?.name || 'Customer'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                        <td className="px-6 py-4 text-gray-300">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-green-400">${order.totalPrice}</td>
                         <td className="px-6 py-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                         <td className="px-6 py-4">
-                          <Button variant="outline" size="sm">View Details</Button>
+                          <Button variant="outline" size="sm">Manage</Button>
                         </td>
                       </tr>
                     ))}
