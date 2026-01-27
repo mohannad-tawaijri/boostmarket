@@ -2,16 +2,25 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Sparkles, Gamepad2, DollarSign, Clock, FileText, Tag } from "lucide-react";
+import { Plus, Sparkles, Gamepad2, DollarSign, Clock, FileText, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GameCategory, ServiceCategory, GAME_NAMES, CATEGORY_NAMES } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import { API_URL } from "@/lib/config";
 
+// Popular tags suggestions
+const SUGGESTED_TAGS = [
+  "Fast Delivery", "24/7 Available", "Stream Friendly", "VPN Protected",
+  "Duo Queue", "Solo Only", "Weekend Available", "Experienced",
+  "Top Ranked", "Guaranteed", "Flexible Hours", "English Speaking"
+];
+
 export default function CreateOfferPage() {
   const router = useRouter();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -21,6 +30,25 @@ export default function CreateOfferPage() {
     price: "",
     deliveryTime: "",
   });
+
+  const addTag = (tag: string) => {
+    const trimmedTag = tag.trim();
+    if (trimmedTag && !tags.includes(trimmedTag) && tags.length < 6) {
+      setTags([...tags, trimmedTag]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addTag(tagInput);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +71,7 @@ export default function CreateOfferPage() {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
+          tags,
           images: [],
         }),
       });
@@ -204,6 +233,76 @@ export default function CreateOfferPage() {
                 placeholder="Describe your service in detail. What's included? What are the requirements? What makes your service unique?"
                 className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none"
               />
+            </div>
+
+            {/* Tags */}
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                <Tag className="w-4 h-4 text-indigo-400" />
+                Tags (up to 6)
+              </label>
+              
+              {/* Selected Tags */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/50 text-indigo-300 rounded-full text-sm"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => removeTag(tag)}
+                        className="hover:text-white transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Tag Input */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagKeyDown}
+                  placeholder="Type a tag and press Enter"
+                  disabled={tags.length >= 6}
+                  className="flex-1 bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50"
+                />
+                <Button
+                  type="button"
+                  onClick={() => addTag(tagInput)}
+                  disabled={!tagInput.trim() || tags.length >= 6}
+                  variant="outline"
+                  className="px-4"
+                >
+                  Add
+                </Button>
+              </div>
+
+              {/* Suggested Tags */}
+              {tags.length < 6 && (
+                <div className="mt-3">
+                  <p className="text-xs text-gray-500 mb-2">Suggested tags:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {SUGGESTED_TAGS.filter(t => !tags.includes(t)).slice(0, 8).map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => addTag(tag)}
+                        className="px-3 py-1 bg-slate-700/50 border border-slate-600 text-gray-400 rounded-full text-xs hover:border-indigo-500 hover:text-indigo-300 transition-colors"
+                      >
+                        + {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Price and Delivery */}

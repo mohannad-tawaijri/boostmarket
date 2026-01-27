@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2, Star } from "lucide-react";
+import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2, Star, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory, Review } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
@@ -215,6 +215,26 @@ export default function ServiceDetailPage() {
                 <h3 className="text-lg font-semibold text-white mb-4">About This Service</h3>
                 <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{service.description}</p>
               </div>
+
+              {/* Tags */}
+              {service.tags && service.tags.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <Tag className="w-5 h-5 text-indigo-400" />
+                    Tags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {service.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 rounded-full text-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Features */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">

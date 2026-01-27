@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, Star } from "lucide-react";
+import { Clock, Star, Tag } from "lucide-react";
 import { Service, GAME_NAMES, GameCategory } from "@/types";
 
 export default function ServiceCard({ service }: { service: Service }) {
@@ -85,6 +85,26 @@ export default function ServiceCard({ service }: { service: Service }) {
               </div>
             </div>
           </div>
+
+          {/* Tags */}
+          {service.tags && service.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {service.tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-slate-700/50 border border-slate-600/50 text-gray-400 rounded-full text-xs"
+                >
+                  <Tag className="w-2.5 h-2.5" />
+                  {tag}
+                </span>
+              ))}
+              {service.tags.length > 3 && (
+                <span className="px-2 py-0.5 text-gray-500 text-xs">
+                  +{service.tags.length - 3} more
+                </span>
+              )}
+            </div>
+          )}
 
           <div className="flex items-center justify-between">
             <div className="flex items-center text-sm text-gray-400">

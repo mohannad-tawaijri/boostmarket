@@ -103,6 +103,7 @@ model Service {
   gameDetails       String?
   price             Float
   deliveryTime      String
+  tags              String[]
   
   boosterId         String
   booster           User              @relation(fields: [boosterId], references: [id], onDelete: Cascade)

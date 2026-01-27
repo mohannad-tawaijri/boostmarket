@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2 } from "lucide-react";
+import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
 import { Service, GameCategory, GAME_NAMES } from "@/types";
@@ -22,8 +22,20 @@ function ServicesContent() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Collect all unique tags from services
+  const allTags = Array.from(
+    new Set(services.flatMap((s) => s.tags || []))
+  ).sort();
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
 
   // Get search query from URL params
   useEffect(() => {
@@ -54,13 +66,21 @@ function ServicesContent() {
     }
   };
 
-  const filteredServices = services.filter((service) =>
-    searchQuery
+  const filteredServices = services.filter((service) => {
+    // Text search filter
+    const matchesSearch = searchQuery
       ? service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (service.booster?.name && service.booster.name.toLowerCase().includes(searchQuery.toLowerCase()))
-      : true
-  );
+      : true;
+
+    // Tag filter
+    const matchesTags =
+      selectedTags.length === 0 ||
+      selectedTags.every((tag) => service.tags?.includes(tag));
+
+    return matchesSearch && matchesTags;
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
@@ -151,6 +171,39 @@ function ServicesContent() {
                 </select>
               </div>
 
+              {/* Tags Filter */}
+              {allTags.length > 0 && (
+                <div className="mb-6">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3">
+                    <Tag className="w-4 h-4 text-green-400" />
+                    Tags
+                  </label>
+                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+                    {allTags.map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                          selectedTags.includes(tag)
+                            ? "bg-indigo-500 text-white border border-indigo-400"
+                            : "bg-slate-700/50 text-gray-400 border border-slate-600 hover:border-indigo-500/50 hover:text-gray-300"
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedTags.length > 0 && (
+                    <button
+                      onClick={() => setSelectedTags([])}
+                      className="mt-2 text-xs text-indigo-400 hover:text-indigo-300"
+                    >
+                      Clear tags
+                    </button>
+                  )}
+                </div>
+              )}
+
               <div className="pt-4 border-t border-slate-700">
                 <Link href="/favorites">
                   <Button variant="outline" className="w-full border-slate-600 text-gray-300 hover:bg-slate-700 hover:text-white rounded-xl py-5">
@@ -185,7 +238,7 @@ function ServicesContent() {
                   Try adjusting your filters or search query
                 </p>
                 <Button 
-                  onClick={() => { setSelectedGame(""); setSearchQuery(""); }}
+                  onClick={() => { setSelectedGame(""); setSearchQuery(""); setSelectedTags([]); }}
                   className="bg-indigo-600 hover:bg-indigo-500"
                 >
                   Clear Filters
