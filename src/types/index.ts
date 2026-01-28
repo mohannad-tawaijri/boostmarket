@@ -95,12 +95,32 @@ export interface Review {
   createdAt: Date;
 }
 
+export type OfferStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'EXPIRED' | 'CANCELLED';
+
+export interface CustomOffer {
+  id: string;
+  title: string;
+  description?: string;
+  price: number;
+  deliveryTime: string;
+  status: OfferStatus;
+  senderId: string;
+  receiverId: string;
+  serviceId?: string;
+  orderId?: string;
+  expiresAt?: Date;
+  respondedAt?: Date;
+  createdAt: Date;
+}
+
 export interface Message {
   id: string;
   conversationId: string;
   senderId: string;
   sender?: User;
-  content: string;
+  content?: string;
+  imageUrl?: string;
+  customOffer?: CustomOffer;
   read: boolean;
   createdAt: Date;
 }

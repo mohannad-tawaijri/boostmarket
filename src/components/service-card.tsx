@@ -53,8 +53,9 @@ export default function ServiceCard({ service }: { service: Service }) {
           
           {/* Price */}
           <div className="absolute bottom-3 right-3">
-            <div className="text-2xl font-bold text-white drop-shadow-lg bg-black/30 backdrop-blur-sm px-3 py-1 rounded-lg">
-              ${service.price}
+            <div className="text-white drop-shadow-lg bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-lg text-right">
+              <span className="text-xs text-gray-300">From</span>
+              <span className="text-2xl font-bold ml-1">${service.price}</span>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { UploadModule } from './upload/upload.module';
 import { ChatModule } from './chat/chat.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { CustomOffersModule } from './custom-offers/custom-offers.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -27,6 +28,7 @@ import { AppController } from './app.controller';
     UploadModule,
     ChatModule,
     FavoritesModule,
+    CustomOffersModule,
   ],
   controllers: [AppController],
 })

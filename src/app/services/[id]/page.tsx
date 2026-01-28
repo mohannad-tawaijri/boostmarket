@@ -338,10 +338,11 @@ export default function ServiceDetailPage() {
             {/* Order Card */}
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 sticky top-24 mb-6">
               <div className="text-center mb-6">
+                <p className="text-gray-400 text-sm mb-1">Starting from</p>
                 <div className="text-4xl font-bold text-gradient mb-2">
                   ${service.price}
                 </div>
-                <p className="text-gray-400 text-sm">One-time payment</p>
+                <p className="text-gray-500 text-xs">Final price discussed via chat</p>
               </div>
 
               {isOwnService ? (
@@ -353,18 +354,18 @@ export default function ServiceDetailPage() {
                 </div>
               ) : (
                 <>
-                  <Button className="w-full mb-3 py-6 text-lg" size="lg" onClick={handleOrderNow}>
-                    Order Now
-                  </Button>
-
                   <Button
-                    variant="outline"
-                    className="w-full py-5"
+                    className="w-full mb-3 py-6 text-lg"
+                    size="lg"
                     onClick={handleContactBooster}
                   >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    Contact Booster
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Get Custom Offer
                   </Button>
+
+                  <p className="text-center text-gray-500 text-xs">
+                    Message the booster to discuss your requirements and get a personalized offer
+                  </p>
                 </>
               )}
 

@@ -16,14 +16,34 @@ import {
   Wifi,
   WifiOff,
   Image as ImageIcon,
-  X
+  X,
+  DollarSign,
+  Clock,
+  Check,
+  XCircle,
+  FileText
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface User {
   id: string;
   name: string;
   avatar?: string;
+  role?: string;
+}
+
+interface CustomOffer {
+  id: string;
+  title: string;
+  description?: string;
+  price: number;
+  deliveryTime: string;
+  status: 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'EXPIRED' | 'CANCELLED';
+  senderId: string;
+  receiverId: string;
+  orderId?: string;
+  expiresAt?: string;
 }
 
 interface Message {
@@ -33,6 +53,7 @@ interface Message {
   senderId: string;
   createdAt: string;
   sender?: User;
+  customOffer?: CustomOffer;
 }
 
 interface Conversation {
@@ -46,6 +67,7 @@ interface Conversation {
 
 function MessagesContent() {
   const { user } = useAuth();
+  const router = useRouter();
   const { isConnected, joinConversation, leaveConversation, onNewMessage, markAsRead, refreshUnreadCount } = useSocket();
   const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -60,6 +82,20 @@ function MessagesContent() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Custom Offer Modal State
+  const [showOfferModal, setShowOfferModal] = useState(false);
+  const [offerForm, setOfferForm] = useState({
+    title: '',
+    description: '',
+    price: '',
+    deliveryTime: '1-2 days'
+  });
+  const [sendingOffer, setSendingOffer] = useState(false);
+  const [processingOffer, setProcessingOffer] = useState<string | null>(null);
+
+  // Check if current user is a booster
+  const isBooster = (user as any)?.role === 'BOOSTER';
 
   // Check for userId param to start new conversation
   const targetUserId = searchParams.get('userId');
@@ -289,6 +325,112 @@ function MessagesContent() {
     }
   };
 
+  const sendCustomOffer = async () => {
+    if (!activeConversation || !offerForm.title || !offerForm.price) return;
+    
+    setSendingOffer(true);
+    const token = localStorage.getItem('authToken');
+    const otherUser = getOtherParticipant(activeConversation);
+    
+    if (!otherUser) {
+      setSendingOffer(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/custom-offers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: offerForm.title,
+          description: offerForm.description || undefined,
+          price: parseFloat(offerForm.price),
+          deliveryTime: offerForm.deliveryTime,
+          receiverId: otherUser.id,
+          conversationId: activeConversation.id,
+          serviceId: activeConversation.service?.id,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Add the message with offer to messages list
+        setMessages(prev => {
+          if (prev.some(m => m.id === data.message.id)) return prev;
+          return [...prev, data.message];
+        });
+        // Reset form and close modal
+        setOfferForm({ title: '', description: '', price: '', deliveryTime: '1-2 days' });
+        setShowOfferModal(false);
+        await fetchConversations();
+      }
+    } catch (error) {
+      console.error('Error sending custom offer:', error);
+    } finally {
+      setSendingOffer(false);
+    }
+  };
+
+  const acceptOffer = async (offerId: string) => {
+    setProcessingOffer(offerId);
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await fetch(`${API_URL}/custom-offers/${offerId}/accept`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Update the message with the new offer status
+        setMessages(prev => prev.map(m => 
+          m.customOffer?.id === offerId 
+            ? { ...m, customOffer: { ...m.customOffer!, status: 'ACCEPTED', orderId: data.order.id } }
+            : m
+        ));
+        // Navigate to orders page
+        router.push('/orders');
+      }
+    } catch (error) {
+      console.error('Error accepting offer:', error);
+    } finally {
+      setProcessingOffer(null);
+    }
+  };
+
+  const declineOffer = async (offerId: string) => {
+    setProcessingOffer(offerId);
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await fetch(`${API_URL}/custom-offers/${offerId}/decline`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Update the message with the new offer status
+        setMessages(prev => prev.map(m => 
+          m.customOffer?.id === offerId 
+            ? { ...m, customOffer: { ...m.customOffer!, status: 'DECLINED' } }
+            : m
+        ));
+      }
+    } catch (error) {
+      console.error('Error declining offer:', error);
+    } finally {
+      setProcessingOffer(null);
+    }
+  };
+
   const getOtherParticipant = (conversation: Conversation): User | null => {
     const otherParticipant = conversation.participants.find(
       p => p.user.id !== user?.id
@@ -450,6 +592,102 @@ function MessagesContent() {
                   ) : (
                     messages.map((message) => {
                       const isOwn = message.senderId === user.id;
+                      
+                      // Custom Offer Card
+                      if (message.customOffer) {
+                        const offer = message.customOffer;
+                        const canRespond = offer.receiverId === user.id && offer.status === 'PENDING';
+                        const isProcessing = processingOffer === offer.id;
+                        
+                        return (
+                          <div
+                            key={message.id}
+                            className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div className="max-w-[85%] bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-indigo-500/50 overflow-hidden">
+                              {/* Offer Header */}
+                              <div className="bg-indigo-600/20 px-4 py-2 border-b border-indigo-500/30 flex items-center gap-2">
+                                <FileText className="w-4 h-4 text-indigo-400" />
+                                <span className="text-indigo-300 font-medium text-sm">Custom Offer</span>
+                                {offer.status !== 'PENDING' && (
+                                  <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-medium ${
+                                    offer.status === 'ACCEPTED' ? 'bg-green-500/20 text-green-400' :
+                                    offer.status === 'DECLINED' ? 'bg-red-500/20 text-red-400' :
+                                    'bg-gray-500/20 text-gray-400'
+                                  }`}>
+                                    {offer.status}
+                                  </span>
+                                )}
+                              </div>
+                              
+                              {/* Offer Content */}
+                              <div className="p-4">
+                                <h4 className="text-white font-semibold mb-2">{offer.title}</h4>
+                                {offer.description && (
+                                  <p className="text-gray-400 text-sm mb-3">{offer.description}</p>
+                                )}
+                                
+                                <div className="flex items-center gap-4 mb-4">
+                                  <div className="flex items-center gap-1.5">
+                                    <DollarSign className="w-4 h-4 text-green-400" />
+                                    <span className="text-green-400 font-bold text-lg">${offer.price}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <Clock className="w-4 h-4 text-indigo-400" />
+                                    <span className="text-gray-300 text-sm">{offer.deliveryTime}</span>
+                                  </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                {canRespond && (
+                                  <div className="flex gap-2">
+                                    <Button
+                                      onClick={() => acceptOffer(offer.id)}
+                                      disabled={isProcessing}
+                                      className="flex-1 bg-green-600 hover:bg-green-500"
+                                    >
+                                      {isProcessing ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                      ) : (
+                                        <>
+                                          <Check className="w-4 h-4 mr-1" />
+                                          Accept
+                                        </>
+                                      )}
+                                    </Button>
+                                    <Button
+                                      onClick={() => declineOffer(offer.id)}
+                                      disabled={isProcessing}
+                                      variant="outline"
+                                      className="flex-1 border-red-500/50 text-red-400 hover:bg-red-500/10"
+                                    >
+                                      <XCircle className="w-4 h-4 mr-1" />
+                                      Decline
+                                    </Button>
+                                  </div>
+                                )}
+
+                                {offer.status === 'ACCEPTED' && offer.orderId && (
+                                  <Link href="/orders">
+                                    <Button className="w-full bg-green-600/20 text-green-400 hover:bg-green-600/30">
+                                      <Check className="w-4 h-4 mr-1" />
+                                      Order Created - View Orders
+                                    </Button>
+                                  </Link>
+                                )}
+                              </div>
+                              
+                              <div className="px-4 pb-2">
+                                <p className="text-xs text-gray-500">
+                                  {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                      
+                      // Regular Message
                       return (
                         <div
                           key={message.id}
@@ -487,6 +725,19 @@ function MessagesContent() {
 
                 {/* Message Input */}
                 <div className="p-4 border-t border-slate-800">
+                  {/* Send Custom Offer Button (for boosters only) */}
+                  {isBooster && (
+                    <div className="mb-3">
+                      <button
+                        onClick={() => setShowOfferModal(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl text-sm font-medium transition-all"
+                      >
+                        <DollarSign className="w-4 h-4" />
+                        Send Custom Offer
+                      </button>
+                    </div>
+                  )}
+
                   {/* Image Preview */}
                   {imagePreview && (
                     <div className="mb-3 relative inline-block">
@@ -557,6 +808,119 @@ function MessagesContent() {
           </div>
         </div>
       </div>
+
+      {/* Custom Offer Modal */}
+      {showOfferModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-700">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-green-400" />
+                Create Custom Offer
+              </h3>
+              <button
+                onClick={() => setShowOfferModal(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Offer Title *
+                </label>
+                <input
+                  type="text"
+                  value={offerForm.title}
+                  onChange={(e) => setOfferForm(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="e.g., Gold to Diamond Boost"
+                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Description (optional)
+                </label>
+                <textarea
+                  value={offerForm.description}
+                  onChange={(e) => setOfferForm(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Describe what's included in this offer..."
+                  rows={3}
+                  className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Price ($) *
+                  </label>
+                  <input
+                    type="number"
+                    value={offerForm.price}
+                    onChange={(e) => setOfferForm(prev => ({ ...prev, price: e.target.value }))}
+                    placeholder="50"
+                    min="1"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Delivery Time *
+                  </label>
+                  <select
+                    value={offerForm.deliveryTime}
+                    onChange={(e) => setOfferForm(prev => ({ ...prev, deliveryTime: e.target.value }))}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  >
+                    <option value="1 day">1 day</option>
+                    <option value="1-2 days">1-2 days</option>
+                    <option value="2-3 days">2-3 days</option>
+                    <option value="3-5 days">3-5 days</option>
+                    <option value="1 week">1 week</option>
+                    <option value="2 weeks">2 weeks</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-slate-800/50 rounded-xl p-3 text-sm text-gray-400">
+                <p>💡 This offer will be sent as a message. The buyer can accept or decline.</p>
+                <p className="mt-1">If accepted, an order will be created automatically.</p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex gap-3 p-4 border-t border-slate-700">
+              <Button
+                variant="outline"
+                onClick={() => setShowOfferModal(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={sendCustomOffer}
+                disabled={!offerForm.title || !offerForm.price || sendingOffer}
+                className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500"
+              >
+                {sendingOffer ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Send Offer
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

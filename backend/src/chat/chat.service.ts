@@ -198,6 +198,7 @@ export class ChatService {
             avatar: true,
           },
         },
+        customOffer: true,
       },
       orderBy: {
         createdAt: 'asc',

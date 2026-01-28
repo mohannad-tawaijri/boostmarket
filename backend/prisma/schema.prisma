@@ -21,6 +21,14 @@ enum OrderStatus {
   DISPUTED
 }
 
+enum OfferStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  CANCELLED
+}
+
 enum ServiceCategory {
   RANK_BOOST
   COACHING
@@ -272,10 +280,50 @@ model Message {
   imageUrl          String?
   read              Boolean       @default(false)
   
+  // Custom offer attached to this message
+  customOfferId     String?       @unique
+  customOffer       CustomOffer?  @relation(fields: [customOfferId], references: [id], onDelete: SetNull)
+  
   createdAt         DateTime      @default(now())
   
   @@map("messages")
   @@index([conversationId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model CustomOffer {
+  id                String        @id @default(cuid())
+  
+  title             String
+  description       String?
+  price             Float
+  deliveryTime      String
+  
+  status            OfferStatus   @default(PENDING)
+  
+  // The booster who created the offer
+  senderId          String
+  
+  // The buyer who received the offer
+  receiverId        String
+  
+  // Optional: linked to a service
+  serviceId         String?
+  
+  // If accepted, links to the created order
+  orderId           String?       @unique
+  
+  expiresAt         DateTime?
+  respondedAt       DateTime?
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  // Relations
+  message           Message?
+  
+  @@map("custom_offers")
   @@index([senderId])
   @@index([receiverId])
 }
