@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './auth-context';
+import { showMessageNotification } from '@/components/toast-notification';
 
 interface Message {
   id: string;
@@ -114,12 +115,39 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       // Increment unread count
       setUnreadCount(prev => prev + 1);
       
-      // Show browser notification if permitted
+      const senderName = notification.from?.name || 'Someone';
+      const messageContent = notification.message?.content || 'Sent you a message';
+      
+      // Show in-app toast notification (always works)
+      showMessageNotification({
+        senderName: senderName,
+        senderAvatar: notification.from?.avatar,
+        message: messageContent,
+        conversationId: notification.conversationId,
+        senderId: notification.from?.id || '',
+      });
+      
+      // Also show browser notification if permitted and page is not focused
       if (Notification.permission === 'granted') {
-        new Notification(`New message from ${notification.from.name}`, {
-          body: notification.message.content.substring(0, 100),
-          icon: notification.from.avatar || '/icon.png',
-        });
+        try {
+          const browserNotification = new Notification(`${senderName}`, {
+            body: messageContent.substring(0, 100),
+            icon: '/icon.png',
+            tag: `message-${notification.conversationId}`, // Prevents duplicate notifications
+          });
+          
+          // Close notification after 5 seconds
+          setTimeout(() => browserNotification.close(), 5000);
+          
+          // Click to focus the window
+          browserNotification.onclick = () => {
+            window.focus();
+            browserNotification.close();
+          };
+        } catch (e) {
+          // Browser notification failed, in-app toast still works
+          console.log('Browser notification not available');
+        }
       }
     });
 

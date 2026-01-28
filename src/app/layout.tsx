@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/contexts/auth-context";
 import { SocketProvider } from "@/contexts/socket-context";
+import { ToastContainer } from "@/components/toast-notification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
+            <ToastContainer />
           </SocketProvider>
         </AuthProvider>
       </body>
