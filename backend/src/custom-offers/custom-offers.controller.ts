@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CustomOffersService } from './custom-offers.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('custom-offers')
 @UseGuards(JwtAuthGuard)
