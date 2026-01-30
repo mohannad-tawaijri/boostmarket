@@ -9,12 +9,16 @@ import {
   Request,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
+import { ChatGateway } from './chat.gateway';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('chat')
 @UseGuards(JwtAuthGuard)
 export class ChatController {
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private chatGateway: ChatGateway,
+  ) {}
 
   @Post('conversations')
   createConversation(
@@ -49,12 +53,32 @@ export class ChatController {
   }
 
   @Post('conversations/:id/messages')
-  sendMessage(
+  async sendMessage(
     @Request() req,
     @Param('id') conversationId: string,
     @Body() data: { content?: string; imageUrl?: string },
   ) {
-    return this.chatService.sendMessageHttp(req.user.id, conversationId, data.content, data.imageUrl);
+    const message = await this.chatService.sendMessageHttp(req.user.id, conversationId, data.content, data.imageUrl);
+    
+    // Emit WebSocket events for real-time updates
+    // Send to conversation room for users viewing the conversation
+    this.chatGateway.server.to(`conversation:${conversationId}`).emit('newMessage', message);
+    
+    // Get conversation to notify other participants
+    const conversation = await this.chatService.getConversation(conversationId, req.user.id);
+    
+    // Notify other participants (for notification badge/toast)
+    conversation.participants.forEach((participant: any) => {
+      if (participant.userId !== req.user.id) {
+        this.chatGateway.server.to(`user:${participant.userId}`).emit('messageNotification', {
+          conversationId: conversationId,
+          message,
+          from: message.sender,
+        });
+      }
+    });
+    
+    return message;
   }
 
   @Get('unread-count')
