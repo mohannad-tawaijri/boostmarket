@@ -142,7 +142,7 @@ export class ChatService {
   }
 
   async getConversations(userId: string) {
-    return this.prisma.conversation.findMany({
+    const conversations = await this.prisma.conversation.findMany({
       where: {
         participants: {
           some: {
@@ -168,11 +168,36 @@ export class ChatService {
             createdAt: 'desc',
           },
         },
+        service: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
       orderBy: {
         lastMessageAt: 'desc',
       },
     });
+
+    // Get unread count for each conversation
+    const conversationsWithUnread = await Promise.all(
+      conversations.map(async (conv) => {
+        const unreadCount = await this.prisma.message.count({
+          where: {
+            conversationId: conv.id,
+            receiverId: userId,
+            read: false,
+          },
+        });
+        return {
+          ...conv,
+          unreadCount,
+        };
+      })
+    );
+
+    return conversationsWithUnread;
   }
 
   async getMessages(userId: string, conversationId: string, skip = 0, take = 50) {

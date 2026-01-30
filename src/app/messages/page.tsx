@@ -63,6 +63,7 @@ interface Conversation {
   lastMessage?: Message;
   updatedAt: string;
   service?: { id: string; title: string };
+  unreadCount?: number;
 }
 
 function MessagesContent() {
@@ -108,20 +109,22 @@ function MessagesContent() {
   // Handle WebSocket real-time messages
   useEffect(() => {
     const unsubscribe = onNewMessage((message: Message) => {
-      // Check if this message is for the active conversation
-      if (activeConversation) {
+      // Check if this message belongs to the active conversation
+      if (activeConversation && (message as any).conversationId === activeConversation.id) {
         setMessages(prev => {
           // Avoid duplicates
           if (prev.some(m => m.id === message.id)) return prev;
           return [...prev, message];
         });
+        // Mark as read immediately since user is viewing this conversation
+        markAsRead(activeConversation.id);
       }
-      // Refresh conversation list to update last message
+      // Refresh conversation list to update last message and unread counts
       fetchConversations();
     });
 
     return () => unsubscribe();
-  }, [activeConversation, onNewMessage]);
+  }, [activeConversation?.id, onNewMessage, markAsRead]);
 
   // Join/leave conversation room when active conversation changes
   useEffect(() => {
@@ -215,6 +218,8 @@ function MessagesContent() {
     await loadMessages(conversation.id);
     markAsRead(conversation.id);
     refreshUnreadCount();
+    // Refresh conversations to update unread count in the list
+    fetchConversations();
     // Clear any pending image when switching conversations
     setSelectedImage(null);
     setImagePreview(null);
@@ -544,9 +549,16 @@ function MessagesContent() {
                           <p className="text-gray-500 text-sm truncate">{conversation.lastMessage.content}</p>
                         )}
                       </div>
-                      <span className="text-gray-600 text-xs">
-                        {new Date(conversation.updatedAt).toLocaleDateString()}
-                      </span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-gray-600 text-xs">
+                          {new Date(conversation.updatedAt).toLocaleDateString()}
+                        </span>
+                        {conversation.unreadCount && conversation.unreadCount > 0 && !isActive && (
+                          <span className="bg-indigo-600 text-white text-xs font-medium rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
+                            {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
+                          </span>
+                        )}
+                      </div>
                     </button>
                   );
                 })
