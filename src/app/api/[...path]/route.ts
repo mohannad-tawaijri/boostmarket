@@ -35,22 +35,45 @@ export async function POST(
   const { path } = await params;
   const url = `${API_URL}/${path.join('/')}`;
   
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-  
   const authHeader = request.headers.get('Authorization');
-  if (authHeader) {
-    headers['Authorization'] = authHeader;
-  }
+  const contentType = request.headers.get('Content-Type') || '';
 
   try {
-    const body = await request.json();
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(body),
-    });
+    let response: Response;
+
+    // Check if it's a file upload (multipart/form-data)
+    if (contentType.includes('multipart/form-data')) {
+      // For file uploads, pass the request body directly
+      const formData = await request.formData();
+      
+      const headers: HeadersInit = {};
+      if (authHeader) {
+        headers['Authorization'] = authHeader;
+      }
+      // Don't set Content-Type - let fetch set it with boundary
+      
+      response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: formData,
+      });
+    } else {
+      // Regular JSON request
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+      if (authHeader) {
+        headers['Authorization'] = authHeader;
+      }
+
+      const body = await request.json();
+      response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      });
+    }
+
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
