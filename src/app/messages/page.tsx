@@ -69,7 +69,7 @@ interface Conversation {
 function MessagesContent() {
   const { user } = useAuth();
   const router = useRouter();
-  const { isConnected, joinConversation, leaveConversation, onNewMessage, markAsRead, refreshUnreadCount } = useSocket();
+  const { isConnected, joinConversation, leaveConversation, onNewMessage, onMessageNotification, markAsRead, refreshUnreadCount } = useSocket();
   const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
@@ -134,6 +134,30 @@ function MessagesContent() {
 
     return () => unsubscribe();
   }, [activeConversation?.id, onNewMessage, markAsRead]);
+
+  // Listen for message notifications (updates badges even without entering a conversation)
+  useEffect(() => {
+    const unsubscribe = onMessageNotification((notification) => {
+      const conversationId = notification.conversationId;
+      
+      // If the notification is for the active conversation, don't increment badge
+      if (activeConversation && conversationId === activeConversation.id) {
+        return;
+      }
+      
+      // Update the unread count for this conversation
+      setConversations(prev => prev.map(c => 
+        c.id === conversationId 
+          ? { ...c, unreadCount: (c.unreadCount || 0) + 1 } 
+          : c
+      ));
+      
+      // Also refresh to get updated last message
+      fetchConversations();
+    });
+
+    return () => unsubscribe();
+  }, [activeConversation?.id, onMessageNotification]);
 
   // Join/leave conversation room when active conversation changes
   useEffect(() => {

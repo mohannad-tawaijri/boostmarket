@@ -36,6 +36,7 @@ interface SocketContextType {
   sendMessage: (conversationId: string, content: string) => void;
   markAsRead: (conversationId: string) => void;
   onNewMessage: (callback: (message: Message) => void) => () => void;
+  onMessageNotification: (callback: (notification: MessageNotification) => void) => () => void;
   refreshUnreadCount: () => void;
 }
 
@@ -56,6 +57,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [unreadCount, setUnreadCount] = useState(0);
   // Use ref to avoid stale closure issues with socket event handlers
   const messageCallbacksRef = useRef<((message: Message) => void)[]>([]);
+  const notificationCallbacksRef = useRef<((notification: MessageNotification) => void)[]>([]);
 
   // Fetch unread count from API
   const fetchUnreadCount = useCallback(async () => {
@@ -116,6 +118,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     newSocket.on('messageNotification', (notification: MessageNotification) => {
       // Increment unread count
       setUnreadCount(prev => prev + 1);
+      
+      // Call all notification callbacks (for messages page to update badges)
+      notificationCallbacksRef.current.forEach(callback => callback(notification));
       
       const senderName = notification.from?.name || 'Someone';
       const messageContent = notification.message?.content || 'Sent you a message';
@@ -194,6 +199,13 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const onMessageNotification = useCallback((callback: (notification: MessageNotification) => void) => {
+    notificationCallbacksRef.current = [...notificationCallbacksRef.current, callback];
+    return () => {
+      notificationCallbacksRef.current = notificationCallbacksRef.current.filter(cb => cb !== callback);
+    };
+  }, []);
+
   return (
     <SocketContext.Provider value={{
       socket,
@@ -204,6 +216,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       sendMessage,
       markAsRead,
       onNewMessage,
+      onMessageNotification,
       refreshUnreadCount: fetchUnreadCount,
     }}>
       {children}
