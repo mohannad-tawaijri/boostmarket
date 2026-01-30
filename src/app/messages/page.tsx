@@ -590,7 +590,7 @@ function MessagesContent() {
                         <span className="text-gray-600 text-xs">
                           {new Date(conversation.updatedAt).toLocaleDateString()}
                         </span>
-                        {conversation.unreadCount && conversation.unreadCount > 0 && !isActive && (
+                        {!isActive && conversation.unreadCount !== undefined && conversation.unreadCount > 0 && (
                           <span className="bg-indigo-600 text-white text-xs font-medium rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
                             {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
                           </span>
