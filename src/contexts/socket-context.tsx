@@ -120,35 +120,37 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       const senderName = notification.from?.name || 'Someone';
       const messageContent = notification.message?.content || 'Sent you a message';
       
-      // Show in-app toast notification (always works)
-      showMessageNotification({
-        senderName: senderName,
-        senderAvatar: notification.from?.avatar,
-        message: messageContent,
-        conversationId: notification.conversationId,
-        senderId: notification.from?.id || '',
-      });
+      // Don't show notifications if user is on the messages page
+      const isOnMessagesPage = typeof window !== 'undefined' && window.location.pathname === '/messages';
       
-      // Also show browser notification if permitted and page is not focused
-      if (Notification.permission === 'granted') {
-        try {
-          const browserNotification = new Notification(`${senderName}`, {
-            body: messageContent.substring(0, 100),
-            icon: '/icon.png',
-            tag: `message-${notification.conversationId}`, // Prevents duplicate notifications
-          });
-          
-          // Close notification after 5 seconds
-          setTimeout(() => browserNotification.close(), 5000);
-          
-          // Click to focus the window
-          browserNotification.onclick = () => {
-            window.focus();
-            browserNotification.close();
-          };
-        } catch (e) {
-          // Browser notification failed, in-app toast still works
-          console.log('Browser notification not available');
+      if (!isOnMessagesPage) {
+        // Show in-app toast notification
+        showMessageNotification({
+          senderName: senderName,
+          senderAvatar: notification.from?.avatar,
+          message: messageContent,
+          conversationId: notification.conversationId,
+          senderId: notification.from?.id || '',
+        });
+        
+        // Also show browser notification if permitted and page is not focused
+        if (Notification.permission === 'granted') {
+          try {
+            const browserNotification = new Notification(`${senderName}`, {
+              body: messageContent.substring(0, 100),
+              icon: '/icon.png',
+              tag: `message-${notification.conversationId}`,
+            });
+            
+            setTimeout(() => browserNotification.close(), 5000);
+            
+            browserNotification.onclick = () => {
+              window.focus();
+              browserNotification.close();
+            };
+          } catch (e) {
+            console.log('Browser notification not available');
+          }
         }
       }
     });

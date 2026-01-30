@@ -109,8 +109,10 @@ function MessagesContent() {
   // Handle WebSocket real-time messages
   useEffect(() => {
     const unsubscribe = onNewMessage((message: Message) => {
+      const messageConversationId = (message as any).conversationId;
+      
       // Check if this message belongs to the active conversation
-      if (activeConversation && (message as any).conversationId === activeConversation.id) {
+      if (activeConversation && messageConversationId === activeConversation.id) {
         setMessages(prev => {
           // Avoid duplicates
           if (prev.some(m => m.id === message.id)) return prev;
@@ -118,8 +120,15 @@ function MessagesContent() {
         });
         // Mark as read immediately since user is viewing this conversation
         markAsRead(activeConversation.id);
+      } else if (messageConversationId) {
+        // Message is for a different conversation - increment its unread count locally
+        setConversations(prev => prev.map(c => 
+          c.id === messageConversationId 
+            ? { ...c, unreadCount: (c.unreadCount || 0) + 1 } 
+            : c
+        ));
       }
-      // Refresh conversation list to update last message and unread counts
+      // Refresh conversation list to update last message and ensure sync
       fetchConversations();
     });
 
@@ -215,6 +224,10 @@ function MessagesContent() {
 
   const selectConversation = async (conversation: Conversation) => {
     setActiveConversation(conversation);
+    // Immediately update local state to clear unread badge for this conversation
+    setConversations(prev => prev.map(c => 
+      c.id === conversation.id ? { ...c, unreadCount: 0 } : c
+    ));
     await loadMessages(conversation.id);
     markAsRead(conversation.id);
     refreshUnreadCount();
