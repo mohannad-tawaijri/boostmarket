@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './auth-context';
 import { showMessageNotification } from '@/components/toast-notification';
@@ -54,7 +54,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [messageCallbacks, setMessageCallbacks] = useState<((message: Message) => void)[]>([]);
+  // Use ref to avoid stale closure issues with socket event handlers
+  const messageCallbacksRef = useRef<((message: Message) => void)[]>([]);
 
   // Fetch unread count from API
   const fetchUnreadCount = useCallback(async () => {
@@ -108,7 +109,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     });
 
     newSocket.on('newMessage', (message: Message) => {
-      messageCallbacks.forEach(callback => callback(message));
+      console.log('Received newMessage:', message);
+      messageCallbacksRef.current.forEach(callback => callback(message));
     });
 
     newSocket.on('messageNotification', (notification: MessageNotification) => {
@@ -184,9 +186,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, [socket, fetchUnreadCount]);
 
   const onNewMessage = useCallback((callback: (message: Message) => void) => {
-    setMessageCallbacks(prev => [...prev, callback]);
+    messageCallbacksRef.current = [...messageCallbacksRef.current, callback];
     return () => {
-      setMessageCallbacks(prev => prev.filter(cb => cb !== callback));
+      messageCallbacksRef.current = messageCallbacksRef.current.filter(cb => cb !== callback);
     };
   }, []);
 
