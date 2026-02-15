@@ -1,119 +1,110 @@
 import Link from "next/link";
-import { Star, TrendingUp, Shield, Zap, Users, Trophy, ArrowRight, Rocket } from "lucide-react";
+import { Star, Shield, Zap, Users, Trophy, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 lg:py-32">
-        {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-          {/* Grid pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full border border-indigo-500/30 mb-8">
-              <Rocket className="w-4 h-4 text-indigo-400" />
-              <span className="text-sm text-indigo-300">The #1 Gaming Boost Marketplace</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Level Up Your
-              <span className="block text-gradient">Gaming Experience</span>
-            </h1>
-            
-            <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-              Connect with professional boosters and coaches to dominate your favorite games. Fast, secure, and guaranteed results.
+    <div className="min-h-screen bg-[#111114]">
+      {/* Hero Section — clean, confident, no animated blobs */}
+      <section className="pt-20 pb-24 lg:pt-28 lg:pb-32">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-violet-400 text-sm font-medium tracking-wide uppercase mb-5">
+              Trusted by 50,000+ gamers
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] tracking-tight">
+              Your rank. <br className="hidden sm:block" />
+              <span className="text-violet-400">Our boosters.</span>
+            </h1>
+            
+            <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed">
+              Find verified pros who'll help you climb the ranks in the games you love. Fast turnaround, real results, buyer protection on every order.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/services">
-                <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-indigo-500/25 btn-glow">
-                  <span className="flex items-center gap-2">
-                    Browse Offers
-                    <ArrowRight className="w-5 h-5" />
-                  </span>
+                <Button size="lg" className="px-8 py-6 text-base">
+                  Browse Offers
+                  <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </Link>
               <Link href="/create-offer">
-                <Button size="lg" variant="outline" className="border-2 border-indigo-500/50 text-indigo-300 hover:bg-indigo-500/10 hover:border-indigo-400 px-8 py-6 text-lg rounded-xl">
-                  Become a Booster
+                <Button size="lg" variant="outline" className="px-8 py-6 text-base">
+                  Start Selling
                 </Button>
               </Link>
             </div>
+          </div>
 
-            {/* Features Pills */}
-            <div className="flex flex-wrap justify-center gap-4 mt-16">
-              {[
-                { icon: "🎮", label: "All Major Games" },
-                { icon: "🔒", label: "Secure Platform" },
-                { icon: "⚡", label: "Fast Delivery" },
-                { icon: "💬", label: "Direct Chat" },
-              ].map((item, index) => (
-                <div key={index} className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 rounded-full border border-slate-700">
-                  <span className="text-xl">{item.icon}</span>
-                  <span className="text-gray-300">{item.label}</span>
-                </div>
-              ))}
-            </div>
+          {/* Trust signals — simple row, not flashy pills */}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-16 text-sm text-zinc-500">
+            {[
+              "All major titles",
+              "Buyer protection",
+              "Avg. delivery < 24h",
+              "Direct chat with boosters",
+            ].map((item, i) => (
+              <span key={i} className="flex items-center gap-1.5">
+                <CheckCircle className="w-3.5 h-3.5 text-violet-500" />
+                {item}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 relative">
+      {/* Why section — honest, not salesy */}
+      <section className="py-20 border-t border-zinc-800/60">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">Why Choose <span className="text-gradient">BoostMarket</span>?</h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">We provide the best gaming boost services with top-tier security and verified professionals</p>
+          <div className="max-w-2xl mx-auto text-center mb-14">
+            <h2 className="text-3xl font-bold text-white mb-3">Why people choose BoostMarket</h2>
+            <p className="text-zinc-400">Not the flashiest — just the most reliable.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
             {[
-              { icon: Shield, color: "from-blue-500 to-cyan-500", title: "Secure & Safe", desc: "All transactions are protected with buyer protection and encrypted payments" },
-              { icon: Star, color: "from-purple-500 to-pink-500", title: "Verified Boosters", desc: "Every booster goes through strict verification and skill testing" },
-              { icon: Zap, color: "from-green-500 to-emerald-500", title: "Fast Delivery", desc: "Quick turnaround times with real-time progress tracking" },
-              { icon: Trophy, color: "from-orange-500 to-yellow-500", title: "Guaranteed Results", desc: "100% satisfaction guarantee or your money back" },
+              { icon: Shield, title: "Buyer protection", desc: "Payments held in escrow until you confirm the boost is done." },
+              { icon: Star, title: "Verified boosters", desc: "Every seller is manually reviewed. No bots, no scammers." },
+              { icon: Zap, title: "Fast turnaround", desc: "Most orders start within an hour. Track progress in real time." },
+              { icon: Trophy, title: "Money-back guarantee", desc: "Not happy? We'll refund you — no drama, no hassle." },
             ].map((feature, index) => (
-              <div key={index} className="group p-6 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 transition-all duration-300 card-hover">
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.desc}</p>
+              <div key={index} className="p-5 rounded-xl bg-zinc-900/50 border border-zinc-800/60 hover:border-zinc-700 transition-colors">
+                <feature.icon className="w-5 h-5 text-violet-400 mb-3" />
+                <h3 className="text-base font-semibold text-white mb-1.5">{feature.title}</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Popular Games Section */}
-      <section className="py-24 bg-slate-800/30">
+      {/* Popular Games — cleaner grid */}
+      <section className="py-20 border-t border-zinc-800/60">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">Popular Games</h2>
-            <p className="text-gray-400">Find boosters for your favorite titles</p>
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Popular games</h2>
+              <p className="text-sm text-zinc-500 mt-1">Jump into what's trending</p>
+            </div>
+            <Link href="/services" className="text-sm text-violet-400 hover:text-violet-300 hidden sm:block">
+              View all →
+            </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { name: "League of Legends", color: "from-yellow-600 to-yellow-800" },
-              { name: "Valorant", color: "from-red-600 to-pink-600" },
-              { name: "CS2", color: "from-orange-500 to-amber-600" },
-              { name: "Dota 2", color: "from-red-700 to-red-900" },
-              { name: "Overwatch 2", color: "from-orange-400 to-orange-600" },
-              { name: "Apex Legends", color: "from-red-500 to-red-700" },
+              { name: "League of Legends", abbr: "LoL", bg: "bg-amber-900/40" },
+              { name: "Valorant", abbr: "VAL", bg: "bg-red-900/40" },
+              { name: "CS2", abbr: "CS2", bg: "bg-orange-900/40" },
+              { name: "Dota 2", abbr: "D2", bg: "bg-rose-900/40" },
+              { name: "Overwatch 2", abbr: "OW2", bg: "bg-orange-800/40" },
+              { name: "Apex Legends", abbr: "APX", bg: "bg-red-800/40" },
             ].map((game, index) => (
               <Link href={`/services?game=${game.name.toUpperCase().replace(/\s+/g, '_').replace('2', '')}`} key={index}>
-                <div className={`aspect-square rounded-2xl bg-gradient-to-br ${game.color} p-4 flex items-end cursor-pointer hover:scale-105 transition-transform group relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-                  <span className="text-white font-semibold text-sm relative z-10">{game.name}</span>
+                <div className={`${game.bg} rounded-xl p-4 aspect-[4/3] flex flex-col justify-between border border-zinc-800/40 hover:border-zinc-700 transition-colors cursor-pointer group`}>
+                  <span className="text-2xl font-bold text-white/20 group-hover:text-white/30 transition-colors">{game.abbr}</span>
+                  <span className="text-sm font-medium text-zinc-300">{game.name}</span>
                 </div>
               </Link>
             ))}
@@ -121,59 +112,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24">
+      {/* How It Works — clean steps */}
+      <section className="py-20 border-t border-zinc-800/60">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">How It Works</h2>
-            <p className="text-gray-400 text-lg">Get started in three simple steps</p>
+          <div className="max-w-2xl mx-auto text-center mb-14">
+            <h2 className="text-3xl font-bold text-white mb-3">Three steps. That's it.</h2>
+            <p className="text-zinc-400">No signup hoops, no hidden fees.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             {[
-              { step: "01", title: "Browse Services", desc: "Explore offers from verified boosters across all games" },
-              { step: "02", title: "Place Your Order", desc: "Choose your service and securely checkout" },
-              { step: "03", title: "Track Progress", desc: "Watch your boost in real-time and chat with your booster" },
+              { step: "1", title: "Pick a service", desc: "Browse offers from verified boosters across all supported games." },
+              { step: "2", title: "Pay securely", desc: "Checkout with buyer protection — your payment is held until delivery." },
+              { step: "3", title: "Watch it happen", desc: "Track progress live and chat directly with your booster." },
             ].map((item, index) => (
-              <div key={index} className="relative text-center">
-                <div className="text-7xl font-bold text-indigo-500/20 absolute -top-4 left-1/2 -translate-x-1/2">{item.step}</div>
-                <div className="relative z-10 pt-8">
-                  <h3 className="text-xl font-semibold text-white mb-3">{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
+              <div key={index} className="text-center">
+                <div className="w-9 h-9 rounded-full bg-violet-600/15 text-violet-400 text-sm font-bold flex items-center justify-center mx-auto mb-4">
+                  {item.step}
                 </div>
+                <h3 className="text-base font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
-        
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-6">
-            <Users className="w-4 h-4 text-white" />
-            <span className="text-sm text-white/90">Join 50,000+ satisfied gamers</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Dominate?</h2>
-          <p className="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">
-            Start your journey to the top ranks today with our professional boosting services
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register">
-              <Button size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-xl">
-                Get Started Free
-              </Button>
-            </Link>
-            <Link href="/services">
-              <Button size="lg" variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl">
-                Explore Services
-              </Button>
-            </Link>
+      {/* CTA — calm and confident, not aggressive */}
+      <section className="py-20 border-t border-zinc-800/60">
+        <div className="container mx-auto px-4">
+          <div className="max-w-xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-2 text-sm text-zinc-500 mb-5">
+              <Users className="w-4 h-4" />
+              <span>Join thousands of players already ranking up</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to climb?</h2>
+            <p className="text-zinc-400 mb-8">
+              Create a free account and browse offers in under a minute.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/register">
+                <Button size="lg" className="px-8 py-6 text-base">
+                  Get Started — Free
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button size="lg" variant="outline" className="px-8 py-6 text-base">
+                  Explore Services
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

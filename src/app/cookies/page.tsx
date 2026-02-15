@@ -1,68 +1,84 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Cookie } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CookiesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 py-16">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen bg-[#111114] py-16">
+      <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
-          <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white">
+          <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Button>
         </Link>
 
-        <div className="flex items-center gap-4 mb-8">
-          <Cookie className="w-10 h-10 text-amber-400" />
-          <h1 className="text-4xl font-bold text-white">Cookie Policy</h1>
-        </div>
+        <h1 className="text-3xl font-bold text-white mb-2">Cookie Policy</h1>
+        <p className="text-sm text-zinc-500 mb-10">Last updated: February 2026</p>
         
-        <div className="space-y-6">
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">What Are Cookies</h2>
-            <p className="text-gray-300">
-              Cookies are small text files that are placed on your device when you visit our website. 
-              They help us provide you with a better experience by remembering your preferences and 
-              understanding how you use our platform.
-            </p>
-          </section>
+        <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">
+          <p>
+            We use a small number of cookies. Here is exactly what they are and why.
+          </p>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">How We Use Cookies</h2>
-            <ul className="text-gray-300 list-disc list-inside space-y-2">
-              <li><strong>Essential Cookies:</strong> Required for the website to function properly (login, security)</li>
-              <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
-              <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
-              <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements</li>
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Essential cookies</h2>
+            <p className="mb-3">These keep the site working. You cannot opt out of them without the site breaking.</p>
+            <div className="rounded-lg border border-zinc-800/60 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800/60 text-zinc-300">
+                    <th className="text-left px-4 py-2.5 font-medium">Cookie</th>
+                    <th className="text-left px-4 py-2.5 font-medium">Purpose</th>
+                    <th className="text-left px-4 py-2.5 font-medium">Duration</th>
+                  </tr>
+                </thead>
+                <tbody className="text-zinc-400">
+                  <tr className="border-b border-zinc-800/40">
+                    <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">session_token</td>
+                    <td className="px-4 py-2.5">Keeps you logged in</td>
+                    <td className="px-4 py-2.5">7 days</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">csrf_token</td>
+                    <td className="px-4 py-2.5">Prevents cross-site request forgery</td>
+                    <td className="px-4 py-2.5">Session</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Analytics cookies</h2>
+            <p className="mb-3">
+              We use basic analytics to understand traffic patterns  which pages get visited, how long people stay, what devices they use. This helps us prioritize what to build next. We do not use Google Analytics or any advertising-linked tracker.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">What we do not do</h2>
+            <ul className="space-y-2 list-disc list-inside">
+              <li>No third-party advertising cookies</li>
+              <li>No cross-site tracking</li>
+              <li>No selling cookie data to anyone</li>
             </ul>
-          </section>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">Managing Cookies</h2>
-            <p className="text-gray-300">
-              You can control and manage cookies through your browser settings. Please note that 
-              disabling certain cookies may affect the functionality of our website.
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Managing cookies</h2>
+            <p>
+              Your browser lets you block or delete cookies anytime. Just know that if you block our session cookie, you will get logged out and need to sign in again each visit.
             </p>
-          </section>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">Third-Party Cookies</h2>
-            <p className="text-gray-300">
-              Some cookies are placed by third-party services that appear on our pages. We do not 
-              control these cookies. Please refer to the respective privacy policies of these 
-              third parties for more information.
+          <div className="pt-4 border-t border-zinc-800/60">
+            <p className="text-zinc-500 text-sm">
+              Questions? <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a>
             </p>
-          </section>
-
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">Contact</h2>
-            <p className="text-gray-300">
-              If you have questions about our use of cookies, please contact us at privacy@boostmarket.com
-            </p>
-          </section>
+          </div>
         </div>
       </div>
     </div>

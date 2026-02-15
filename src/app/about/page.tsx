@@ -1,172 +1,71 @@
-import { 
-  Gamepad2,
-  Users, 
-  Shield, 
-  Trophy,
-  Heart,
-  Globe,
-  Zap,
-  Target
-} from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import Logo from '@/components/logo';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
-  const features = [
-    { icon: '🎮', label: 'All Major Games' },
-    { icon: '🔒', label: 'Secure Platform' },
-    { icon: '⚡', label: 'Fast Service' },
-    { icon: '💬', label: 'Direct Support' },
-  ];
-
-  const values = [
-    {
-      icon: Shield,
-      title: 'Security First',
-      description: 'We prioritize the safety of your gaming accounts with industry-leading security measures.',
-    },
-    {
-      icon: Users,
-      title: 'Community Driven',
-      description: 'Built by gamers, for gamers. We understand what you need to succeed.',
-    },
-    {
-      icon: Trophy,
-      title: 'Excellence',
-      description: 'We only work with the best boosters who have proven their skills at the highest levels.',
-    },
-    {
-      icon: Heart,
-      title: 'Customer Focus',
-      description: 'Your satisfaction is our priority. We are here to help you achieve your gaming goals.',
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/50 to-slate-950"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full mb-6">
-            <Logo size="sm" showText={false} />
-            <span className="text-indigo-400 font-medium">About BoostMarket</span>
-          </div>
+    <div className="min-h-screen bg-[#111114]">
+      <section className="py-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">About BoostMarket</h1>
+          <p className="text-zinc-500 text-sm mb-10">The short version of who we are and why we built this.</p>
           
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Connecting <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Gamers</span> with <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Pros</span>
-          </h1>
-          
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            We are the leading marketplace for gaming boost services, connecting ambitious players with professional boosters across all major competitive games.
-          </p>
-        </div>
-      </section>
+          <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">
+            <p>
+              BoostMarket started because we were tired of sketchy Discord DMs and random forum posts
+              every time we wanted a rank boost. No receipts, no accountability, no way to know if the
+              person on the other end was any good  or even real.
+            </p>
 
-      {/* Features Section */}
-      <section className="py-16 border-y border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {features.map((item, index) => (
-              <div key={index} className="text-center">
-                <p className="text-4xl md:text-5xl">
-                  {item.icon}
-                </p>
-                <p className="text-gray-400 mt-2">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            <p>
+              So we built a proper marketplace. One where boosters can list their services with clear
+              pricing, buyers can read real reviews before committing, and everyone has a chat thread
+              and order history to fall back on if something goes wrong.
+            </p>
 
-      {/* Mission Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Mission</h2>
-              <p className="text-gray-400 text-lg mb-6">
-                Gaming is more than just entertainment — it is a passion, a community, and for many, a way of life. We believe everyone deserves to experience the thrill of playing at higher ranks and competing with the best.
+              <h2 className="text-lg font-semibold text-white mb-3">What we actually do</h2>
+              <p>
+                We are a platform. Buyers find boosters, place orders, and pay through us. The booster
+                does the work, the buyer confirms, and the booster gets paid. We hold the funds in
+                between to keep both sides honest. If there is a dispute, we step in.
               </p>
-              <p className="text-gray-400 text-lg mb-6">
-                BoostMarket was founded to bridge the gap between casual and competitive gaming. We provide a safe, reliable platform where skilled boosters can share their expertise and help others achieve their gaming goals.
+            </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">What we do not do</h2>
+              <p>
+                We do not employ boosters. We do not boost accounts ourselves. We do not guarantee
+                specific outcomes  games are unpredictable, and so are rank systems. What we do
+                guarantee is that sellers on our platform have reviews, order history, and skin in
+                the game (literally).
               </p>
-              <div className="flex gap-4">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-yellow-400" />
-                  <span className="text-white">Fast Service</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5 text-green-400" />
-                  <span className="text-white">Goal Oriented</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-blue-400" />
-                  <span className="text-white">Global Reach</span>
-                </div>
-              </div>
             </div>
-            
-            <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 flex items-center justify-center">
-                <Gamepad2 className="w-48 h-48 text-white/80" />
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center">
-                <Trophy className="w-16 h-16 text-white" />
-              </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">How we make money</h2>
+              <p>
+                We take a small fee on each transaction. That is it. No premium seller tiers, no
+                pay-to-rank listing schemes, no ads. The marketplace works because good boosters
+                get good reviews and rise to the top naturally.
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">The team</h2>
+              <p>
+                We are a small group of people who play competitive games and got tired of the
+                existing options. Some of us have been on both sides  buying boosts and selling
+                them. That perspective shapes how we build the platform.
+              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Values Section */}
-      <section className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Our Values</h2>
-            <p className="text-gray-400">The principles that guide everything we do</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 hover:border-indigo-500/30 transition-all"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center mb-4">
-                  <value.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{value.title}</h3>
-                <p className="text-gray-400 text-sm">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-slate-900/50 to-slate-950">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">Join Our Community</h2>
-          <p className="text-xl text-gray-400 mb-8">
-            Whether you are looking to get boosted or become a booster yourself, we would love to have you.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-12 pt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row gap-4">
             <Link href="/services">
-              <Button size="lg" className="w-full sm:w-auto">
-                Find a Booster
-              </Button>
+              <Button>Browse Services</Button>
             </Link>
-            <Link href="/register">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Apply as Booster
-              </Button>
+            <Link href="/become-booster">
+              <Button variant="outline">Sell on BoostMarket</Button>
             </Link>
           </div>
         </div>

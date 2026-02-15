@@ -37,10 +37,10 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 py-8">
+    <div className="min-h-screen bg-[#0c0c0f] py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
-        <Link href="/services" className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors">
+        <Link href="/services" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Back to Services
         </Link>
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Payment Form */}
           <div className="lg:col-span-2">
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
               <h1 className="text-2xl font-bold text-white mb-6">Complete Your Order</h1>
 
               {/* Payment Method Selection */}
@@ -61,11 +61,11 @@ export default function CheckoutPage() {
                     className={`p-4 rounded-xl border-2 transition-all ${
                       paymentMethod === 'card'
                         ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
+                        : 'border-zinc-700 bg-zinc-800/20 hover:border-zinc-700'
                     }`}
                   >
-                    <CreditCard className={`w-6 h-6 mb-2 ${paymentMethod === 'card' ? 'text-indigo-400' : 'text-gray-400'}`} />
-                    <p className={`font-medium ${paymentMethod === 'card' ? 'text-white' : 'text-gray-400'}`}>Credit Card</p>
+                    <CreditCard className={`w-6 h-6 mb-2 ${paymentMethod === 'card' ? 'text-violet-400' : 'text-zinc-400'}`} />
+                    <p className={`font-medium ${paymentMethod === 'card' ? 'text-white' : 'text-zinc-400'}`}>Credit Card</p>
                   </button>
                   <button
                     type="button"
@@ -73,11 +73,11 @@ export default function CheckoutPage() {
                     className={`p-4 rounded-xl border-2 transition-all ${
                       paymentMethod === 'paypal'
                         ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-slate-700 bg-slate-800/30 hover:border-slate-600'
+                        : 'border-zinc-700 bg-zinc-800/20 hover:border-zinc-700'
                     }`}
                   >
-                    <div className={`w-6 h-6 mb-2 font-bold ${paymentMethod === 'paypal' ? 'text-indigo-400' : 'text-gray-400'}`}>PP</div>
-                    <p className={`font-medium ${paymentMethod === 'paypal' ? 'text-white' : 'text-gray-400'}`}>PayPal</p>
+                    <div className={`w-6 h-6 mb-2 font-bold ${paymentMethod === 'paypal' ? 'text-violet-400' : 'text-zinc-400'}`}>PP</div>
+                    <p className={`font-medium ${paymentMethod === 'paypal' ? 'text-white' : 'text-zinc-400'}`}>PayPal</p>
                   </button>
                 </div>
               </div>
@@ -86,42 +86,42 @@ export default function CheckoutPage() {
               {paymentMethod === 'card' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Card Number</label>
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">Card Number</label>
                     <div className="relative">
-                      <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                       <input
                         type="text"
                         placeholder="1234 5678 9012 3456"
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Expiry Date</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">Expiry Date</label>
                       <input
                         type="text"
                         placeholder="MM/YY"
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">CVC</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">CVC</label>
                       <input
                         type="text"
                         placeholder="123"
-                        className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Cardholder Name</label>
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">Cardholder Name</label>
                     <input
                       type="text"
                       placeholder="John Doe"
-                      className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                     />
                   </div>
 
@@ -148,7 +148,7 @@ export default function CheckoutPage() {
 
               {paymentMethod === 'paypal' && (
                 <div className="text-center py-8">
-                  <p className="text-gray-400 mb-6">You will be redirected to PayPal to complete your payment</p>
+                  <p className="text-zinc-400 mb-6">You will be redirected to PayPal to complete your payment</p>
                   <Button className="w-full py-4 text-lg">
                     Continue with PayPal
                   </Button>
@@ -159,52 +159,52 @@ export default function CheckoutPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 sticky top-24">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6 sticky top-24">
               <h2 className="text-lg font-semibold text-white mb-6">Order Summary</h2>
 
-              <div className="flex items-start gap-4 pb-6 border-b border-slate-800">
-                <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center flex-shrink-0">
+              <div className="flex items-start gap-4 pb-6 border-b border-zinc-800/60">
+                <div className="w-16 h-16 rounded-lg bg-violet-600 flex items-center justify-center flex-shrink-0">
                   <Gamepad2 className="w-8 h-8 text-white" />
                 </div>
                 <div>
                   <h3 className="text-white font-medium">{orderData.service}</h3>
-                  <p className="text-gray-400 text-sm">{orderData.game}</p>
-                  <p className="text-gray-500 text-sm">by {orderData.booster}</p>
+                  <p className="text-zinc-400 text-sm">{orderData.game}</p>
+                  <p className="text-zinc-500 text-sm">by {orderData.booster}</p>
                 </div>
               </div>
 
-              <div className="py-6 border-b border-slate-800 space-y-3">
+              <div className="py-6 border-b border-zinc-800/60 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Delivery Time</span>
+                  <span className="text-zinc-400">Delivery Time</span>
                   <span className="text-white">{orderData.deliveryTime}</span>
                 </div>
                 {orderData.options.map((option, index) => (
                   <div key={index} className="flex items-center gap-2 text-sm">
                     <Check className="w-4 h-4 text-green-400" />
-                    <span className="text-gray-300">{option}</span>
+                    <span className="text-zinc-300">{option}</span>
                   </div>
                 ))}
               </div>
 
               <div className="pt-6 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Subtotal</span>
+                  <span className="text-zinc-400">Subtotal</span>
                   <span className="text-white">${orderData.price.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Service Fee</span>
+                  <span className="text-zinc-400">Service Fee</span>
                   <span className="text-white">$0.00</span>
                 </div>
-                <div className="flex justify-between text-lg font-semibold pt-3 border-t border-slate-800">
+                <div className="flex justify-between text-lg font-semibold pt-3 border-t border-zinc-800/60">
                   <span className="text-white">Total</span>
-                  <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  <span className="text-violet-400">
                     ${orderData.price.toFixed(2)}
                   </span>
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-slate-800/30 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="mt-6 p-4 bg-zinc-800/20 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <Lock className="w-4 h-4" />
                   <span>Secure checkout powered by Stripe</span>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Gamepad2, DollarSign, Users, Star, CheckCircle, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
 
@@ -9,111 +9,101 @@ export default function BecomeBoosterPage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
-      {/* Hero */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-full border border-green-500/30 mb-6">
-            <DollarSign className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-green-300">Start Earning Today</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Turn Your <span className="text-gradient">Gaming Skills</span><br />Into Income
-          </h1>
-          
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Join thousands of boosters earning money by helping other gamers achieve their goals. 
-            Set your own prices, work your own hours.
-          </p>
-          
-          <Link href={user ? "/create-offer" : "/register"}>
-            <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-lg px-8 py-6">
-              {user ? "Create Your First Offer" : "Get Started Now"}
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+    <div className="min-h-screen bg-[#111114]">
+      <section className="py-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Sell on BoostMarket</h1>
+          <p className="text-zinc-500 text-sm mb-10">If you are good at competitive games, you can get paid for it.</p>
 
-      {/* Benefits */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">Why Boost on BoostMarket?</h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50 text-center">
-              <DollarSign className="w-12 h-12 text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-3">Keep More Earnings</h3>
-              <p className="text-gray-400">Low platform fees mean more money in your pocket. You set your own prices.</p>
-            </div>
-            
-            <div className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50 text-center">
-              <Users className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-3">Growing Customer Base</h3>
-              <p className="text-gray-400">Access thousands of gamers looking for boost services every day.</p>
-            </div>
-            
-            <div className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50 text-center">
-              <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-3">Fast Payouts</h3>
-              <p className="text-gray-400">Get paid quickly after completing orders. No long waiting periods.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">
+            <p>
+              BoostMarket is a marketplace. You list your services, set your own prices, and work on
+              your own schedule. We handle payments, provide a chat system, and bring in the buyers.
+              You bring the skill.
+            </p>
 
-      {/* How it works */}
-      <section className="py-16 bg-slate-800/30">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">How to Get Started</h2>
-          
-          <div className="max-w-3xl mx-auto space-y-6">
-            <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white font-bold">1</div>
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-2">Create an Account</h3>
-                <p className="text-gray-400">Sign up for free in less than a minute. No verification fees.</p>
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">How it works for sellers</h2>
+              <div className="space-y-4">
+                <div className="flex gap-4 items-start">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
+                  <div>
+                    <span className="text-white font-medium">Create a free account.</span>{" "}
+                    Takes under a minute. No approval process or upfront fees.
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
+                  <div>
+                    <span className="text-white font-medium">List your services.</span>{" "}
+                    Pick a game, describe what you offer (rank boost, coaching, achievements),
+                    set a price, and publish. You can create as many listings as you want.
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
+                  <div>
+                    <span className="text-white font-medium">Accept orders and deliver.</span>{" "}
+                    When someone buys your service, you get notified. Chat with the buyer,
+                    do the work, and mark it complete. Payment releases after the buyer confirms.
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white font-bold">2</div>
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-2">Create Your Offers</h3>
-                <p className="text-gray-400">List the games and services you offer. Set your prices and delivery times.</p>
-              </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">What we take</h2>
+              <p>
+                A small platform fee on each completed order. That is how we keep the lights on.
+                There are no listing fees, no monthly subscriptions, and no hidden charges.
+                You only pay when you earn.
+              </p>
             </div>
-            
-            <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white font-bold">3</div>
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-2">Start Earning</h3>
-                <p className="text-gray-400">Accept orders, complete boosts, and get paid. It's that simple!</p>
-              </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">What makes sellers successful here</h2>
+              <ul className="space-y-2">
+                <li className="flex gap-2">
+                  <span className="text-zinc-600"></span>
+                  <span>Clear, honest descriptions of what you deliver and how long it takes</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-zinc-600"></span>
+                  <span>Competitive pricing (check what others charge for similar services)</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-zinc-600"></span>
+                  <span>Fast responses to messages  buyers notice</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-zinc-600"></span>
+                  <span>Delivering on time or communicating early if there is a delay</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-zinc-600"></span>
+                  <span>Building up reviews  your first few orders matter the most</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-lg font-semibold text-white mb-3">A note on expectations</h2>
+              <p>
+                This is not passive income. Boosting takes real time and effort. The sellers who
+                do well here treat it like a job (or at least a serious side gig). If you are
+                looking to list something and forget about it, this probably is not for you.
+              </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <Gamepad2 className="w-16 h-16 text-indigo-400 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Start Earning?</h2>
-          <p className="text-gray-400 mb-8">Join BoostMarket today and monetize your gaming skills</p>
-          
-          <Link href={user ? "/create-offer" : "/register"}>
-            <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500">
-              {user ? "Create an Offer" : "Sign Up Free"}
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
+          <div className="mt-12 pt-8 border-t border-zinc-800/60">
+            <Link href={user ? "/create-offer" : "/register"}>
+              <Button size="lg">
+                {user ? "Create Your First Listing" : "Create an Account"}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

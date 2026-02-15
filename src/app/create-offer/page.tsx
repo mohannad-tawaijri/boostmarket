@@ -100,7 +100,7 @@ export default function CreateOfferPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-900 py-12 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
@@ -111,21 +111,21 @@ export default function CreateOfferPage() {
       <div className="container mx-auto px-4 max-w-4xl relative z-10">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full border border-indigo-500/30 mb-4">
-            <Sparkles className="w-4 h-4 text-indigo-400" />
-            <span className="text-sm text-indigo-300">Create Your Offer</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 rounded-full border border-violet-500/20 mb-4">
+            <Sparkles className="w-4 h-4 text-violet-400" />
+            <span className="text-sm text-violet-300">Create Your Offer</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Share Your <span className="text-gradient">Gaming Skills</span>
+            Share Your <span className="text-violet-400">Gaming Skills</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
             Create a compelling offer to showcase your boosting expertise and start earning
           </p>
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
+        <div className="bg-zinc-800/40 rounded-2xl border border-zinc-700/40 shadow-2xl overflow-hidden">
+          <div className="bg-violet-600 px-8 py-6">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
                 <Plus className="w-6 h-6 text-white" />
@@ -140,8 +140,8 @@ export default function CreateOfferPage() {
           <form onSubmit={handleSubmit} className="p-8 space-y-8">
             {/* Title */}
             <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                <FileText className="w-4 h-4 text-indigo-400" />
+              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
+                <FileText className="w-4 h-4 text-violet-400" />
                 Service Title *
               </label>
               <input
@@ -151,7 +151,7 @@ export default function CreateOfferPage() {
                 onChange={handleChange}
                 required
                 placeholder="e.g., League of Legends Rank Boost from Silver to Gold"
-                className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
@@ -159,7 +159,7 @@ export default function CreateOfferPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Game Selection */}
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
                   Game *
                 </label>
@@ -168,11 +168,11 @@ export default function CreateOfferPage() {
                   value={formData.game}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-slate-800">Select a game</option>
+                  <option value="" className="bg-zinc-800">Select a game</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
-                    <option key={key} value={key} className="bg-slate-800">
+                    <option key={key} value={key} className="bg-zinc-800">
                       {name}
                     </option>
                   ))}
@@ -181,7 +181,7 @@ export default function CreateOfferPage() {
 
               {/* Category */}
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Tag className="w-4 h-4 text-pink-400" />
                   Service Category *
                 </label>
@@ -190,11 +190,11 @@ export default function CreateOfferPage() {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-slate-800">Select a category</option>
+                  <option value="" className="bg-zinc-800">Select a category</option>
                   {Object.entries(CATEGORY_NAMES).map(([key, name]) => (
-                    <option key={key} value={key} className="bg-slate-800">
+                    <option key={key} value={key} className="bg-zinc-800">
                       {name}
                     </option>
                   ))}
@@ -204,7 +204,7 @@ export default function CreateOfferPage() {
 
             {/* Game Details */}
             <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <Sparkles className="w-4 h-4 text-yellow-400" />
                 Game Details (Optional)
               </label>
@@ -214,13 +214,13 @@ export default function CreateOfferPage() {
                 value={formData.gameDetails}
                 onChange={handleChange}
                 placeholder="e.g., EUW Server, Any Role, Diamond+ Experience"
-                className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
             {/* Description */}
             <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <FileText className="w-4 h-4 text-cyan-400" />
                 Description *
               </label>
@@ -231,14 +231,14 @@ export default function CreateOfferPage() {
                 required
                 rows={5}
                 placeholder="Describe your service in detail. What's included? What are the requirements? What makes your service unique?"
-                className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none"
+                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
               />
             </div>
 
             {/* Tags */}
             <div className="space-y-2">
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
-                <Tag className="w-4 h-4 text-indigo-400" />
+              <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
+                <Tag className="w-4 h-4 text-violet-400" />
                 Tags (up to 6)
               </label>
               
@@ -248,7 +248,7 @@ export default function CreateOfferPage() {
                   {tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/50 text-indigo-300 rounded-full text-sm"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/50 text-violet-300 rounded-full text-sm"
                     >
                       {tag}
                       <button
@@ -272,7 +272,7 @@ export default function CreateOfferPage() {
                   onKeyDown={handleTagKeyDown}
                   placeholder="Type a tag and press Enter"
                   disabled={tags.length >= 6}
-                  className="flex-1 bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-50"
+                  className="flex-1 bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50"
                 />
                 <Button
                   type="button"
@@ -288,14 +288,14 @@ export default function CreateOfferPage() {
               {/* Suggested Tags */}
               {tags.length < 6 && (
                 <div className="mt-3">
-                  <p className="text-xs text-gray-500 mb-2">Suggested tags:</p>
+                  <p className="text-xs text-zinc-500 mb-2">Suggested tags:</p>
                   <div className="flex flex-wrap gap-2">
                     {SUGGESTED_TAGS.filter(t => !tags.includes(t)).slice(0, 8).map((tag) => (
                       <button
                         key={tag}
                         type="button"
                         onClick={() => addTag(tag)}
-                        className="px-3 py-1 bg-slate-700/50 border border-slate-600 text-gray-400 rounded-full text-xs hover:border-indigo-500 hover:text-indigo-300 transition-colors"
+                        className="px-3 py-1 bg-slate-700/50 border border-zinc-700 text-zinc-400 rounded-full text-xs hover:border-indigo-500 hover:text-violet-300 transition-colors"
                       >
                         + {tag}
                       </button>
@@ -308,7 +308,7 @@ export default function CreateOfferPage() {
             {/* Price and Delivery */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <DollarSign className="w-4 h-4 text-green-400" />
                   Price (USD) *
                 </label>
@@ -323,13 +323,13 @@ export default function CreateOfferPage() {
                     min="1"
                     step="0.01"
                     placeholder="29.99"
-                    className="w-full bg-slate-700/50 border border-slate-600 rounded-xl pl-8 pr-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                    className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl pl-8 pr-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Clock className="w-4 h-4 text-orange-400" />
                   Delivery Time *
                 </label>
@@ -340,17 +340,17 @@ export default function CreateOfferPage() {
                   onChange={handleChange}
                   required
                   placeholder="e.g., 2-3 days"
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex gap-4 pt-6 border-t border-slate-700">
+            <div className="flex gap-4 pt-6 border-t border-zinc-700">
               <Button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white py-6 rounded-xl font-semibold text-lg shadow-lg shadow-indigo-500/25 btn-glow"
+                className="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-6 rounded-xl font-semibold text-lg shadow-lg shadow-violet-500/15 "
                 size="lg"
               >
                 {loading ? (
@@ -370,7 +370,7 @@ export default function CreateOfferPage() {
                 variant="outline"
                 onClick={() => router.back()}
                 disabled={loading}
-                className="px-8 border-slate-600 text-gray-300 hover:bg-slate-700 hover:text-white rounded-xl"
+                className="px-8 border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
                 size="lg"
               >
                 Cancel
@@ -380,9 +380,9 @@ export default function CreateOfferPage() {
         </div>
 
         {/* Tips Section */}
-        <div className="mt-8 bg-gradient-to-r from-indigo-900/50 to-purple-900/50 backdrop-blur-xl rounded-2xl border border-indigo-500/20 p-8">
+        <div className="mt-8 bg-violet-900/30 rounded-2xl border border-indigo-500/20 p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg">
+            <div className="p-2 bg-violet-600 rounded-lg">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <h3 className="font-bold text-xl text-white">Pro Tips for Success</h3>
@@ -396,9 +396,9 @@ export default function CreateOfferPage() {
               { icon: "📋", text: "Specify any requirements from the buyer" },
               { icon: "🏆", text: "Highlight your experience and success rate" },
             ].map((tip, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+              <div key={index} className="flex items-center gap-3 p-3 bg-zinc-800/40 rounded-xl border border-zinc-700/40">
                 <span className="text-xl">{tip.icon}</span>
-                <span className="text-gray-300 text-sm">{tip.text}</span>
+                <span className="text-zinc-300 text-sm">{tip.text}</span>
               </div>
             ))}
           </div>

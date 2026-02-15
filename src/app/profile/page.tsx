@@ -46,18 +46,18 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 py-8">
+    <div className="min-h-screen bg-[#0c0c0f] py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
-          <p className="text-gray-400">Manage your profile and preferences</p>
+          <p className="text-zinc-400">Manage your profile and preferences</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-4">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-4">
               <nav className="space-y-1">
                 {sections.map((section) => (
                   <button
@@ -65,8 +65,8 @@ export default function ProfilePage() {
                     onClick={() => setActiveSection(section.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                       activeSection === section.id
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-indigo-400 border border-indigo-500/30'
-                        : 'text-gray-400 hover:text-white hover:bg-slate-800/50'
+                        ? 'bg-violet-600/10 text-violet-400 border border-violet-500/20'
+                        : 'text-zinc-400 hover:text-white hover:bg-zinc-800/40'
                     }`}
                   >
                     <section.icon className="w-5 h-5" />
@@ -79,24 +79,24 @@ export default function ProfilePage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
               {activeSection === 'profile' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="flex items-center gap-6 pb-6 border-b border-slate-800">
+                  <div className="flex items-center gap-6 pb-6 border-b border-zinc-800/60">
                     <div className="relative">
-                      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                      <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
                         <Gamepad2 className="w-12 h-12 text-white" />
                       </div>
                       <button
                         type="button"
-                        className="absolute bottom-0 right-0 p-2 bg-slate-800 rounded-full border border-slate-700 hover:bg-slate-700 transition-colors"
+                        className="absolute bottom-0 right-0 p-2 bg-zinc-800 rounded-full border border-zinc-700 hover:bg-zinc-700 transition-colors"
                       >
                         <Camera className="w-4 h-4 text-white" />
                       </button>
                     </div>
                     <div>
                       <h2 className="text-xl font-semibold text-white">{user?.name || 'Your Name'}</h2>
-                      <p className="text-gray-400">{user?.email || 'your@email.com'}</p>
+                      <p className="text-zinc-400">{user?.email || 'your@email.com'}</p>
                       {user?.isAdmin && (
                         <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
                           Admin
@@ -107,43 +107,43 @@ export default function ProfilePage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Display Name</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">Display Name</label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                         <input
                           type="text"
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">Email Address</label>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                         <input
                           type="email"
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Bio</label>
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">Bio</label>
                     <textarea
                       name="bio"
                       value={formData.bio}
                       onChange={handleChange}
                       rows={4}
                       placeholder="Tell others about yourself..."
-                      className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                      className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                     />
                   </div>
 
@@ -158,50 +158,50 @@ export default function ProfilePage() {
 
               {activeSection === 'security' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="pb-6 border-b border-slate-800">
+                  <div className="pb-6 border-b border-zinc-800/60">
                     <h2 className="text-xl font-semibold text-white mb-2">Change Password</h2>
-                    <p className="text-gray-400">Update your password to keep your account secure</p>
+                    <p className="text-zinc-400">Update your password to keep your account secure</p>
                   </div>
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Current Password</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">Current Password</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                         <input
                           type="password"
                           name="currentPassword"
                           value={formData.currentPassword}
                           onChange={handleChange}
-                          className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">New Password</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">New Password</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                         <input
                           type="password"
                           name="newPassword"
                           value={formData.newPassword}
                           onChange={handleChange}
-                          className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Confirm New Password</label>
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">Confirm New Password</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                         <input
                           type="password"
                           name="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleChange}
-                          className="w-full bg-slate-800/50 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -218,9 +218,9 @@ export default function ProfilePage() {
 
               {activeSection === 'notifications' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-slate-800">
+                  <div className="pb-6 border-b border-zinc-800/60">
                     <h2 className="text-xl font-semibold text-white mb-2">Notification Preferences</h2>
-                    <p className="text-gray-400">Manage how you receive notifications</p>
+                    <p className="text-zinc-400">Manage how you receive notifications</p>
                   </div>
 
                   <div className="space-y-4">
@@ -230,14 +230,14 @@ export default function ProfilePage() {
                       { label: 'New messages', description: 'Receive alerts for new chat messages' },
                       { label: 'Marketing emails', description: 'Receive promotional offers and news' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-zinc-800/20 rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
-                          <p className="text-gray-500 text-sm">{item.description}</p>
+                          <p className="text-zinc-500 text-sm">{item.description}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input type="checkbox" className="sr-only peer" defaultChecked={index < 3} />
-                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
                         </label>
                       </div>
                     ))}
@@ -247,14 +247,14 @@ export default function ProfilePage() {
 
               {activeSection === 'payment' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-slate-800">
+                  <div className="pb-6 border-b border-zinc-800/60">
                     <h2 className="text-xl font-semibold text-white mb-2">Payment Methods</h2>
-                    <p className="text-gray-400">Manage your payment information</p>
+                    <p className="text-zinc-400">Manage your payment information</p>
                   </div>
 
-                  <div className="p-6 bg-slate-800/30 rounded-lg border border-dashed border-slate-700 text-center">
-                    <CreditCard className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                    <p className="text-gray-400 mb-4">No payment methods added yet</p>
+                  <div className="p-6 bg-zinc-800/20 rounded-lg border border-dashed border-zinc-700 text-center">
+                    <CreditCard className="w-12 h-12 text-zinc-500 mx-auto mb-4" />
+                    <p className="text-zinc-400 mb-4">No payment methods added yet</p>
                     <Button variant="outline">Add Payment Method</Button>
                   </div>
                 </div>
@@ -262,9 +262,9 @@ export default function ProfilePage() {
 
               {activeSection === 'privacy' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-slate-800">
+                  <div className="pb-6 border-b border-zinc-800/60">
                     <h2 className="text-xl font-semibold text-white mb-2">Privacy Settings</h2>
-                    <p className="text-gray-400">Control your privacy preferences</p>
+                    <p className="text-zinc-400">Control your privacy preferences</p>
                   </div>
 
                   <div className="space-y-4">
@@ -273,20 +273,20 @@ export default function ProfilePage() {
                       { label: 'Show online status', description: 'Let others see when you are online' },
                       { label: 'Allow messages from anyone', description: 'Receive messages from non-contacts' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-zinc-800/20 rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
-                          <p className="text-gray-500 text-sm">{item.description}</p>
+                          <p className="text-zinc-500 text-sm">{item.description}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input type="checkbox" className="sr-only peer" defaultChecked />
-                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
                         </label>
                       </div>
                     ))}
                   </div>
 
-                  <div className="pt-6 border-t border-slate-800">
+                  <div className="pt-6 border-t border-zinc-800/60">
                     <h3 className="text-lg font-semibold text-red-400 mb-4">Danger Zone</h3>
                     <Button variant="destructive">Delete Account</Button>
                   </div>

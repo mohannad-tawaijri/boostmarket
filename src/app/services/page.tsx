@@ -83,25 +83,25 @@ function ServicesContent() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
+    <div className="min-h-screen bg-[#111114]">
       {/* Hero Section */}
       <section className="relative py-16 overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-violet-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/20 rounded-full border border-indigo-500/30 mb-4">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
-              <span className="text-sm text-indigo-300">Discover Amazing Boosters</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/20 rounded-full border border-violet-500/20 mb-4">
+              <Sparkles className="w-4 h-4 text-violet-400" />
+              <span className="text-sm text-violet-300">Discover Amazing Boosters</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Browse <span className="text-gradient">Boost Services</span>
+              Browse <span className="text-violet-400">Boost Services</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
               Find the perfect booster for your gaming needs
             </p>
           </div>
@@ -109,13 +109,13 @@ function ServicesContent() {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search services, games, boosters..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-2xl text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                className="w-full pl-12 pr-4 py-4 bg-zinc-800/60 border border-zinc-700 rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
               />
             </div>
           </div>
@@ -126,26 +126,26 @@ function ServicesContent() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <aside className="lg:w-72 flex-shrink-0">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 sticky top-24">
+            <div className="bg-zinc-800/40 rounded-2xl border border-zinc-700/40 p-6 sticky top-24">
               <h3 className="font-semibold text-lg text-white mb-6 flex items-center gap-2">
-                <SlidersHorizontal className="w-5 h-5 text-indigo-400" />
+                <SlidersHorizontal className="w-5 h-5 text-violet-400" />
                 Filters
               </h3>
 
               {/* Game Filter */}
               <div className="mb-6">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
                   Game
                 </label>
                 <select
                   value={selectedGame}
                   onChange={(e) => setSelectedGame(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-slate-800">All Games</option>
+                  <option value="" className="bg-zinc-800">All Games</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
-                    <option key={key} value={key} className="bg-slate-800">
+                    <option key={key} value={key} className="bg-zinc-800">
                       {name}
                     </option>
                   ))}
@@ -154,17 +154,17 @@ function ServicesContent() {
 
               {/* Sort By */}
               <div className="mb-6">
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                   <Filter className="w-4 h-4 text-cyan-400" />
                   Sort By
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-slate-600 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value} className="bg-slate-800">
+                    <option key={option.value} value={option.value} className="bg-zinc-800">
                       {option.label}
                     </option>
                   ))}
@@ -174,7 +174,7 @@ function ServicesContent() {
               {/* Tags Filter */}
               {allTags.length > 0 && (
                 <div className="mb-6">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3">
+                  <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                     <Tag className="w-4 h-4 text-green-400" />
                     Tags
                   </label>
@@ -186,7 +186,7 @@ function ServicesContent() {
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                           selectedTags.includes(tag)
                             ? "bg-indigo-500 text-white border border-indigo-400"
-                            : "bg-slate-700/50 text-gray-400 border border-slate-600 hover:border-indigo-500/50 hover:text-gray-300"
+                            : "bg-slate-700/50 text-zinc-400 border border-zinc-700 hover:border-zinc-700 hover:text-zinc-300"
                         }`}
                       >
                         {tag}
@@ -196,7 +196,7 @@ function ServicesContent() {
                   {selectedTags.length > 0 && (
                     <button
                       onClick={() => setSelectedTags([])}
-                      className="mt-2 text-xs text-indigo-400 hover:text-indigo-300"
+                      className="mt-2 text-xs text-violet-400 hover:text-violet-300"
                     >
                       Clear tags
                     </button>
@@ -204,9 +204,9 @@ function ServicesContent() {
                 </div>
               )}
 
-              <div className="pt-4 border-t border-slate-700">
+              <div className="pt-4 border-t border-zinc-700">
                 <Link href="/favorites">
-                  <Button variant="outline" className="w-full border-slate-600 text-gray-300 hover:bg-slate-700 hover:text-white rounded-xl py-5">
+                  <Button variant="outline" className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
                     <Heart className="w-4 h-4 mr-2 text-pink-400" />
                     My Favorites
                   </Button>
@@ -218,28 +218,28 @@ function ServicesContent() {
           {/* Services Grid */}
           <main className="flex-1">
             <div className="mb-6 flex justify-between items-center">
-              <p className="text-gray-400">
+              <p className="text-zinc-400">
                 <span className="text-white font-semibold">{filteredServices.length}</span> services found
               </p>
             </div>
 
             {loading ? (
               <div className="text-center py-20">
-                <div className="inline-block w-16 h-16 rounded-full border-4 border-indigo-500/30 border-t-indigo-500 animate-spin"></div>
-                <p className="mt-6 text-gray-400">Loading amazing offers...</p>
+                <div className="inline-block w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
+                <p className="mt-6 text-zinc-400">Loading amazing offers...</p>
               </div>
             ) : filteredServices.length === 0 ? (
-              <div className="text-center py-20 bg-slate-800/30 rounded-2xl border border-slate-700/50">
+              <div className="text-center py-20 bg-zinc-800/20 rounded-2xl border border-zinc-700/40">
                 <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
-                  <Search className="w-10 h-10 text-gray-500" />
+                  <Search className="w-10 h-10 text-zinc-500" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">No services found</h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-zinc-400 mb-6">
                   Try adjusting your filters or search query
                 </p>
                 <Button 
                   onClick={() => { setSelectedGame(""); setSearchQuery(""); setSelectedTags([]); }}
-                  className="bg-indigo-600 hover:bg-indigo-500"
+                  className="bg-violet-600 hover:bg-indigo-500"
                 >
                   Clear Filters
                 </Button>
@@ -260,10 +260,10 @@ function ServicesContent() {
 
 function ServicesLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 flex items-center justify-center">
+    <div className="min-h-screen bg-[#111114] flex items-center justify-center">
       <div className="text-center">
-        <div className="inline-block w-16 h-16 rounded-full border-4 border-indigo-500/30 border-t-indigo-500 animate-spin"></div>
-        <p className="mt-6 text-gray-400">Loading services...</p>
+        <div className="inline-block w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
+        <p className="mt-6 text-zinc-400">Loading services...</p>
       </div>
     </div>
   );

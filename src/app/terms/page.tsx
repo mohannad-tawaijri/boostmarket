@@ -6,66 +6,90 @@ import { Button } from "@/components/ui/button";
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 py-16">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen bg-[#111114] py-16">
+      <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
-          <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white">
+          <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Button>
         </Link>
 
-        <h1 className="text-4xl font-bold text-white mb-8">Terms of Service</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Terms of Service</h1>
+        <p className="text-sm text-zinc-500 mb-10">Last updated: February 2026</p>
         
-        <div className="prose prose-invert max-w-none space-y-6">
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">1. Acceptance of Terms</h2>
-            <p className="text-gray-300">
-              By accessing and using BoostMarket, you agree to be bound by these Terms of Service. 
-              If you do not agree to these terms, please do not use our platform.
-            </p>
-          </section>
+        <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">
+          <p>
+            These terms are the agreement between you and BoostMarket. By using the site, you are agreeing to them. If you do not agree, that is okay  just do not use the platform.
+          </p>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">2. Service Description</h2>
-            <p className="text-gray-300">
-              BoostMarket is a marketplace connecting gamers who offer boosting services with those seeking them. 
-              We facilitate transactions but are not directly responsible for the services provided by individual boosters.
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">What BoostMarket is</h2>
+            <p>
+              We are a marketplace. Sellers list boosting services, buyers purchase them, and we facilitate the transaction. We are not the ones doing the boosting  the individual sellers are. Think of us as the platform that connects the two sides and handles the payment in between.
             </p>
-          </section>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">3. User Responsibilities</h2>
-            <ul className="text-gray-300 list-disc list-inside space-y-2">
-              <li>You must provide accurate account information</li>
-              <li>You are responsible for maintaining account security</li>
-              <li>You agree not to engage in fraudulent activities</li>
-              <li>You must comply with all applicable laws and game terms of service</li>
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Your account</h2>
+            <ul className="space-y-2 list-disc list-inside">
+              <li>Use real information when signing up. Fake accounts get removed.</li>
+              <li>You are responsible for keeping your password secure. We recommend something unique.</li>
+              <li>One account per person. Do not create multiple accounts to game the review system or dodge bans.</li>
+              <li>You must be at least 18 years old (or the legal age in your country) to use BoostMarket.</li>
             </ul>
-          </section>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">4. Payment Terms</h2>
-            <p className="text-gray-300">
-              All payments are processed securely through our platform. Refunds are handled on a case-by-case basis 
-              according to our refund policy.
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">For buyers</h2>
+            <p className="mb-3">
+              When you place an order, your payment is held by us until the seller delivers. If something goes wrong  the seller does not deliver, or the result is not what was promised  you can open a dispute and we will review it.
             </p>
-          </section>
+            <p>
+              Refunds are not automatic. We look at each case individually. If the seller delivered what was listed and you just changed your mind, that is generally not grounds for a refund.
+            </p>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">5. Limitation of Liability</h2>
-            <p className="text-gray-300">
-              BoostMarket is not liable for any damages arising from the use of our platform or services 
-              provided by boosters. Use the platform at your own risk.
-            </p>
-          </section>
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">For sellers</h2>
+            <ul className="space-y-2 list-disc list-inside">
+              <li>List your services honestly. Do not promise things you cannot deliver.</li>
+              <li>Deliver within the timeframe you set. If you need more time, communicate with the buyer.</li>
+              <li>Be responsive. Buyers who cannot reach you will open disputes, and that is bad for everyone.</li>
+              <li>We take a small platform fee from each completed order. The exact percentage is shown before you list.</li>
+            </ul>
+          </div>
 
-          <section className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <h2 className="text-2xl font-semibold text-white mb-4">6. Contact</h2>
-            <p className="text-gray-300">
-              For questions about these terms, please contact us at support@boostmarket.com
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Things you cannot do</h2>
+            <ul className="space-y-2 list-disc list-inside">
+              <li>Scam, defraud, or mislead other users</li>
+              <li>Use the platform for anything illegal</li>
+              <li>Harass other users through chat or reviews</li>
+              <li>Attempt to take transactions off-platform to avoid fees</li>
+              <li>Use bots, scripts, or automation to interact with the site</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Liability</h2>
+            <p>
+              We do our best to keep the platform running smoothly, but we cannot guarantee 100% uptime or that every seller will be perfect. We are a marketplace, not an insurance company. Use the platform at your own discretion, especially when it comes to sharing game account credentials.
             </p>
-          </section>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-3">Changes to these terms</h2>
+            <p>
+              We might update these terms occasionally. If we make significant changes, we will let you know via email or a notice on the site. Continued use after changes means you accept them.
+            </p>
+          </div>
+
+          <div className="pt-4 border-t border-zinc-800/60">
+            <p className="text-zinc-500 text-sm">
+              Questions? <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">support@boostmarket.com</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>

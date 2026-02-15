@@ -69,12 +69,12 @@ export function ToastContainer() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="bg-slate-900 border border-slate-700 rounded-xl shadow-xl p-4 animate-slide-in"
+          className="bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl p-4 animate-slide-in"
         >
           <div className="flex items-start gap-3">
             {/* Avatar or Icon */}
             {toast.type === 'message' ? (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center flex-shrink-0">
                 {toast.avatar ? (
                   <img src={toast.avatar} alt="" className="w-10 h-10 rounded-full" />
                 ) : (
@@ -82,7 +82,7 @@ export function ToastContainer() {
                 )}
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center flex-shrink-0">
                 <MessageSquare className="w-5 h-5 text-white" />
               </div>
             )}
@@ -90,12 +90,12 @@ export function ToastContainer() {
             {/* Content */}
             <div className="flex-1 min-w-0">
               <p className="text-white font-medium text-sm">{toast.title}</p>
-              <p className="text-gray-400 text-sm truncate">{toast.body}</p>
+              <p className="text-zinc-400 text-sm truncate">{toast.body}</p>
               {toast.link && (
                 <Link
                   href={toast.link}
                   onClick={() => removeToast(toast.id)}
-                  className="text-indigo-400 text-xs hover:underline mt-1 inline-block"
+                  className="text-violet-400 text-xs hover:underline mt-1 inline-block"
                 >
                   Open Chat →
                 </Link>
@@ -105,7 +105,7 @@ export function ToastContainer() {
             {/* Close Button */}
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-gray-500 hover:text-white flex-shrink-0"
+              className="text-zinc-500 hover:text-white flex-shrink-0"
             >
               <X className="w-4 h-4" />
             </button>

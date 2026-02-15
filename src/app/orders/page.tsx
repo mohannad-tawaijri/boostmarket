@@ -119,7 +119,7 @@ export default function OrdersPage() {
       case 'CANCELLED':
         return { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/20', label: 'Cancelled' };
       default:
-        return { icon: Package, color: 'text-gray-400', bg: 'bg-gray-500/20', label: status };
+        return { icon: Package, color: 'text-zinc-400', bg: 'bg-gray-500/20', label: status };
     }
   };
 
@@ -129,20 +129,20 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+      <div className="min-h-screen bg-[#0c0c0f] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 py-8">
+    <div className="min-h-screen bg-[#0c0c0f] py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">My Orders</h1>
-            <p className="text-gray-400">Orders you've placed for boosting services</p>
+            <p className="text-zinc-400">Orders you've placed for boosting services</p>
           </div>
           <Link href="/services">
             <Button className="mt-4 md:mt-0">
@@ -165,8 +165,8 @@ export default function OrdersPage() {
               onClick={() => setFilter(filterOption.id as typeof filter)}
               className={`px-4 py-2 rounded-lg transition-all ${
                 filter === filterOption.id
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
-                  : 'bg-slate-800/50 text-gray-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-violet-600 text-white'
+                  : 'bg-zinc-800/40 text-zinc-400 hover:text-white hover:bg-zinc-800'
               }`}
             >
               {filterOption.label}
@@ -177,10 +177,10 @@ export default function OrdersPage() {
         {/* Orders List */}
         <div className="space-y-4">
           {filteredOrders.length === 0 ? (
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-12 text-center">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-12 text-center">
               <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">No orders found</h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-zinc-400 mb-6">
                 {filter === 'all' 
                   ? "You haven't placed any orders yet" 
                   : "No orders matching this filter"}
@@ -197,7 +197,7 @@ export default function OrdersPage() {
               return (
                 <div
                   key={order.id}
-                  className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all"
+                  className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden hover:border-zinc-700 transition-all"
                 >
                   {/* Order Header */}
                   <div
@@ -206,12 +206,12 @@ export default function OrdersPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center flex-shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-violet-600 flex items-center justify-center flex-shrink-0">
                           <Gamepad2 className="w-7 h-7 text-white" />
                         </div>
                         <div>
                           <h3 className="text-white font-semibold">{order.service?.title || 'Service'}</h3>
-                          <p className="text-gray-400 text-sm">{order.service?.game || 'Game'}</p>
+                          <p className="text-zinc-400 text-sm">{order.service?.game || 'Game'}</p>
                         </div>
                       </div>
 
@@ -228,12 +228,12 @@ export default function OrdersPage() {
                         )}
                         <div className="text-right hidden sm:block">
                           <p className="text-white font-semibold">${order.totalPrice}</p>
-                          <p className="text-gray-500 text-sm">{new Date(order.createdAt).toLocaleDateString()}</p>
+                          <p className="text-zinc-500 text-sm">{new Date(order.createdAt).toLocaleDateString()}</p>
                         </div>
                         {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-gray-400" />
+                          <ChevronUp className="w-5 h-5 text-zinc-400" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                          <ChevronDown className="w-5 h-5 text-zinc-400" />
                         )}
                       </div>
                     </div>
@@ -241,18 +241,18 @@ export default function OrdersPage() {
 
                   {/* Expanded Details */}
                   {isExpanded && (
-                    <div className="px-6 pb-6 border-t border-slate-800 pt-6">
+                    <div className="px-6 pb-6 border-t border-zinc-800/60 pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                          <p className="text-gray-500 text-sm mb-1">Booster</p>
+                          <p className="text-zinc-500 text-sm mb-1">Booster</p>
                           <p className="text-white font-medium">{order.booster?.name || 'Booster'}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500 text-sm mb-1">Order ID</p>
+                          <p className="text-zinc-500 text-sm mb-1">Order ID</p>
                           <p className="text-white font-medium text-sm">{order.id}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500 text-sm mb-1">Status</p>
+                          <p className="text-zinc-500 text-sm mb-1">Status</p>
                           <p className={`font-medium ${statusConfig.color}`}>{statusConfig.label}</p>
                         </div>
                       </div>
@@ -270,7 +270,7 @@ export default function OrdersPage() {
                               e.stopPropagation();
                               setReviewModalOrder(order);
                             }}
-                            className="gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400"
+                            className="gap-2 bg-amber-500 hover:from-yellow-400 hover:to-orange-400"
                           >
                             <Star className="w-4 h-4" />
                             Leave Review
@@ -302,8 +302,8 @@ export default function OrdersPage() {
 
       {/* Review Modal */}
       {reviewModalOrder && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800/60 rounded-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Leave a Review</h2>
               <button
@@ -312,25 +312,25 @@ export default function OrdersPage() {
                   setReviewRating(5);
                   setReviewComment('');
                 }}
-                className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-400" />
+                <X className="w-5 h-5 text-zinc-400" />
               </button>
             </div>
 
             <div className="mb-4">
-              <p className="text-gray-400 text-sm mb-1">Service</p>
+              <p className="text-zinc-400 text-sm mb-1">Service</p>
               <p className="text-white font-medium">{reviewModalOrder.service.title}</p>
             </div>
 
             <div className="mb-4">
-              <p className="text-gray-400 text-sm mb-1">Booster</p>
+              <p className="text-zinc-400 text-sm mb-1">Booster</p>
               <p className="text-white font-medium">{reviewModalOrder.booster.name}</p>
             </div>
 
             {/* Star Rating */}
             <div className="mb-6">
-              <p className="text-gray-400 text-sm mb-3">Your Rating</p>
+              <p className="text-zinc-400 text-sm mb-3">Your Rating</p>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -348,7 +348,7 @@ export default function OrdersPage() {
                   </button>
                 ))}
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-zinc-500 mt-2">
                 {reviewRating === 1 && 'Poor'}
                 {reviewRating === 2 && 'Fair'}
                 {reviewRating === 3 && 'Good'}
@@ -359,13 +359,13 @@ export default function OrdersPage() {
 
             {/* Comment */}
             <div className="mb-6">
-              <label className="text-gray-400 text-sm mb-2 block">Comment (optional)</label>
+              <label className="text-zinc-400 text-sm mb-2 block">Comment (optional)</label>
               <textarea
                 value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
                 placeholder="Share your experience with this booster..."
                 rows={4}
-                className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
               />
             </div>
 
@@ -385,7 +385,7 @@ export default function OrdersPage() {
               <Button
                 onClick={submitReview}
                 disabled={submittingReview}
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600"
+                className="flex-1 bg-violet-600"
               >
                 {submittingReview ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

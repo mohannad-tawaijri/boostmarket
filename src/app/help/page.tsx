@@ -1,52 +1,60 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, MessageCircle, Mail, FileText, Shield, HelpCircle, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const faqs = [
   {
     question: "How does BoostMarket work?",
-    answer: "BoostMarket connects gamers who offer boosting services with those who need them. Browse available services, choose a booster, place an order, and communicate through our secure chat system."
+    answer: "It is a marketplace. Sellers list boosting services (rank boosts, coaching, achievements, etc.) and set their own prices. Buyers browse, pick a seller, and place an order. We hold the payment until the service is delivered and confirmed. Think of us like a middleman that keeps both sides honest."
   },
   {
-    question: "Is boosting safe?",
-    answer: "We take security seriously. All boosters are vetted, and we use secure communication channels. However, always follow game-specific terms of service and use account sharing features at your own discretion."
+    question: "Is boosting safe for my game account?",
+    answer: "It depends on the game and the type of service. Duo queue and coaching never need your login. Account-sharing services carry more risk  both from the booster having access and from the game publisher potentially flagging unusual activity. We cannot guarantee your account will not face consequences from the game developer. That is a decision you need to weigh for yourself."
   },
   {
     question: "How do I become a booster?",
-    answer: "Anyone can offer services on BoostMarket! Simply create an account, then click 'Create Offer' to list your boosting services. Set your prices, describe your services, and start accepting orders."
+    answer: "Create a free account, then go to \"Create Offer\" to list your first service. There is no approval process  you can start immediately. That said, buyers will look at your reviews and profile before ordering, so put effort into your listing descriptions and deliver on what you promise."
   },
   {
     question: "What payment methods do you accept?",
-    answer: "We accept major credit cards, PayPal, and various other payment methods through our secure payment processor."
+    answer: "Major credit and debit cards through our payment processor. We do not handle payment information directly  it goes through an encrypted third-party provider."
   },
   {
     question: "How do refunds work?",
-    answer: "Refunds are handled on a case-by-case basis. If a booster fails to deliver the service, you can open a dispute and our team will review it."
+    answer: "If a booster does not deliver what was promised, you can open a dispute from your order page. Our team reviews the chat history, order details, and any evidence from both sides. Depending on the situation, we may issue a partial or full refund. We do not do automatic refunds  each case is reviewed individually."
   },
   {
-    question: "How do I contact a booster?",
-    answer: "Once you're logged in, you can use the chat feature on any service page to communicate directly with the booster before or after placing an order."
+    question: "Can I talk to the booster before ordering?",
+    answer: "Yes. Every listing has a chat option. We actually recommend messaging the booster first to discuss specifics  timelines, champion preferences, play schedule, whatever matters for your order."
+  },
+  {
+    question: "How long does a boost usually take?",
+    answer: "It varies. Each listing shows an estimated delivery time. A single-division boost might take a day; a full rank climb could take a week or more. The booster can give you a better estimate once they know your starting point."
+  },
+  {
+    question: "What happens if the booster goes dark?",
+    answer: "If the booster stops responding or fails to deliver within a reasonable time, open a dispute. We will investigate and can reassign or refund the order. Boosters who ghost orders get flagged and eventually removed from the platform."
   }
 ];
 
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
-    <div className="border border-slate-700/50 rounded-xl overflow-hidden">
+    <div className="border-b border-zinc-800/60">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 flex items-center justify-between bg-slate-800/50 hover:bg-slate-800 transition-colors text-left"
+        className="w-full py-5 flex items-start justify-between text-left group"
       >
-        <span className="font-medium text-white">{question}</span>
-        <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="font-medium text-zinc-200 group-hover:text-white transition-colors pr-4">{question}</span>
+        <ChevronDown className={`w-5 h-5 text-zinc-500 flex-shrink-0 mt-0.5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
-        <div className="px-6 py-4 bg-slate-800/30">
-          <p className="text-gray-300">{answer}</p>
+        <div className="pb-5">
+          <p className="text-zinc-400 text-[15px] leading-relaxed">{answer}</p>
         </div>
       )}
     </div>
@@ -55,62 +63,35 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 py-16">
-      <div className="container mx-auto px-4 max-w-4xl">
+    <div className="min-h-screen bg-[#111114] py-16">
+      <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
-          <Button variant="ghost" className="mb-8 text-gray-400 hover:text-white">
+          <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Button>
         </Link>
 
-        <h1 className="text-4xl font-bold text-white mb-4">Help Center</h1>
-        <p className="text-xl text-gray-400 mb-12">Find answers to common questions or contact our support team</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Help</h1>
+        <p className="text-zinc-500 text-sm mb-10">Answers to the questions we get asked most.</p>
 
-        {/* Contact Options */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <a href="mailto:support@boostmarket.com" className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 hover:border-indigo-500/50 transition-colors text-center">
-            <Mail className="w-10 h-10 text-indigo-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">Email Support</h3>
-            <p className="text-gray-400 text-sm">support@boostmarket.com</p>
-          </a>
-          
-          <Link href="/how-it-works" className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 hover:border-purple-500/50 transition-colors text-center">
-            <FileText className="w-10 h-10 text-purple-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">How It Works</h3>
-            <p className="text-gray-400 text-sm">Learn the basics</p>
-          </Link>
-          
-          <Link href="/terms" className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 hover:border-cyan-500/50 transition-colors text-center">
-            <Shield className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">Terms & Policies</h3>
-            <p className="text-gray-400 text-sm">Read our guidelines</p>
-          </Link>
-        </div>
-
-        {/* FAQs */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <HelpCircle className="w-6 h-6 text-indigo-400" />
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <FAQItem key={index} question={faq.question} answer={faq.answer} />
-            ))}
-          </div>
+          {faqs.map((faq, index) => (
+            <FAQItem key={index} question={faq.question} answer={faq.answer} />
+          ))}
         </div>
 
-        {/* Still need help */}
-        <div className="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-2xl p-8 border border-indigo-500/30 text-center">
-          <MessageCircle className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Still need help?</h2>
-          <p className="text-gray-300 mb-6">Our support team is here to assist you</p>
-          <a href="mailto:support@boostmarket.com">
-            <Button className="bg-indigo-600 hover:bg-indigo-500">
-              Contact Support
-            </Button>
-          </a>
+        <div className="pt-6 border-t border-zinc-800/60">
+          <p className="text-zinc-400 text-[15px] mb-1">
+            Did not find what you are looking for?
+          </p>
+          <p className="text-zinc-500 text-sm">
+            Email us at{" "}
+            <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
+              support@boostmarket.com
+            </a>{" "}
+            and we will get back to you within 24 hours.
+          </p>
         </div>
       </div>
     </div>

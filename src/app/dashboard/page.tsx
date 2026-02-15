@@ -99,10 +99,10 @@ export default function DashboardPage() {
   const completedOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'COMPLETED').length;
 
   const stats = [
-    { label: 'Orders Placed', value: myOrders.length.toString(), icon: ShoppingBag, color: 'from-blue-500 to-cyan-500' },
-    { label: 'Customer Orders', value: customerOrders.length.toString(), icon: DollarSign, color: 'from-green-500 to-emerald-500' },
-    { label: 'My Offers', value: offers.length.toString(), icon: Gamepad2, color: 'from-yellow-500 to-orange-500' },
-    { label: 'Completed', value: completedOrders.toString(), icon: CheckCircle, color: 'from-purple-500 to-pink-500' },
+    { label: 'Orders Placed', value: myOrders.length.toString(), icon: ShoppingBag, color: 'text-blue-400' },
+    { label: 'Customer Orders', value: customerOrders.length.toString(), icon: DollarSign, color: 'text-emerald-400' },
+    { label: 'My Offers', value: offers.length.toString(), icon: Gamepad2, color: 'text-amber-400' },
+    { label: 'Completed', value: completedOrders.toString(), icon: CheckCircle, color: 'text-violet-400' },
   ];
 
   const getStatusBadge = (status: string) => {
@@ -114,20 +114,20 @@ export default function DashboardPage() {
       case 'pending':
         return <span className="px-2 py-1 text-xs rounded-full bg-blue-500/20 text-blue-400">Pending</span>;
       default:
-        return <span className="px-2 py-1 text-xs rounded-full bg-gray-500/20 text-gray-400">{status}</span>;
+        return <span className="px-2 py-1 text-xs rounded-full bg-gray-500/20 text-zinc-400">{status}</span>;
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 py-8">
+    <div className="min-h-screen bg-[#0c0c0f] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">
-              Welcome back, <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">{user?.name || 'Gamer'}</span>
+              Welcome back, <span className="text-violet-400">{user?.name || 'Gamer'}</span>
             </h1>
-            <p className="text-gray-400">Here's what's happening with your account</p>
+            <p className="text-zinc-400">Here's what's happening with your account</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-3">
             <Link href="/create-offer">
@@ -144,11 +144,11 @@ export default function DashboardPage() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all"
+              className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6 hover:border-zinc-700 transition-all"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">{stat.label}</p>
+                  <p className="text-zinc-400 text-sm">{stat.label}</p>
                   <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
                 </div>
                 <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.color}`}>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-slate-800 pb-4 overflow-x-auto">
+        <div className="flex gap-2 mb-6 border-b border-zinc-800/60 pb-4 overflow-x-auto">
           {[
             { id: 'overview', label: 'Overview', icon: TrendingUp },
             { id: 'orders', label: 'Orders I Placed', icon: ShoppingBag },
@@ -172,8 +172,8 @@ export default function DashboardPage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-violet-600 text-white'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -186,21 +186,21 @@ export default function DashboardPage() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Orders */}
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-white">Recent Orders</h2>
-                <Link href="/orders" className="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-1">
+                <Link href="/orders" className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
                   View all <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
               {loading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                  <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
                 </div>
               ) : [...myOrders, ...customerOrders].length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-gray-400">No orders yet</p>
+                  <p className="text-zinc-400">No orders yet</p>
                   <Link href="/services">
                     <Button variant="outline" size="sm" className="mt-3">Browse Services</Button>
                   </Link>
@@ -208,14 +208,14 @@ export default function DashboardPage() {
               ) : (
                 <div className="space-y-4">
                   {[...myOrders, ...customerOrders].slice(0, 3).map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-zinc-800/40 rounded-lg">
                       <div>
                         <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
-                        <p className="text-gray-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
+                        <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
                       </div>
                       <div className="text-right">
                         {getStatusBadge(order.status)}
-                        <p className="text-gray-400 text-sm mt-1">${order.totalPrice}</p>
+                        <p className="text-zinc-400 text-sm mt-1">${order.totalPrice}</p>
                       </div>
                     </div>
                   ))}
@@ -224,28 +224,28 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6">
+            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
               <div className="grid grid-cols-2 gap-4">
-                <Link href="/services" className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800 transition-all group">
-                  <ShoppingBag className="w-8 h-8 text-indigo-400 mb-2 group-hover:scale-110 transition-transform" />
+                <Link href="/services" className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all group">
+                  <ShoppingBag className="w-8 h-8 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">Browse Offers</p>
-                  <p className="text-gray-500 text-sm">Find boosting services</p>
+                  <p className="text-zinc-500 text-sm">Find boosting services</p>
                 </Link>
-                <Link href="/create-offer" className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800 transition-all group">
+                <Link href="/create-offer" className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all group">
                   <Plus className="w-8 h-8 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">Create Offer</p>
-                  <p className="text-gray-500 text-sm">Start selling services</p>
+                  <p className="text-zinc-500 text-sm">Start selling services</p>
                 </Link>
-                <Link href="/orders" className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800 transition-all group">
+                <Link href="/orders" className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all group">
                   <Clock className="w-8 h-8 text-yellow-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">Track Orders</p>
-                  <p className="text-gray-500 text-sm">View order status</p>
+                  <p className="text-zinc-500 text-sm">View order status</p>
                 </Link>
-                <Link href="/profile" className="p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800 transition-all group">
+                <Link href="/profile" className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all group">
                   <MessageSquare className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">Messages</p>
-                  <p className="text-gray-500 text-sm">Chat with users</p>
+                  <p className="text-zinc-500 text-sm">Chat with users</p>
                 </Link>
               </div>
             </div>
@@ -253,19 +253,19 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'orders' && (
-          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-800">
+          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-zinc-800/60">
               <h2 className="text-lg font-semibold text-white">Orders I Placed</h2>
-              <p className="text-gray-400 text-sm">Services you purchased from other boosters</p>
+              <p className="text-zinc-400 text-sm">Services you purchased from other boosters</p>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
               </div>
             ) : myOrders.length === 0 ? (
               <div className="text-center py-12">
                 <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 mb-4">You haven't purchased any services yet</p>
+                <p className="text-zinc-400 mb-4">You haven't purchased any services yet</p>
                 <Link href="/services">
                   <Button>Browse Services</Button>
                 </Link>
@@ -273,23 +273,23 @@ export default function DashboardPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-slate-800/50">
+                  <thead className="bg-zinc-800/40">
                     <tr>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Booster</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Price</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Service</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Booster</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Status</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Price</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
                     {myOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
+                      <tr key={order.id} className="hover:bg-zinc-800/20 transition-colors">
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
-                        <td className="px-6 py-4 text-gray-300">{order.booster?.name || 'Booster'}</td>
+                        <td className="px-6 py-4 text-zinc-300">{order.booster?.name || 'Booster'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                        <td className="px-6 py-4 text-gray-300">${order.totalPrice}</td>
-                        <td className="px-6 py-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-zinc-300">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -300,20 +300,20 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'customer-orders' && (
-          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-800">
+          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-zinc-800/60">
               <h2 className="text-lg font-semibold text-white">Customer Orders</h2>
-              <p className="text-gray-400 text-sm">Orders from customers who purchased your services</p>
+              <p className="text-zinc-400 text-sm">Orders from customers who purchased your services</p>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
               </div>
             ) : customerOrders.length === 0 ? (
               <div className="text-center py-12">
                 <DollarSign className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 mb-2">No customer orders yet</p>
-                <p className="text-gray-500 text-sm mb-4">Create an offer and start selling your services!</p>
+                <p className="text-zinc-400 mb-2">No customer orders yet</p>
+                <p className="text-zinc-500 text-sm mb-4">Create an offer and start selling your services!</p>
                 <Link href="/create-offer">
                   <Button>Create an Offer</Button>
                 </Link>
@@ -321,24 +321,24 @@ export default function DashboardPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-slate-800/50">
+                  <thead className="bg-zinc-800/40">
                     <tr>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Service</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Customer</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Status</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Earnings</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Date</th>
-                      <th className="text-left text-gray-400 font-medium px-6 py-4">Action</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Service</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Customer</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Status</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Earnings</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Date</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
                     {customerOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-slate-800/30 transition-colors">
+                      <tr key={order.id} className="hover:bg-zinc-800/20 transition-colors">
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
-                        <td className="px-6 py-4 text-gray-300">{order.buyer?.name || 'Customer'}</td>
+                        <td className="px-6 py-4 text-zinc-300">{order.buyer?.name || 'Customer'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
                         <td className="px-6 py-4 text-green-400">${order.totalPrice}</td>
-                        <td className="px-6 py-4 text-gray-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                         <td className="px-6 py-4">
                           <Button variant="outline" size="sm">Manage</Button>
                         </td>
@@ -355,13 +355,13 @@ export default function DashboardPage() {
           <div className="space-y-4">
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
               </div>
             ) : offers.length === 0 ? (
-              <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-12 text-center">
+              <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-12 text-center">
                 <Gamepad2 className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">No offers yet</h3>
-                <p className="text-gray-400 mb-6">Start selling your boosting services today!</p>
+                <p className="text-zinc-400 mb-6">Start selling your boosting services today!</p>
                 <Link href="/create-offer">
                   <Button className="gap-2">
                     <Plus className="w-4 h-4" />
@@ -372,15 +372,15 @@ export default function DashboardPage() {
             ) : (
               <>
                 {offers.map((offer) => (
-                  <div key={offer.id} className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-6 flex items-center justify-between">
+                  <div key={offer.id} className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6 flex items-center justify-between">
                     <div>
                       <h3 className="text-white font-semibold text-lg">{offer.title}</h3>
-                      <p className="text-gray-400">{offer.game}</p>
+                      <p className="text-zinc-400">{offer.game}</p>
                     </div>
                     <div className="flex items-center gap-8">
                       <div className="text-center">
                         <p className="text-2xl font-bold text-white">${offer.price}</p>
-                        <p className="text-gray-500 text-sm">Price</p>
+                        <p className="text-zinc-500 text-sm">Price</p>
                       </div>
                       <Link href={`/services/${offer.id}`}>
                         <Button variant="outline">View Offer</Button>
@@ -389,9 +389,9 @@ export default function DashboardPage() {
                   </div>
                 ))}
                 <Link href="/create-offer" className="mt-4 block">
-                  <div className="bg-slate-900/30 border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 transition-colors cursor-pointer">
-                    <Plus className="w-12 h-12 text-gray-500 mb-2" />
-                    <p className="text-gray-400">Create New Offer</p>
+                  <div className="bg-zinc-900/30 border-2 border-dashed border-zinc-700 rounded-xl p-8 flex flex-col items-center justify-center hover:border-zinc-700 transition-colors cursor-pointer">
+                    <Plus className="w-12 h-12 text-zinc-500 mb-2" />
+                    <p className="text-zinc-400">Create New Offer</p>
                   </div>
                 </Link>
               </>

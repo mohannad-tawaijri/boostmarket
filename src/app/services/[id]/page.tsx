@@ -131,25 +131,25 @@ export default function ServiceDetailPage() {
     APEX_LEGENDS: "from-red-500 via-red-600 to-red-800",
     FORTNITE: "from-blue-500 via-purple-500 to-indigo-700",
     ROCKET_LEAGUE: "from-blue-500 via-cyan-500 to-blue-700",
-    RAINBOW_SIX: "from-slate-600 via-slate-700 to-slate-900",
+    RAINBOW_SIX: "from-zinc-700 via-zinc-800 to-zinc-900",
     COD_WARZONE: "from-green-700 via-green-800 to-green-950",
     OTHER: "from-indigo-600 via-purple-600 to-indigo-800",
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 flex items-center justify-center">
-        <div className="w-16 h-16 rounded-full border-4 border-indigo-500/30 border-t-indigo-500 animate-spin"></div>
+      <div className="min-h-screen bg-[#111114] flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
       </div>
     );
   }
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-[#111114] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-20 h-20 mx-auto mb-6 bg-slate-800 rounded-full flex items-center justify-center">
-            <Gamepad2 className="w-10 h-10 text-gray-500" />
+          <div className="w-20 h-20 mx-auto mb-6 bg-zinc-800 rounded-full flex items-center justify-center">
+            <Gamepad2 className="w-10 h-10 text-zinc-500" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Service not found</h2>
           <Link href="/services">
@@ -163,11 +163,11 @@ export default function ServiceDetailPage() {
   const gradient = gameGradients[service.game] || gameGradients.OTHER;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
+    <div className="min-h-screen bg-[#111114]">
       {/* Hero Banner */}
       <div className={`relative h-64 bg-gradient-to-br ${gradient} overflow-hidden`}>
         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#111114] via-transparent to-transparent"></div>
         
         <div className="container mx-auto px-4 pt-6 relative z-10">
           <button 
@@ -179,10 +179,10 @@ export default function ServiceDetailPage() {
           </button>
           
           <div className="flex items-center gap-3">
-            <span className="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/20">
+            <span className="px-4 py-1.5 bg-white/20 rounded-full text-sm font-medium text-white border border-white/20">
               {GAME_NAMES[service.game as GameCategory] || service.game}
             </span>
-            <span className="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/20">
+            <span className="px-4 py-1.5 bg-white/20 rounded-full text-sm font-medium text-white border border-white/20">
               {CATEGORY_NAMES[service.category as ServiceCategory] || service.category}
             </span>
           </div>
@@ -193,18 +193,18 @@ export default function ServiceDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 mb-6">
+            <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-8 mb-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold text-white mb-4">{service.title}</h1>
                 </div>
                 <button
                   onClick={toggleFavorite}
-                  className="p-3 bg-slate-700/50 hover:bg-slate-700 rounded-xl transition-colors"
+                  className="p-3 bg-slate-700/50 hover:bg-zinc-700 rounded-xl transition-colors"
                 >
                   <Heart
                     className={`w-6 h-6 ${
-                      isFavorite ? "fill-pink-500 text-pink-500" : "text-gray-400"
+                      isFavorite ? "fill-pink-500 text-pink-500" : "text-zinc-400"
                     }`}
                   />
                 </button>
@@ -213,21 +213,21 @@ export default function ServiceDetailPage() {
               {/* Description */}
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-white mb-4">About This Service</h3>
-                <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{service.description}</p>
+                <p className="text-zinc-300 whitespace-pre-wrap leading-relaxed">{service.description}</p>
               </div>
 
               {/* Tags */}
               {service.tags && service.tags.length > 0 && (
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <Tag className="w-5 h-5 text-indigo-400" />
+                    <Tag className="w-5 h-5 text-violet-400" />
                     Tags
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {service.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 rounded-full text-sm"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/20 border border-violet-500/20 text-violet-300 rounded-full text-sm"
                       >
                         {tag}
                       </span>
@@ -238,21 +238,21 @@ export default function ServiceDetailPage() {
 
               {/* Features */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div className="bg-slate-700/30 p-4 rounded-xl border border-slate-600/50">
+                <div className="bg-slate-700/30 p-4 rounded-xl border border-zinc-700/50">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 bg-indigo-500/20 rounded-lg">
-                      <Clock className="w-5 h-5 text-indigo-400" />
+                      <Clock className="w-5 h-5 text-violet-400" />
                     </div>
-                    <span className="text-sm text-gray-400">Delivery Time</span>
+                    <span className="text-sm text-zinc-400">Delivery Time</span>
                   </div>
                   <p className="font-semibold text-white text-lg">{service.deliveryTime}</p>
                 </div>
-                <div className="bg-slate-700/30 p-4 rounded-xl border border-slate-600/50">
+                <div className="bg-slate-700/30 p-4 rounded-xl border border-zinc-700/50">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 bg-green-500/20 rounded-lg">
                       <Shield className="w-5 h-5 text-green-400" />
                     </div>
-                    <span className="text-sm text-gray-400">Secure Service</span>
+                    <span className="text-sm text-zinc-400">Secure Service</span>
                   </div>
                   <p className="font-semibold text-white text-lg">100% Protected</p>
                 </div>
@@ -263,7 +263,7 @@ export default function ServiceDetailPage() {
                 <h3 className="text-lg font-semibold text-white mb-4">What's Included</h3>
                 <div className="space-y-3">
                   {["Professional boosting service", "Real-time progress updates", "Account safety guaranteed", "24/7 customer support"].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-gray-300">
+                    <div key={index} className="flex items-center gap-3 text-zinc-300">
                       <CheckCircle className="w-5 h-5 text-green-400" />
                       <span>{item}</span>
                     </div>
@@ -290,21 +290,21 @@ export default function ServiceDetailPage() {
                 {reviews.length === 0 ? (
                   <div className="bg-slate-700/30 rounded-xl p-6 text-center">
                     <Star className="w-10 h-10 text-gray-600 mx-auto mb-3" />
-                    <p className="text-gray-400">No reviews yet</p>
-                    <p className="text-gray-500 text-sm">Be the first to review after completing an order!</p>
+                    <p className="text-zinc-400">No reviews yet</p>
+                    <p className="text-zinc-500 text-sm">Be the first to review after completing an order!</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {reviews.map((review) => (
-                      <div key={review.id} className="bg-slate-700/30 rounded-xl p-4 border border-slate-600/50">
+                      <div key={review.id} className="bg-slate-700/30 rounded-xl p-4 border border-zinc-700/50">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                            <div className="w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                               {review.reviewer?.name?.charAt(0) || "U"}
                             </div>
                             <div>
                               <p className="text-white font-medium">{review.reviewer?.name || "User"}</p>
-                              <p className="text-gray-500 text-xs">
+                              <p className="text-zinc-500 text-xs">
                                 {new Date(review.createdAt).toLocaleDateString()}
                               </p>
                             </div>
@@ -323,7 +323,7 @@ export default function ServiceDetailPage() {
                           </div>
                         </div>
                         {review.comment && (
-                          <p className="text-gray-300 text-sm">{review.comment}</p>
+                          <p className="text-zinc-300 text-sm">{review.comment}</p>
                         )}
                       </div>
                     ))}
@@ -336,19 +336,19 @@ export default function ServiceDetailPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Order Card */}
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 sticky top-24 mb-6">
+            <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-6 sticky top-24 mb-6">
               <div className="text-center mb-6">
-                <p className="text-gray-400 text-sm mb-1">Starting from</p>
-                <div className="text-4xl font-bold text-gradient mb-2">
+                <p className="text-zinc-400 text-sm mb-1">Starting from</p>
+                <div className="text-4xl font-bold text-violet-400 mb-2">
                   ${service.price}
                 </div>
-                <p className="text-gray-500 text-xs">Final price discussed via chat</p>
+                <p className="text-zinc-500 text-xs">Final price discussed via chat</p>
               </div>
 
               {isOwnService ? (
-                <div className="text-center text-gray-400 py-4">
+                <div className="text-center text-zinc-400 py-4">
                   <p>This is your offer</p>
-                  <Link href="/dashboard" className="text-indigo-400 hover:underline text-sm">
+                  <Link href="/dashboard" className="text-violet-400 hover:underline text-sm">
                     Manage in Dashboard
                   </Link>
                 </div>
@@ -363,18 +363,18 @@ export default function ServiceDetailPage() {
                     Get Custom Offer
                   </Button>
 
-                  <p className="text-center text-gray-500 text-xs">
+                  <p className="text-center text-zinc-500 text-xs">
                     Message the booster to discuss your requirements and get a personalized offer
                   </p>
                 </>
               )}
 
-              <div className="mt-6 pt-6 border-t border-slate-700">
-                <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+              <div className="mt-6 pt-6 border-t border-zinc-700">
+                <div className="flex items-center gap-2 text-sm text-zinc-400 mb-2">
                   <Shield className="w-4 h-4 text-green-400" />
                   <span>Secure payment</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <CheckCircle className="w-4 h-4 text-green-400" />
                   <span>Money-back guarantee</span>
                 </div>
@@ -383,19 +383,19 @@ export default function ServiceDetailPage() {
 
             {/* Booster Card */}
             {service.booster && (
-              <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+              <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-6">
                 <h3 className="font-semibold text-white mb-4">About the Booster</h3>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     {service.booster.name?.charAt(0) || "B"}
                   </div>
                   <div>
                     <p className="font-semibold text-white text-lg">{service.booster.name}</p>
-                    <p className="text-indigo-400 text-sm">Verified Pro Booster</p>
+                    <p className="text-violet-400 text-sm">Verified Pro Booster</p>
                   </div>
                 </div>
                 {service.booster.bio && (
-                  <p className="text-gray-400 text-sm">{service.booster.bio}</p>
+                  <p className="text-zinc-400 text-sm">{service.booster.bio}</p>
                 )}
               </div>
             )}
