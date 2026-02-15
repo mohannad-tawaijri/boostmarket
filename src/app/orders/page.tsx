@@ -129,14 +129,14 @@ export default function OrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0c0c0f] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0c0f] py-8">
+    <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -166,7 +166,7 @@ export default function OrdersPage() {
               className={`px-4 py-2 rounded-lg transition-all ${
                 filter === filterOption.id
                   ? 'bg-violet-600 text-white'
-                  : 'bg-zinc-800/40 text-zinc-400 hover:text-white hover:bg-zinc-800'
+                  : 'bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-zinc-800'
               }`}
             >
               {filterOption.label}
@@ -177,7 +177,7 @@ export default function OrdersPage() {
         {/* Orders List */}
         <div className="space-y-4">
           {filteredOrders.length === 0 ? (
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-12 text-center">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
               <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">No orders found</h3>
               <p className="text-zinc-400 mb-6">
@@ -197,7 +197,7 @@ export default function OrdersPage() {
               return (
                 <div
                   key={order.id}
-                  className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden hover:border-zinc-700 transition-all"
+                  className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden hover:border-white/[0.08] transition-all"
                 >
                   {/* Order Header */}
                   <div
@@ -241,7 +241,7 @@ export default function OrdersPage() {
 
                   {/* Expanded Details */}
                   {isExpanded && (
-                    <div className="px-6 pb-6 border-t border-zinc-800/60 pt-6">
+                    <div className="px-6 pb-6 border-t border-white/[0.06] pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                           <p className="text-zinc-500 text-sm mb-1">Booster</p>
@@ -303,7 +303,7 @@ export default function OrdersPage() {
       {/* Review Modal */}
       {reviewModalOrder && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800/60 rounded-2xl max-w-md w-full p-6">
+          <div className="bg-[#141418] border border-white/[0.06] rounded-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Leave a Review</h2>
               <button
@@ -312,7 +312,7 @@ export default function OrdersPage() {
                   setReviewRating(5);
                   setReviewComment('');
                 }}
-                className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                className="p-2 hover:bg-white/[0.06] rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-zinc-400" />
               </button>
@@ -365,7 +365,7 @@ export default function OrdersPage() {
                 onChange={(e) => setReviewComment(e.target.value)}
                 placeholder="Share your experience with this booster..."
                 rows={4}
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
               />
             </div>
 

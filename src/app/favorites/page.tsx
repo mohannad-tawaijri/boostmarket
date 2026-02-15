@@ -56,14 +56,14 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#111114] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       {/* Header Section */}
       <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -89,7 +89,7 @@ export default function FavoritesPage() {
 
       <div className="container mx-auto px-4 pb-16">
         {favorites.length === 0 ? (
-          <div className="text-center py-20 bg-zinc-800/20 rounded-2xl border border-zinc-700/40 max-w-lg mx-auto">
+          <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-white/[0.08] max-w-lg mx-auto">
             <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
               <Heart className="w-10 h-10 text-zinc-500" />
             </div>
@@ -113,7 +113,7 @@ export default function FavoritesPage() {
                   <ServiceCard service={favorite.service} />
                   <button
                     onClick={() => removeFavorite(favorite.serviceId)}
-                    className="absolute top-4 right-4 p-2.5 bg-zinc-900/80 rounded-xl border border-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:border-red-600"
+                    className="absolute top-4 right-4 p-2.5 bg-zinc-900/80 rounded-xl border border-white/[0.08] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:border-red-600"
                     title="Remove from favorites"
                   >
                     <Trash2 className="w-4 h-4 text-white" />

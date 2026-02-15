@@ -26,28 +26,28 @@
 }
 
 .dark {
-  --background: 240 6% 7%;
-  --foreground: 0 0% 93%;
-  --card: 240 5% 10%;
-  --card-foreground: 0 0% 93%;
-  --popover: 240 5% 10%;
-  --popover-foreground: 0 0% 93%;
+  --background: 240 10% 6%;
+  --foreground: 0 0% 95%;
+  --card: 240 8% 11%;
+  --card-foreground: 0 0% 95%;
+  --popover: 240 8% 11%;
+  --popover-foreground: 0 0% 95%;
   --primary: 250 60% 60%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 4% 16%;
+  --secondary: 240 6% 17%;
   --secondary-foreground: 0 0% 93%;
-  --muted: 240 4% 16%;
+  --muted: 240 6% 14%;
   --muted-foreground: 240 4% 55%;
   --accent: 250 60% 60%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 62% 45%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 4% 16%;
-  --input: 240 4% 16%;
+  --border: 240 6% 20%;
+  --input: 240 6% 17%;
   --ring: 250 60% 60%;
 }
 
-/* Scrollbar — subtle, not distracting */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -58,36 +58,64 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
 }
 
-/* Accent text highlight — single clean color, not triple gradient */
-.text-accent-highlight {
-  color: #7c5cfc;
+/* Card with glass effect */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
 }
 
-/* Subtle card elevation — no neon glow */
-.card-elevated {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+.glass-card:hover {
+  border-color: rgba(124, 92, 252, 0.25);
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
 }
 
-/* Input focus — clean ring, no glow */
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #7c5cfc;
-  box-shadow: 0 0 0 2px rgba(124, 92, 252, 0.15);
+/* Solid card — more visible */
+.solid-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Card hover — gentle lift, no glow */
+.solid-card:hover {
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* Subtle section gradient backgrounds */
+.section-alt {
+  background: linear-gradient(180deg, rgba(124,92,252,0.03) 0%, transparent 100%);
+}
+
+.section-dark {
+  background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
+}
+
+/* Card hover — gentle lift */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Input focus */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(124, 92, 252, 0.5);
+  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.1);
+}
+
+/* Accent glow (subtle) for key elements */
+.accent-glow {
+  box-shadow: 0 0 20px rgba(124, 92, 252, 0.15), 0 0 60px rgba(124, 92, 252, 0.05);
 }

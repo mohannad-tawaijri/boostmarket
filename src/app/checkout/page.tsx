@@ -37,7 +37,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c0c0f] py-8">
+    <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link href="/services" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors">
@@ -48,7 +48,7 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Payment Form */}
           <div className="lg:col-span-2">
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
               <h1 className="text-2xl font-bold text-white mb-6">Complete Your Order</h1>
 
               {/* Payment Method Selection */}
@@ -61,7 +61,7 @@ export default function CheckoutPage() {
                     className={`p-4 rounded-xl border-2 transition-all ${
                       paymentMethod === 'card'
                         ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-zinc-700 bg-zinc-800/20 hover:border-zinc-700'
+                        : 'border-white/[0.08] bg-white/[0.02] hover:border-zinc-700'
                     }`}
                   >
                     <CreditCard className={`w-6 h-6 mb-2 ${paymentMethod === 'card' ? 'text-violet-400' : 'text-zinc-400'}`} />
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
                     className={`p-4 rounded-xl border-2 transition-all ${
                       paymentMethod === 'paypal'
                         ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-zinc-700 bg-zinc-800/20 hover:border-zinc-700'
+                        : 'border-white/[0.08] bg-white/[0.02] hover:border-zinc-700'
                     }`}
                   >
                     <div className={`w-6 h-6 mb-2 font-bold ${paymentMethod === 'paypal' ? 'text-violet-400' : 'text-zinc-400'}`}>PP</div>
@@ -92,7 +92,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         placeholder="1234 5678 9012 3456"
-                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -103,7 +103,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         placeholder="MM/YY"
-                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                     <div>
@@ -111,7 +111,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         placeholder="123"
-                        className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -121,7 +121,7 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       placeholder="John Doe"
-                      className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                     />
                   </div>
 
@@ -159,10 +159,10 @@ export default function CheckoutPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6 sticky top-24">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 sticky top-24">
               <h2 className="text-lg font-semibold text-white mb-6">Order Summary</h2>
 
-              <div className="flex items-start gap-4 pb-6 border-b border-zinc-800/60">
+              <div className="flex items-start gap-4 pb-6 border-b border-white/[0.06]">
                 <div className="w-16 h-16 rounded-lg bg-violet-600 flex items-center justify-center flex-shrink-0">
                   <Gamepad2 className="w-8 h-8 text-white" />
                 </div>
@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="py-6 border-b border-zinc-800/60 space-y-3">
+              <div className="py-6 border-b border-white/[0.06] space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">Delivery Time</span>
                   <span className="text-white">{orderData.deliveryTime}</span>
@@ -195,7 +195,7 @@ export default function CheckoutPage() {
                   <span className="text-zinc-400">Service Fee</span>
                   <span className="text-white">$0.00</span>
                 </div>
-                <div className="flex justify-between text-lg font-semibold pt-3 border-t border-zinc-800/60">
+                <div className="flex justify-between text-lg font-semibold pt-3 border-t border-white/[0.06]">
                   <span className="text-white">Total</span>
                   <span className="text-violet-400">
                     ${orderData.price.toFixed(2)}
@@ -203,7 +203,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-zinc-800/20 rounded-lg">
+              <div className="mt-6 p-4 bg-white/[0.02] rounded-lg">
                 <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <Lock className="w-4 h-4" />
                   <span>Secure checkout powered by Stripe</span>

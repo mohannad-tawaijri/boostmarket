@@ -488,7 +488,7 @@ function MessagesContent() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#0c0c0f] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Please log in</h2>
@@ -502,7 +502,7 @@ function MessagesContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0c0f]">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between gap-4 mb-6">
@@ -532,11 +532,11 @@ function MessagesContent() {
         </div>
 
         {/* Main Content */}
-        <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl overflow-hidden flex" style={{ height: 'calc(100vh - 200px)' }}>
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden flex" style={{ height: 'calc(100vh - 200px)' }}>
           {/* Conversations List */}
-          <div className={`w-full md:w-80 border-r border-zinc-800/60 flex flex-col ${activeConversation ? 'hidden md:flex' : 'flex'}`}>
+          <div className={`w-full md:w-80 border-r border-white/[0.06] flex flex-col ${activeConversation ? 'hidden md:flex' : 'flex'}`}>
             {/* Search */}
-            <div className="p-4 border-b border-zinc-800/60">
+            <div className="p-4 border-b border-white/[0.06]">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 <input
@@ -544,7 +544,7 @@ function MessagesContent() {
                   placeholder="Search conversations..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -570,7 +570,7 @@ function MessagesContent() {
                     <button
                       key={conversation.id}
                       onClick={() => selectConversation(conversation)}
-                      className={`w-full p-4 flex items-center gap-3 hover:bg-zinc-800/40 transition-colors border-b border-zinc-800/60/50 ${
+                      className={`w-full p-4 flex items-center gap-3 hover:bg-white/[0.04] transition-colors border-b border-white/[0.06]/50 ${
                         isActive ? 'bg-zinc-800/70' : ''
                       }`}
                     >
@@ -608,7 +608,7 @@ function MessagesContent() {
             {activeConversation ? (
               <>
                 {/* Chat Header */}
-                <div className="p-4 border-b border-zinc-800/60 flex items-center gap-3">
+                <div className="p-4 border-b border-white/[0.06] flex items-center gap-3">
                   <button
                     onClick={() => setActiveConversation(null)}
                     className="md:hidden text-zinc-400 hover:text-white"
@@ -773,7 +773,7 @@ function MessagesContent() {
                 </div>
 
                 {/* Message Input */}
-                <div className="p-4 border-t border-zinc-800/60">
+                <div className="p-4 border-t border-white/[0.06]">
                   {/* Send Custom Offer Button (for boosters only) */}
                   {isBooster && (
                     <div className="mb-3">
@@ -793,7 +793,7 @@ function MessagesContent() {
                       <img 
                         src={imagePreview} 
                         alt="Preview" 
-                        className="max-h-32 rounded-lg border border-zinc-700"
+                        className="max-h-32 rounded-lg border border-white/[0.08]"
                       />
                       <button
                         onClick={clearSelectedImage}
@@ -815,7 +815,7 @@ function MessagesContent() {
                     {/* Image upload button */}
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      className="px-3 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
+                      className="px-3 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
                       title="Send image"
                     >
                       <ImageIcon className="w-5 h-5" />
@@ -826,7 +826,7 @@ function MessagesContent() {
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Type a message..."
-                      className="flex-1 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="flex-1 px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                     />
                     <Button 
                       onClick={sendMessage} 
@@ -861,9 +861,9 @@ function MessagesContent() {
       {/* Custom Offer Modal */}
       {showOfferModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white/[0.05] border border-white/[0.08] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-zinc-700">
+            <div className="flex items-center justify-between p-4 border-b border-white/[0.08]">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-green-400" />
                 Create Custom Offer
@@ -887,7 +887,7 @@ function MessagesContent() {
                   value={offerForm.title}
                   onChange={(e) => setOfferForm(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="e.g., Gold to Diamond Boost"
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
 
@@ -900,7 +900,7 @@ function MessagesContent() {
                   onChange={(e) => setOfferForm(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Describe what's included in this offer..."
                   rows={3}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                 />
               </div>
 
@@ -915,7 +915,7 @@ function MessagesContent() {
                     onChange={(e) => setOfferForm(prev => ({ ...prev, price: e.target.value }))}
                     placeholder="50"
                     min="1"
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -925,7 +925,7 @@ function MessagesContent() {
                   <select
                     value={offerForm.deliveryTime}
                     onChange={(e) => setOfferForm(prev => ({ ...prev, deliveryTime: e.target.value }))}
-                    className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   >
                     <option value="1 day">1 day</option>
                     <option value="1-2 days">1-2 days</option>
@@ -937,14 +937,14 @@ function MessagesContent() {
                 </div>
               </div>
 
-              <div className="bg-zinc-800/40 rounded-xl p-3 text-sm text-zinc-400">
+              <div className="bg-white/[0.04] rounded-xl p-3 text-sm text-zinc-400">
                 <p>💡 This offer will be sent as a message. The buyer can accept or decline.</p>
                 <p className="mt-1">If accepted, an order will be created automatically.</p>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex gap-3 p-4 border-t border-zinc-700">
+            <div className="flex gap-3 p-4 border-t border-white/[0.08]">
               <Button
                 variant="outline"
                 onClick={() => setShowOfferModal(false)}
@@ -977,7 +977,7 @@ function MessagesContent() {
 export default function MessagesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#0c0c0f] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
       </div>
     }>

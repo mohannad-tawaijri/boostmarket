@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">About BoostMarket</h1>
@@ -60,7 +60,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-zinc-800/60 flex flex-col sm:flex-row gap-4">
+          <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row gap-4">
             <Link href="/services">
               <Button>Browse Services</Button>
             </Link>

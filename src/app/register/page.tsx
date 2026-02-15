@@ -89,7 +89,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Register Card */}
-        <div className="bg-zinc-800/40 rounded-2xl border border-zinc-700/40 shadow-2xl overflow-hidden">
+        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden">
           <div className="p-8">
             <h1 className="text-2xl font-bold text-white text-center mb-2">Create Account</h1>
             <p className="text-zinc-400 text-center mb-8">Join the gaming boost community</p>
@@ -114,7 +114,7 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
 
@@ -131,7 +131,7 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
 
@@ -149,7 +149,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                     placeholder="••••••••"
-                    className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                   <button
                     type="button"
@@ -174,7 +174,7 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
 
@@ -209,7 +209,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Login Link */}
-          <div className="px-8 py-6 bg-zinc-900/50 border-t border-zinc-700/40 text-center">
+          <div className="px-8 py-6 bg-white/[0.03] border-t border-white/[0.08] text-center">
             <p className="text-zinc-400">
               Already have an account?{" "}
               <Link href="/login" className="text-violet-400 hover:text-violet-300 font-medium">

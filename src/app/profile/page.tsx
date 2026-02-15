@@ -46,7 +46,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0c0c0f] py-8">
+    <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -57,7 +57,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-4">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
               <nav className="space-y-1">
                 {sections.map((section) => (
                   <button
@@ -66,7 +66,7 @@ export default function ProfilePage() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                       activeSection === section.id
                         ? 'bg-violet-600/10 text-violet-400 border border-violet-500/20'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-800/40'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
                     }`}
                   >
                     <section.icon className="w-5 h-5" />
@@ -79,17 +79,17 @@ export default function ProfilePage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
               {activeSection === 'profile' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="flex items-center gap-6 pb-6 border-b border-zinc-800/60">
+                  <div className="flex items-center gap-6 pb-6 border-b border-white/[0.06]">
                     <div className="relative">
                       <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
                         <Gamepad2 className="w-12 h-12 text-white" />
                       </div>
                       <button
                         type="button"
-                        className="absolute bottom-0 right-0 p-2 bg-zinc-800 rounded-full border border-zinc-700 hover:bg-zinc-700 transition-colors"
+                        className="absolute bottom-0 right-0 p-2 bg-white/[0.06] rounded-full border border-white/[0.08] hover:bg-zinc-700 transition-colors"
                       >
                         <Camera className="w-4 h-4 text-white" />
                       </button>
@@ -115,7 +115,7 @@ export default function ProfilePage() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       rows={4}
                       placeholder="Tell others about yourself..."
-                      className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                     />
                   </div>
 
@@ -158,7 +158,7 @@ export default function ProfilePage() {
 
               {activeSection === 'security' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="pb-6 border-b border-zinc-800/60">
+                  <div className="pb-6 border-b border-white/[0.06]">
                     <h2 className="text-xl font-semibold text-white mb-2">Change Password</h2>
                     <p className="text-zinc-400">Update your password to keep your account secure</p>
                   </div>
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                           name="currentPassword"
                           value={formData.currentPassword}
                           onChange={handleChange}
-                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                           name="newPassword"
                           value={formData.newPassword}
                           onChange={handleChange}
-                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
                           name="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleChange}
-                          className="w-full bg-zinc-800/40 border border-zinc-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -218,7 +218,7 @@ export default function ProfilePage() {
 
               {activeSection === 'notifications' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-zinc-800/60">
+                  <div className="pb-6 border-b border-white/[0.06]">
                     <h2 className="text-xl font-semibold text-white mb-2">Notification Preferences</h2>
                     <p className="text-zinc-400">Manage how you receive notifications</p>
                   </div>
@@ -230,7 +230,7 @@ export default function ProfilePage() {
                       { label: 'New messages', description: 'Receive alerts for new chat messages' },
                       { label: 'Marketing emails', description: 'Receive promotional offers and news' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-zinc-800/20 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.02] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
@@ -247,12 +247,12 @@ export default function ProfilePage() {
 
               {activeSection === 'payment' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-zinc-800/60">
+                  <div className="pb-6 border-b border-white/[0.06]">
                     <h2 className="text-xl font-semibold text-white mb-2">Payment Methods</h2>
                     <p className="text-zinc-400">Manage your payment information</p>
                   </div>
 
-                  <div className="p-6 bg-zinc-800/20 rounded-lg border border-dashed border-zinc-700 text-center">
+                  <div className="p-6 bg-white/[0.02] rounded-lg border border-dashed border-white/[0.08] text-center">
                     <CreditCard className="w-12 h-12 text-zinc-500 mx-auto mb-4" />
                     <p className="text-zinc-400 mb-4">No payment methods added yet</p>
                     <Button variant="outline">Add Payment Method</Button>
@@ -262,7 +262,7 @@ export default function ProfilePage() {
 
               {activeSection === 'privacy' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-zinc-800/60">
+                  <div className="pb-6 border-b border-white/[0.06]">
                     <h2 className="text-xl font-semibold text-white mb-2">Privacy Settings</h2>
                     <p className="text-zinc-400">Control your privacy preferences</p>
                   </div>
@@ -273,7 +273,7 @@ export default function ProfilePage() {
                       { label: 'Show online status', description: 'Let others see when you are online' },
                       { label: 'Allow messages from anyone', description: 'Receive messages from non-contacts' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-zinc-800/20 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.02] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
@@ -286,7 +286,7 @@ export default function ProfilePage() {
                     ))}
                   </div>
 
-                  <div className="pt-6 border-t border-zinc-800/60">
+                  <div className="pt-6 border-t border-white/[0.06]">
                     <h3 className="text-lg font-semibold text-red-400 mb-4">Danger Zone</h3>
                     <Button variant="destructive">Delete Account</Button>
                   </div>

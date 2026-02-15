@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${jakarta.className} bg-[#111114] text-gray-100 antialiased`}>
+        <body className={`${jakarta.className} bg-[#0d0d12] text-gray-100 antialiased`}>
         <AuthProvider>
           <SocketProvider>
             <div className="flex flex-col min-h-screen">

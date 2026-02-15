@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#111114] py-16">
+    <div className="min-h-screen bg-transparent py-16">
       <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
@@ -85,7 +85,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div className="pt-4 border-t border-zinc-800/60">
+          <div className="pt-4 border-t border-white/[0.06]">
             <p className="text-zinc-500 text-sm">
               Questions? <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">support@boostmarket.com</a>
             </p>

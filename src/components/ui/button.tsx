@@ -5,18 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-violet-600 text-white hover:bg-violet-500 active:bg-violet-700",
+        default: "bg-gradient-to-b from-violet-500 to-violet-700 text-white shadow-lg shadow-violet-600/20 hover:from-violet-400 hover:to-violet-600 hover:shadow-violet-500/30 active:from-violet-600 active:to-violet-800",
         destructive:
-          "bg-red-600 text-white hover:bg-red-500 active:bg-red-700",
+          "bg-gradient-to-b from-red-500 to-red-700 text-white shadow-lg shadow-red-600/20 hover:from-red-400 hover:to-red-600",
         outline:
-          "border border-zinc-700 bg-transparent text-zinc-300 hover:bg-zinc-800 hover:text-white",
+          "border border-white/10 bg-white/[0.03] text-zinc-200 hover:bg-white/[0.07] hover:border-white/15 hover:text-white",
         secondary:
-          "bg-zinc-800 text-zinc-100 hover:bg-zinc-700",
-        ghost: "text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200",
+          "bg-white/[0.06] text-zinc-100 hover:bg-white/[0.1] border border-white/[0.06]",
+        ghost: "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-100",
         link: "text-violet-400 underline-offset-4 hover:underline hover:text-violet-300",
       },
       size: {

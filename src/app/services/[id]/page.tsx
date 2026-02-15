@@ -138,7 +138,7 @@ export default function ServiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#111114] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
       </div>
     );
@@ -146,9 +146,9 @@ export default function ServiceDetailPage() {
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-[#111114] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
-          <div className="w-20 h-20 mx-auto mb-6 bg-zinc-800 rounded-full flex items-center justify-center">
+          <div className="w-20 h-20 mx-auto mb-6 bg-white/[0.06] rounded-full flex items-center justify-center">
             <Gamepad2 className="w-10 h-10 text-zinc-500" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Service not found</h2>
@@ -163,7 +163,7 @@ export default function ServiceDetailPage() {
   const gradient = gameGradients[service.game] || gameGradients.OTHER;
 
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       {/* Hero Banner */}
       <div className={`relative h-64 bg-gradient-to-br ${gradient} overflow-hidden`}>
         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
@@ -193,7 +193,7 @@ export default function ServiceDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-8 mb-6">
+            <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-8 mb-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold text-white mb-4">{service.title}</h1>
@@ -336,7 +336,7 @@ export default function ServiceDetailPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Order Card */}
-            <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-6 sticky top-24 mb-6">
+            <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-6 sticky top-24 mb-6">
               <div className="text-center mb-6">
                 <p className="text-zinc-400 text-sm mb-1">Starting from</p>
                 <div className="text-4xl font-bold text-violet-400 mb-2">
@@ -369,7 +369,7 @@ export default function ServiceDetailPage() {
                 </>
               )}
 
-              <div className="mt-6 pt-6 border-t border-zinc-700">
+              <div className="mt-6 pt-6 border-t border-white/[0.08]">
                 <div className="flex items-center gap-2 text-sm text-zinc-400 mb-2">
                   <Shield className="w-4 h-4 text-green-400" />
                   <span>Secure payment</span>
@@ -383,7 +383,7 @@ export default function ServiceDetailPage() {
 
             {/* Booster Card */}
             {service.booster && (
-              <div className="bg-zinc-900/50 rounded-2xl border border-zinc-700/40 p-6">
+              <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-6">
                 <h3 className="font-semibold text-white mb-4">About the Booster</h3>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-xl">

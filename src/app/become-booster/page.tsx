@@ -9,7 +9,7 @@ export default function BecomeBoosterPage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Sell on BoostMarket</h1>
@@ -26,14 +26,14 @@ export default function BecomeBoosterPage() {
               <h2 className="text-lg font-semibold text-white mb-3">How it works for sellers</h2>
               <div className="space-y-4">
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
                   <div>
                     <span className="text-white font-medium">Create a free account.</span>{" "}
                     Takes under a minute. No approval process or upfront fees.
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
                   <div>
                     <span className="text-white font-medium">List your services.</span>{" "}
                     Pick a game, describe what you offer (rank boost, coaching, achievements),
@@ -41,7 +41,7 @@ export default function BecomeBoosterPage() {
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
                   <div>
                     <span className="text-white font-medium">Accept orders and deliver.</span>{" "}
                     When someone buys your service, you get notified. Chat with the buyer,
@@ -96,7 +96,7 @@ export default function BecomeBoosterPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-zinc-800/60">
+          <div className="mt-12 pt-8 border-t border-white/[0.06]">
             <Link href={user ? "/create-offer" : "/register"}>
               <Button size="lg">
                 {user ? "Create Your First Listing" : "Create an Account"}

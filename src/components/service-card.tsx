@@ -3,19 +3,19 @@ import { Clock, Star, Tag } from "lucide-react";
 import { Service, GAME_NAMES, GameCategory } from "@/types";
 
 export default function ServiceCard({ service }: { service: Service }) {
-  // Game-specific muted background colors
+  // Game-specific gradient backgrounds
   const gameBgs: Record<string, string> = {
-    LEAGUE_OF_LEGENDS: "bg-amber-900/30",
-    VALORANT: "bg-red-900/30",
-    CSGO: "bg-orange-900/30",
-    DOTA2: "bg-rose-900/30",
-    OVERWATCH: "bg-orange-800/30",
-    APEX_LEGENDS: "bg-red-800/30",
-    FORTNITE: "bg-blue-900/30",
-    ROCKET_LEAGUE: "bg-cyan-900/30",
-    RAINBOW_SIX: "bg-zinc-700/30",
-    COD_WARZONE: "bg-green-900/30",
-    OTHER: "bg-violet-900/30",
+    LEAGUE_OF_LEGENDS: "from-amber-600/20 to-amber-950/40",
+    VALORANT: "from-red-500/20 to-red-950/40",
+    CSGO: "from-orange-500/20 to-orange-950/40",
+    DOTA2: "from-rose-500/20 to-rose-950/40",
+    OVERWATCH: "from-orange-400/15 to-orange-950/40",
+    APEX_LEGENDS: "from-red-500/15 to-red-950/40",
+    FORTNITE: "from-blue-500/15 to-blue-950/40",
+    ROCKET_LEAGUE: "from-cyan-500/15 to-cyan-950/40",
+    RAINBOW_SIX: "from-zinc-500/15 to-zinc-900/40",
+    COD_WARZONE: "from-green-500/15 to-green-950/40",
+    OTHER: "from-violet-500/15 to-violet-950/40",
   };
 
   const gameBg = gameBgs[service.game] || gameBgs.OTHER;
@@ -29,12 +29,12 @@ export default function ServiceCard({ service }: { service: Service }) {
 
   return (
     <Link href={`/services/${service.id}`} className="block group">
-      <div className="bg-zinc-900/60 rounded-xl border border-zinc-800/60 overflow-hidden hover:border-zinc-700 transition-colors card-hover cursor-pointer">
+      <div className="bg-white/[0.03] rounded-xl border border-white/[0.07] overflow-hidden hover:border-violet-500/25 transition-all card-hover cursor-pointer hover:shadow-lg hover:shadow-violet-600/5">
         {/* Header area */}
-        <div className={`relative h-40 ${gameBg} flex flex-col justify-between p-4`}>
+        <div className={`relative h-40 bg-gradient-to-br ${gameBg} flex flex-col justify-between p-4`}>
           {/* Game name */}
           <div className="flex items-center justify-between">
-            <span className="px-2.5 py-1 bg-black/30 backdrop-blur-sm rounded-md text-xs font-medium text-zinc-200">
+            <span className="px-2.5 py-1 bg-black/40 backdrop-blur-md rounded-md text-xs font-medium text-zinc-200">
               {gameName}
             </span>
             {service.featured && (
@@ -58,8 +58,8 @@ export default function ServiceCard({ service }: { service: Service }) {
           <p className="text-sm text-zinc-500 mb-3 line-clamp-2">{service.description}</p>
           
           {/* Booster */}
-          <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-zinc-800/60">
-            <div className="w-8 h-8 bg-violet-600/20 rounded-full flex items-center justify-center text-violet-400 font-medium text-xs">
+          <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-white/[0.06]">
+            <div className="w-8 h-8 bg-violet-500/15 border border-violet-500/20 rounded-full flex items-center justify-center text-violet-400 font-medium text-xs">
               {service.booster?.name?.charAt(0) || "B"}
             </div>
             <div className="flex-1 min-w-0">
@@ -82,7 +82,7 @@ export default function ServiceCard({ service }: { service: Service }) {
               {service.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-zinc-800/60 text-zinc-500 rounded text-xs"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/[0.05] text-zinc-400 rounded text-xs"
                 >
                   <Tag className="w-2.5 h-2.5" />
                   {tag}

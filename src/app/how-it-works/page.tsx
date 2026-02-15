@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">How It Works</h1>
@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
             </div>
 
             {/* FAQ */}
-            <div className="pt-6 border-t border-zinc-800/60 space-y-6">
+            <div className="pt-6 border-t border-white/[0.06] space-y-6">
               <h2 className="text-lg font-semibold text-white">Common questions</h2>
 
               <div>
@@ -109,7 +109,7 @@ export default function HowItWorksPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-zinc-800/60">
+          <div className="mt-12 pt-8 border-t border-white/[0.06]">
             <Link href="/services">
               <Button>Browse Services</Button>
             </Link>

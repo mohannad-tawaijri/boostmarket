@@ -124,7 +124,7 @@ export default function CreateOfferPage() {
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-zinc-800/40 rounded-2xl border border-zinc-700/40 shadow-2xl overflow-hidden">
+        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden">
           <div className="bg-violet-600 px-8 py-6">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -151,7 +151,7 @@ export default function CreateOfferPage() {
                 onChange={handleChange}
                 required
                 placeholder="e.g., League of Legends Rank Boost from Silver to Gold"
-                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
@@ -168,7 +168,7 @@ export default function CreateOfferPage() {
                   value={formData.game}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zinc-800">Select a game</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
@@ -190,7 +190,7 @@ export default function CreateOfferPage() {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zinc-800">Select a category</option>
                   {Object.entries(CATEGORY_NAMES).map(([key, name]) => (
@@ -214,7 +214,7 @@ export default function CreateOfferPage() {
                 value={formData.gameDetails}
                 onChange={handleChange}
                 placeholder="e.g., EUW Server, Any Role, Diamond+ Experience"
-                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
@@ -231,7 +231,7 @@ export default function CreateOfferPage() {
                 required
                 rows={5}
                 placeholder="Describe your service in detail. What's included? What are the requirements? What makes your service unique?"
-                className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
+                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
               />
             </div>
 
@@ -272,7 +272,7 @@ export default function CreateOfferPage() {
                   onKeyDown={handleTagKeyDown}
                   placeholder="Type a tag and press Enter"
                   disabled={tags.length >= 6}
-                  className="flex-1 bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50"
+                  className="flex-1 bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50"
                 />
                 <Button
                   type="button"
@@ -295,7 +295,7 @@ export default function CreateOfferPage() {
                         key={tag}
                         type="button"
                         onClick={() => addTag(tag)}
-                        className="px-3 py-1 bg-slate-700/50 border border-zinc-700 text-zinc-400 rounded-full text-xs hover:border-indigo-500 hover:text-violet-300 transition-colors"
+                        className="px-3 py-1 bg-slate-700/50 border border-white/[0.08] text-zinc-400 rounded-full text-xs hover:border-indigo-500 hover:text-violet-300 transition-colors"
                       >
                         + {tag}
                       </button>
@@ -323,7 +323,7 @@ export default function CreateOfferPage() {
                     min="1"
                     step="0.01"
                     placeholder="29.99"
-                    className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl pl-8 pr-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl pl-8 pr-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                 </div>
               </div>
@@ -340,13 +340,13 @@ export default function CreateOfferPage() {
                   onChange={handleChange}
                   required
                   placeholder="e.g., 2-3 days"
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex gap-4 pt-6 border-t border-zinc-700">
+            <div className="flex gap-4 pt-6 border-t border-white/[0.08]">
               <Button
                 type="submit"
                 disabled={loading}
@@ -370,7 +370,7 @@ export default function CreateOfferPage() {
                 variant="outline"
                 onClick={() => router.back()}
                 disabled={loading}
-                className="px-8 border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
+                className="px-8 border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
                 size="lg"
               >
                 Cancel
@@ -396,7 +396,7 @@ export default function CreateOfferPage() {
               { icon: "📋", text: "Specify any requirements from the buyer" },
               { icon: "🏆", text: "Highlight your experience and success rate" },
             ].map((tip, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-zinc-800/40 rounded-xl border border-zinc-700/40">
+              <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl border border-white/[0.08]">
                 <span className="text-xl">{tip.icon}</span>
                 <span className="text-zinc-300 text-sm">{tip.text}</span>
               </div>

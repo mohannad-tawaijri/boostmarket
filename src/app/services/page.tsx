@@ -83,7 +83,7 @@ function ServicesContent() {
   });
 
   return (
-    <div className="min-h-screen bg-[#111114]">
+    <div className="min-h-screen bg-transparent">
       {/* Hero Section */}
       <section className="relative py-16 overflow-hidden">
         {/* Background effects */}
@@ -115,7 +115,7 @@ function ServicesContent() {
                 placeholder="Search services, games, boosters..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-zinc-800/60 border border-zinc-700 rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                className="w-full pl-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
               />
             </div>
           </div>
@@ -126,7 +126,7 @@ function ServicesContent() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <aside className="lg:w-72 flex-shrink-0">
-            <div className="bg-zinc-800/40 rounded-2xl border border-zinc-700/40 p-6 sticky top-24">
+            <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] p-6 sticky top-24">
               <h3 className="font-semibold text-lg text-white mb-6 flex items-center gap-2">
                 <SlidersHorizontal className="w-5 h-5 text-violet-400" />
                 Filters
@@ -141,7 +141,7 @@ function ServicesContent() {
                 <select
                   value={selectedGame}
                   onChange={(e) => setSelectedGame(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zinc-800">All Games</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
@@ -161,7 +161,7 @@ function ServicesContent() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value} className="bg-zinc-800">
@@ -186,7 +186,7 @@ function ServicesContent() {
                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                           selectedTags.includes(tag)
                             ? "bg-indigo-500 text-white border border-indigo-400"
-                            : "bg-slate-700/50 text-zinc-400 border border-zinc-700 hover:border-zinc-700 hover:text-zinc-300"
+                            : "bg-slate-700/50 text-zinc-400 border border-white/[0.08] hover:border-white/[0.08] hover:text-zinc-300"
                         }`}
                       >
                         {tag}
@@ -204,9 +204,9 @@ function ServicesContent() {
                 </div>
               )}
 
-              <div className="pt-4 border-t border-zinc-700">
+              <div className="pt-4 border-t border-white/[0.08]">
                 <Link href="/favorites">
-                  <Button variant="outline" className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
+                  <Button variant="outline" className="w-full border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
                     <Heart className="w-4 h-4 mr-2 text-pink-400" />
                     My Favorites
                   </Button>
@@ -229,7 +229,7 @@ function ServicesContent() {
                 <p className="mt-6 text-zinc-400">Loading amazing offers...</p>
               </div>
             ) : filteredServices.length === 0 ? (
-              <div className="text-center py-20 bg-zinc-800/20 rounded-2xl border border-zinc-700/40">
+              <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-white/[0.08]">
                 <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
                   <Search className="w-10 h-10 text-zinc-500" />
                 </div>
@@ -260,7 +260,7 @@ function ServicesContent() {
 
 function ServicesLoading() {
   return (
-    <div className="min-h-screen bg-[#111114] flex items-center justify-center">
+    <div className="min-h-screen bg-transparent flex items-center justify-center">
       <div className="text-center">
         <div className="inline-block w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
         <p className="mt-6 text-zinc-400">Loading services...</p>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CookiesPage() {
   return (
-    <div className="min-h-screen bg-[#111114] py-16">
+    <div className="min-h-screen bg-transparent py-16">
       <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
@@ -26,17 +26,17 @@ export default function CookiesPage() {
           <div>
             <h2 className="text-lg font-semibold text-white mb-3">Essential cookies</h2>
             <p className="mb-3">These keep the site working. You cannot opt out of them without the site breaking.</p>
-            <div className="rounded-lg border border-zinc-800/60 overflow-hidden">
+            <div className="rounded-lg border border-white/[0.06] overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800/60 text-zinc-300">
+                  <tr className="border-b border-white/[0.06] text-zinc-300">
                     <th className="text-left px-4 py-2.5 font-medium">Cookie</th>
                     <th className="text-left px-4 py-2.5 font-medium">Purpose</th>
                     <th className="text-left px-4 py-2.5 font-medium">Duration</th>
                   </tr>
                 </thead>
                 <tbody className="text-zinc-400">
-                  <tr className="border-b border-zinc-800/40">
+                  <tr className="border-b border-white/[0.06]/40">
                     <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">session_token</td>
                     <td className="px-4 py-2.5">Keeps you logged in</td>
                     <td className="px-4 py-2.5">7 days</td>
@@ -74,7 +74,7 @@ export default function CookiesPage() {
             </p>
           </div>
 
-          <div className="pt-4 border-t border-zinc-800/60">
+          <div className="pt-4 border-t border-white/[0.06]">
             <p className="text-zinc-500 text-sm">
               Questions? <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a>
             </p>

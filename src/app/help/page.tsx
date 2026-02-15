@@ -44,7 +44,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-zinc-800/60">
+    <div className="border-b border-white/[0.06]">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-5 flex items-start justify-between text-left group"
@@ -63,7 +63,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-[#111114] py-16">
+    <div className="min-h-screen bg-transparent py-16">
       <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
@@ -81,7 +81,7 @@ export default function HelpPage() {
           ))}
         </div>
 
-        <div className="pt-6 border-t border-zinc-800/60">
+        <div className="pt-6 border-t border-white/[0.06]">
           <p className="text-zinc-400 text-[15px] mb-1">
             Did not find what you are looking for?
           </p>

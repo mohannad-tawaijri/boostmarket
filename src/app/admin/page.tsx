@@ -52,7 +52,7 @@ export default function AdminDashboard() {
 
   if (!user?.isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0c0c0f] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <Shield className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0c0f] py-8">
+    <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
           {adminStats.map((stat, index) => (
             <div
               key={index}
-              className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6 hover:border-zinc-700 transition-all"
+              className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 hover:border-white/[0.08] transition-all"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b border-zinc-800/60 pb-4">
+        <div className="flex flex-wrap gap-2 mb-6 border-b border-white/[0.06] pb-4">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Activity */}
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">Recent Activity</h2>
               {recentActivity.length === 0 ? (
                 <div className="text-center py-8">
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-4">
                   {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-zinc-800/20 rounded-lg">
+                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-white/[0.02] rounded-lg">
                       <div className={`p-2 rounded-lg ${
                         activity.status === 'success' ? 'bg-green-500/20' : 
                         activity.status === 'warning' ? 'bg-yellow-500/20' : 'bg-red-500/20'
@@ -155,12 +155,12 @@ export default function AdminDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setActiveTab('users')}
-                  className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all text-left"
+                  className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all text-left"
                 >
                   <Users className="w-8 h-8 text-blue-400 mb-2" />
                   <p className="text-white font-medium">Manage Users</p>
@@ -168,7 +168,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('chats')}
-                  className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all text-left"
+                  className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all text-left"
                 >
                   <MessageSquare className="w-8 h-8 text-purple-400 mb-2" />
                   <p className="text-white font-medium">View Chats</p>
@@ -176,7 +176,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('orders')}
-                  className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all text-left"
+                  className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all text-left"
                 >
                   <ShoppingBag className="w-8 h-8 text-green-400 mb-2" />
                   <p className="text-white font-medium">View Orders</p>
@@ -184,7 +184,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('disputes')}
-                  className="p-4 bg-zinc-800/40 rounded-lg hover:bg-zinc-800 transition-all text-left"
+                  className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all text-left"
                 >
                   <AlertTriangle className="w-8 h-8 text-yellow-400 mb-2" />
                   <p className="text-white font-medium">Disputes</p>
@@ -196,14 +196,14 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'users' && (
-          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">All Users</h2>
               <div className="flex gap-2">
                 <input
                   type="text"
                   placeholder="Search users..."
-                  className="bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
               </div>
             </div>
@@ -216,10 +216,10 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'orders' && (
-          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">All Orders</h2>
-              <select className="bg-zinc-800/40 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
+              <select className="bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
                 <option value="all">All Status</option>
                 <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'chats' && (
-          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">All Conversations</h2>
               <p className="text-zinc-400 text-sm">Monitor all user conversations for safety</p>
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'disputes' && (
-          <div className="bg-zinc-900/50 border border-zinc-800/60 rounded-xl p-6">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">Disputes & Reports</h2>
               <p className="text-zinc-400 text-sm">Handle user complaints and order disputes</p>

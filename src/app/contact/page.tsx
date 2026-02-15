@@ -20,7 +20,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111114] py-16">
+    <div className="min-h-screen bg-transparent py-16">
       <div className="container mx-auto px-4 max-w-2xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
@@ -46,7 +46,7 @@ export default function ContactPage() {
         </div>
 
         {submitted ? (
-          <div className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-8 text-center">
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-8 text-center">
             <h2 className="text-xl font-semibold text-white mb-2">Message sent</h2>
             <p className="text-zinc-400 text-sm">We will get back to you as soon as we can.</p>
           </div>
@@ -60,7 +60,7 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                   placeholder="Your name"
                 />
               </div>
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                   placeholder="you@email.com"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                 required
                 value={formData.subject}
                 onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                 placeholder="What is this about?"
               />
             </div>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({...formData, message: e.target.value})}
-                className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors resize-none"
+                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors resize-none"
                 placeholder="Give us the details..."
               />
             </div>

@@ -17,8 +17,8 @@ export default function Logo({ size = "md", showText = true, className = "" }: L
 
   return (
     <Link href="/" className={`flex items-center gap-2 group ${className}`}>
-      {/* Simple icon mark */}
-      <div className={`${s.icon} rounded-lg bg-violet-600 flex items-center justify-center`}>
+      {/* Icon mark with subtle glow */}
+      <div className={`${s.icon} rounded-lg bg-gradient-to-b from-violet-500 to-violet-700 flex items-center justify-center shadow-lg shadow-violet-600/25`}>
         <svg viewBox="0 0 24 24" fill="none" className="w-[60%] h-[60%] text-white">
           <path
             d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"
