@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/[0.06] mt-10 pt-6 text-xs text-center text-zinc-600">
-          <p>&copy; {new Date().getFullYear()} بوست ماركت. جميع الحقوق محفوظة.</p>
+          <p>&copy; {new Date().getFullYear()} BoostMarket. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>

@@ -17,8 +17,8 @@ export default function Home() {
             </p>
             
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] tracking-tight">
-              رتبتك. <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">خبراؤنا.</span>
+              ارفع مستواك <br className="hidden sm:block" />
+              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">واترك الباقي علينا</span>
             </h1>
             
             <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed">
@@ -61,7 +61,7 @@ export default function Home() {
       <section className="py-20 section-alt">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center mb-14">
-            <h2 className="text-3xl font-bold text-white mb-3">لماذا يختار الناس بوست ماركت</h2>
+            <h2 className="text-3xl font-bold text-white mb-3">لماذا يختار الناس BoostMarket</h2>
             <p className="text-zinc-500">ليس الأكثر بهرجة — فقط الأكثر موثوقية.</p>
           </div>
           

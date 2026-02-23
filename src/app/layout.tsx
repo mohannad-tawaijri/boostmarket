@@ -10,7 +10,7 @@ import { ToastContainer } from "@/components/toast-notification";
 const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "500", "600", "700", "800"] });
 
 export const metadata: Metadata = {
-  title: "بوست ماركت — تعزيز ألعابك باحترافية",
+  title: "BoostMarket — تعزيز ألعابك باحترافية",
   description: "سوق يجمع اللاعبين مع بوسترز موثوقين لرفع رانكك — بسرعة وأمان وشفافية.",
 };
 
