@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function TermsPage() {
@@ -10,7 +10,7 @@ export default function TermsPage() {
       <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
-            <ArrowLeft className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-4 h-4 ms-2" />
             العودة للرئيسية
           </Button>
         </Link>

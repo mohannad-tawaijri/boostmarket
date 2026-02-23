@@ -100,7 +100,7 @@ export default function BecomeBoosterPage() {
             <Link href={user ? "/create-offer" : "/register"}>
               <Button size="lg">
                 {user ? "أنشئ إعلانك الأول" : "أنشئ حساباً"}
-                <ArrowRight className="w-4 h-4 mr-2" />
+                <ArrowRight className="w-4 h-4 me-2" />
               </Button>
             </Link>
           </div>

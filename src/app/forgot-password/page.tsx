@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, ArrowLeft, Send } from "lucide-react";
+import { Mail, ArrowRight, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
 
               <div className="text-center">
                 <Link href="/login" className="text-violet-400 hover:text-violet-300 text-sm flex items-center justify-center gap-2">
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" />
                   العودة لتسجيل الدخول
                 </Link>
               </div>

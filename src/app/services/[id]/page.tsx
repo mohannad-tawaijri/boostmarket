@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Clock, Heart, MessageCircle, Shield, ArrowLeft, CheckCircle, Gamepad2, Star, Tag } from "lucide-react";
+import { Clock, Heart, MessageCircle, Shield, ArrowRight, CheckCircle, Gamepad2, Star, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory, Review } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
@@ -174,7 +174,7 @@ export default function ServiceDetailPage() {
             onClick={() => router.back()}
             className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-4"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5" />
             العودة للخدمات
           </button>
           
@@ -335,10 +335,11 @@ export default function ServiceDetailPage() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-6">
             {/* Order Card */}
-            <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-6 sticky top-24 mb-6">
+            <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-6">
               <div className="text-center mb-6">
-                <p className="text-zinc-400 text-sm mb-1">يبدأ من</p>
+                <p className="text-zinc-400 text-sm mb-1">من</p>
                 <div className="text-4xl font-bold text-violet-400 mb-2">
                   ${service.price}
                 </div>
@@ -359,7 +360,7 @@ export default function ServiceDetailPage() {
                     size="lg"
                     onClick={handleContactBooster}
                   >
-                    <MessageCircle className="w-5 h-5 mr-2" />
+                    <MessageCircle className="w-5 h-5 me-2" />
                     اطلب عرض خاص
                   </Button>
 
@@ -399,6 +400,7 @@ export default function ServiceDetailPage() {
                 )}
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>

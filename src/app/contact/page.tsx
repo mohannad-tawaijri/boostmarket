@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ export default function ContactPage() {
       <div className="container mx-auto px-4 max-w-2xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
-            <ArrowLeft className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-4 h-4 ms-2" />
             العودة للرئيسية
           </Button>
         </Link>

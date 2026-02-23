@@ -98,7 +98,7 @@ export default function FavoritesPage() {
               ابدأ بإضافة خدمات إلى مفضلاتك لتراها هنا
             </p>
             <Button onClick={() => router.push("/services")}>
-              <Sparkles className="w-4 h-4 ml-2" />
+              <Sparkles className="w-4 h-4 ms-2" />
               تصفح الخدمات
             </Button>
           </div>

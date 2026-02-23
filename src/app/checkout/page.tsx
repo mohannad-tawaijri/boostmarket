@@ -8,7 +8,7 @@ import {
   Lock, 
   Shield, 
   Check, 
-  ArrowLeft,
+  ArrowRight,
   Gamepad2
 } from 'lucide-react';
 
@@ -41,7 +41,7 @@ export default function CheckoutPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link href="/services" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" />
           العودة للخدمات
         </Link>
 

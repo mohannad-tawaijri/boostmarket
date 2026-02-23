@@ -9,7 +9,7 @@ import { API_URL } from '@/lib/config';
 import { 
   MessageSquare, 
   Send, 
-  ArrowLeft,
+  ArrowRight,
   Loader2,
   User as UserIcon,
   Search,
@@ -509,7 +509,7 @@ function MessagesContent() {
           <div className="flex items-center gap-4">
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white">
-                <ArrowLeft className="w-4 h-4 me-2" />
+                <ArrowRight className="w-4 h-4 me-2" />
                 رجوع
               </Button>
             </Link>
@@ -613,7 +613,7 @@ function MessagesContent() {
                     onClick={() => setActiveConversation(null)}
                     className="md:hidden text-zinc-400 hover:text-white"
                   >
-                    <ArrowLeft className="w-5 h-5" />
+                    <ArrowRight className="w-5 h-5" />
                   </button>
                   <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center">
                     <UserIcon className="w-5 h-5 text-white" />
