@@ -63,8 +63,8 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent">
-      {/* Header Section */}
+    <div className="min-h-screen bg-transparent" dir="rtl">
+      {/* قسم الرأس */}
       <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
@@ -75,13 +75,13 @@ export default function FavoritesPage() {
           <div className="text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/20 rounded-full border border-pink-500/30 mb-4">
               <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
-              <span className="text-sm text-pink-300">Your Collection</span>
+              <span className="text-sm text-pink-300">مجموعتك</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              My <span className="text-violet-400">Favorites</span>
+              <span className="text-violet-400">المفضلة</span>
             </h1>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              All your saved boost services in one place
+              جميع خدمات التعزيز المحفوظة لديك في مكان واحد
             </p>
           </div>
         </div>
@@ -93,19 +93,19 @@ export default function FavoritesPage() {
             <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
               <Heart className="w-10 h-10 text-zinc-500" />
             </div>
-            <h2 className="text-2xl font-semibold text-white mb-2">No favorites yet</h2>
+            <h2 className="text-2xl font-semibold text-white mb-2">لا توجد مفضلات بعد</h2>
             <p className="text-zinc-400 mb-8">
-              Start adding services to your favorites to see them here
+              ابدأ بإضافة خدمات إلى مفضلاتك لتراها هنا
             </p>
             <Button onClick={() => router.push("/services")}>
-              <Sparkles className="w-4 h-4 mr-2" />
-              Browse Services
+              <Sparkles className="w-4 h-4 ml-2" />
+              تصفح الخدمات
             </Button>
           </div>
         ) : (
           <>
             <p className="text-zinc-400 mb-6">
-              <span className="text-white font-semibold">{favorites.length}</span> saved services
+              <span className="text-white font-semibold">{favorites.length}</span> خدمات محفوظة
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {favorites.map((favorite) => (
@@ -113,8 +113,8 @@ export default function FavoritesPage() {
                   <ServiceCard service={favorite.service} />
                   <button
                     onClick={() => removeFavorite(favorite.serviceId)}
-                    className="absolute top-4 right-4 p-2.5 bg-zinc-900/80 rounded-xl border border-white/[0.08] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:border-red-600"
-                    title="Remove from favorites"
+                    className="absolute top-4 left-4 p-2.5 bg-zinc-900/80 rounded-xl border border-white/[0.08] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 hover:border-red-600"
+                    title="إزالة من المفضلة"
                   >
                     <Trash2 className="w-4 h-4 text-white" />
                   </button>

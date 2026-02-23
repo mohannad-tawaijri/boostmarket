@@ -100,7 +100,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
   };
 
   return (
-    <div className="fixed bottom-4 right-4 w-96 bg-[#141418] rounded-xl shadow-2xl shadow-black/40 z-50 flex flex-col max-h-[600px] border border-white/[0.06]">
+    <div className="fixed bottom-4 start-4 w-96 bg-[#141418] rounded-xl shadow-2xl shadow-black/40 z-50 flex flex-col max-h-[600px] border border-white/[0.06]">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/[0.06] rounded-t-xl">
         <div className="flex items-center gap-3">
@@ -109,7 +109,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
           </div>
           <div>
             <p className="font-medium text-white text-sm">{otherUser.name}</p>
-            <p className="text-xs text-zinc-500">Online</p>
+            <p className="text-xs text-zinc-500">متصل</p>
           </div>
         </div>
         <button onClick={onClose} className="hover:bg-white/[0.06] p-1.5 rounded-md transition-colors">
@@ -125,8 +125,8 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center py-8 text-zinc-500">
-            <p className="text-sm">No messages yet.</p>
-            <p className="text-xs mt-1 text-zinc-600">Start the conversation!</p>
+            <p className="text-sm">لا توجد رسائل بعد.</p>
+            <p className="text-xs mt-1 text-zinc-600">ابدأ المحادثة!</p>
           </div>
         ) : (
           messages.map((message) => {
@@ -170,7 +170,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type a message..."
+            placeholder="اكتب رسالة..."
             className="flex-1 bg-white/[0.06] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
           />
           <Button onClick={sendMessage} disabled={!newMessage.trim()} size="icon">

@@ -39,14 +39,14 @@ export default function ServiceCard({ service }: { service: Service }) {
             </span>
             {service.featured && (
               <span className="px-2.5 py-1 bg-amber-500/20 border border-amber-500/30 rounded-md text-xs font-medium text-amber-300">
-                Featured
+                مميز
               </span>
             )}
           </div>
           
           {/* Price */}
-          <div className="self-end">
-            <span className="text-xs text-zinc-400">from </span>
+          <div className="self-start">
+            <span className="text-xs text-zinc-400">يبدأ من </span>
             <span className="text-xl font-bold text-white">${service.price}</span>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function ServiceCard({ service }: { service: Service }) {
                   <span className="text-xs text-zinc-600">({reviewCount})</span>
                 </div>
               ) : (
-                <p className="text-xs text-zinc-600">New seller</p>
+                <p className="text-xs text-zinc-600">بائع جديد</p>
               )}
             </div>
           </div>
@@ -98,11 +98,11 @@ export default function ServiceCard({ service }: { service: Service }) {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center text-sm text-zinc-500">
-              <Clock className="w-3.5 h-3.5 mr-1 text-zinc-600" />
+              <Clock className="w-3.5 h-3.5 me-1 text-zinc-600" />
               {service.deliveryTime}
             </div>
             <span className="text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors">
-              View →
+              عرض ←
             </span>
           </div>
         </div>

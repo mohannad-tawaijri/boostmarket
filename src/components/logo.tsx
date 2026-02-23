@@ -29,7 +29,7 @@ export default function Logo({ size = "md", showText = true, className = "" }: L
 
       {showText && (
         <span className={`${s.text} font-bold tracking-tight text-white`}>
-          Boost<span className="text-violet-400">Market</span>
+          بوست<span className="text-violet-400">ماركت</span>
         </span>
       )}
     </Link>

@@ -34,20 +34,20 @@ export default function Navbar() {
           <Logo size="sm" />
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center gap-6">
             <Link href="/services" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              Browse Offers
+              تصفح العروض
             </Link>
             <Link href="/create-offer" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              Create Offer
+              إنشاء عرض
             </Link>
             <Link href="/how-it-works" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              How it Works
+              كيف يعمل
             </Link>
           </div>
 
           {/* Search & User Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center gap-4">
             {/* Search */}
             {showSearch ? (
               <form onSubmit={handleSearch} className="flex items-center">
@@ -56,16 +56,16 @@ export default function Navbar() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search services..."
+                    placeholder="ابحث عن الخدمات..."
                     autoFocus
-                    className="w-64 bg-white/[0.05] border border-white/[0.08] rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
+                    className="w-64 bg-white/[0.05] border border-white/[0.08] rounded-lg pe-10 ps-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
                   />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                  <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>
                 <button
                   type="button"
                   onClick={() => { setShowSearch(false); setSearchQuery(""); }}
-                  className="ml-2 p-2 hover:bg-white/[0.06] rounded-full transition-colors"
+                  className="me-2 p-2 hover:bg-white/[0.06] rounded-full transition-colors"
                 >
                   <X className="w-4 h-4 text-zinc-400" />
                 </button>
@@ -83,14 +83,14 @@ export default function Navbar() {
               <>
                 <Link href="/dashboard">
                   <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white">
-                    Dashboard
+                    لوحة التحكم
                   </Button>
                 </Link>
                 <Link href="/messages">
-                  <button className="p-2 hover:bg-white/[0.06] rounded-full relative transition-colors" title="Messages">
+                  <button className="p-2 hover:bg-white/[0.06] rounded-full relative transition-colors" title="الرسائل">
                     <MessageSquare className="w-5 h-5 text-zinc-400" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                      <span className="absolute -top-1 -start-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
@@ -101,10 +101,10 @@ export default function Navbar() {
                     <ShoppingCart className="w-5 h-5 text-zinc-400" />
                   </button>
                 </Link>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   {user?.isAdmin && (
                     <Link href="/admin">
-                      <button className="p-2 hover:bg-red-900/30 rounded-full transition-colors" title="Admin Dashboard">
+                      <button className="p-2 hover:bg-red-900/30 rounded-full transition-colors" title="لوحة الإدارة">
                         <Shield className="w-5 h-5 text-red-400" />
                       </button>
                     </Link>
@@ -115,7 +115,7 @@ export default function Navbar() {
                     </button>
                   </Link>
                   <Button onClick={logout} variant="ghost" size="sm" className="text-zinc-400 hover:text-white">
-                    Logout
+                    تسجيل خروج
                   </Button>
                 </div>
               </>
@@ -123,12 +123,12 @@ export default function Navbar() {
               <>
                 <Link href="/login">
                   <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white">
-                    Sign In
+                    تسجيل دخول
                   </Button>
                 </Link>
                 <Link href="/register">
                   <Button size="sm">
-                    Sign Up
+                    إنشاء حساب
                   </Button>
                 </Link>
               </>
@@ -159,10 +159,10 @@ export default function Navbar() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search services..."
-                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+                    placeholder="ابحث عن الخدمات..."
+                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
                   />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                  <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>
               </form>
               
@@ -171,28 +171,28 @@ export default function Navbar() {
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Browse Offers
+                تصفح العروض
               </Link>
               <Link
                 href="/create-offer"
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Create Offer
+                إنشاء عرض
               </Link>
               <Link
                 href="/how-it-works"
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                How it Works
+                كيف يعمل
               </Link>
               <Link
                 href="/about"
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                About
+                من نحن
               </Link>
               {user ? (
                 <>
@@ -203,7 +203,7 @@ export default function Navbar() {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <Shield className="w-4 h-4" />
-                      Admin Panel
+                      لوحة الإدارة
                     </Link>
                   )}
                   <Link
@@ -211,14 +211,14 @@ export default function Navbar() {
                     className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Dashboard
+                    لوحة التحكم
                   </Link>
                   <Link
                     href="/messages"
                     className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors flex items-center justify-between"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <span>Messages</span>
+                    <span>الرسائل</span>
                     {unreadCount > 0 && (
                       <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                         {unreadCount > 9 ? '9+' : unreadCount}
@@ -230,16 +230,16 @@ export default function Navbar() {
                     className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Orders
+                    الطلبات
                   </Link>
                   <button
                     onClick={() => {
                       logout();
                       setIsMenuOpen(false);
                     }}
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors text-left"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors text-right"
                   >
-                    Logout
+                    تسجيل خروج
                   </button>
                 </>
               ) : (
@@ -249,14 +249,14 @@ export default function Navbar() {
                     className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sign In
+                    تسجيل دخول
                   </Link>
                   <Link
                     href="/register"
                     className="bg-violet-600 text-white px-3 py-2 rounded-lg text-center font-medium hover:bg-violet-500 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sign Up
+                    إنشاء حساب
                   </Link>
                 </>
               )}

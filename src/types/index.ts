@@ -149,25 +149,25 @@ export enum GameCategory {
 }
 
 export const GAME_NAMES: Record<GameCategory, string> = {
-  [GameCategory.LEAGUE_OF_LEGENDS]: 'League of Legends',
-  [GameCategory.VALORANT]: 'Valorant',
-  [GameCategory.CSGO]: 'CS:GO',
-  [GameCategory.DOTA2]: 'Dota 2',
-  [GameCategory.OVERWATCH]: 'Overwatch',
-  [GameCategory.APEX_LEGENDS]: 'Apex Legends',
-  [GameCategory.FORTNITE]: 'Fortnite',
-  [GameCategory.ROCKET_LEAGUE]: 'Rocket League',
-  [GameCategory.RAINBOW_SIX]: 'Rainbow Six Siege',
-  [GameCategory.COD_WARZONE]: 'Call of Duty: Warzone',
-  [GameCategory.OTHER]: 'Other',
+  [GameCategory.LEAGUE_OF_LEGENDS]: 'ليق أوف ليجندز',
+  [GameCategory.VALORANT]: 'فالورانت',
+  [GameCategory.CSGO]: 'كاونتر سترايك 2',
+  [GameCategory.DOTA2]: 'دوتا 2',
+  [GameCategory.OVERWATCH]: 'أوفرواتش 2',
+  [GameCategory.APEX_LEGENDS]: 'أبيكس ليجندز',
+  [GameCategory.FORTNITE]: 'فورتنايت',
+  [GameCategory.ROCKET_LEAGUE]: 'روكيت ليق',
+  [GameCategory.RAINBOW_SIX]: 'رينبو سيكس سيج',
+  [GameCategory.COD_WARZONE]: 'كول أوف ديوتي: وورزون',
+  [GameCategory.OTHER]: 'أخرى',
 };
 
 export const CATEGORY_NAMES: Record<ServiceCategory, string> = {
-  RANK_BOOST: 'Rank Boost',
-  COACHING: 'Coaching',
-  ACCOUNT_LEVELING: 'Account Leveling',
-  WIN_BOOST: 'Win Boost',
-  PLACEMENT_MATCHES: 'Placement Matches',
-  DUOQ: 'Duo Queue',
-  OTHER: 'Other',
+  RANK_BOOST: 'تعزيز الرتبة',
+  COACHING: 'تدريب',
+  ACCOUNT_LEVELING: 'ترقية الحساب',
+  WIN_BOOST: 'تعزيز الانتصارات',
+  PLACEMENT_MATCHES: 'مباريات التصنيف',
+  DUOQ: 'لعب ثنائي',
+  OTHER: 'أخرى',
 };

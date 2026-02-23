@@ -10,9 +10,9 @@ import { API_URL } from "@/lib/config";
 
 // Popular tags suggestions
 const SUGGESTED_TAGS = [
-  "Fast Delivery", "24/7 Available", "Stream Friendly", "VPN Protected",
-  "Duo Queue", "Solo Only", "Weekend Available", "Experienced",
-  "Top Ranked", "Guaranteed", "Flexible Hours", "English Speaking"
+  "توصيل سريع", "متاح 24/7", "صديق للبث", "محمي بـ VPN",
+  "ثنائي", "فردي فقط", "متاح في عطلة نهاية الأسبوع", "خبير",
+  "ترتيب عالي", "مضمون", "ساعات مرنة", "يتحدث العربية"
 ];
 
 export default function CreateOfferPage() {
@@ -80,11 +80,11 @@ export default function CreateOfferPage() {
         const service = await response.json();
         router.push(`/services/${service.id}`);
       } else {
-        alert("Failed to create offer. Please try again.");
+        alert("فشل في إنشاء العرض. يرجى المحاولة مرة أخرى.");
       }
     } catch (error) {
       console.error("Error creating offer:", error);
-      alert("An error occurred. Please try again.");
+      alert("حدث خطأ. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -113,13 +113,13 @@ export default function CreateOfferPage() {
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 rounded-full border border-violet-500/20 mb-4">
             <Sparkles className="w-4 h-4 text-violet-400" />
-            <span className="text-sm text-violet-300">Create Your Offer</span>
+            <span className="text-sm text-violet-300">أنشئ عرضك</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Share Your <span className="text-violet-400">Gaming Skills</span>
+            شارك <span className="text-violet-400">مهاراتك في الألعاب</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            Create a compelling offer to showcase your boosting expertise and start earning
+            أنشئ عرضًا مميزًا لعرض خبرتك في التعزيز وابدأ بالكسب
           </p>
         </div>
 
@@ -131,8 +131,8 @@ export default function CreateOfferPage() {
                 <Plus className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">New Boost Offer</h2>
-                <p className="text-indigo-200 text-sm">Fill in the details below</p>
+                <h2 className="text-xl font-bold text-white">عرض تعزيز جديد</h2>
+                <p className="text-indigo-200 text-sm">املأ التفاصيل أدناه</p>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <FileText className="w-4 h-4 text-violet-400" />
-                Service Title *
+                عنوان الخدمة *
               </label>
               <input
                 type="text"
@@ -150,7 +150,7 @@ export default function CreateOfferPage() {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                placeholder="e.g., League of Legends Rank Boost from Silver to Gold"
+                placeholder="مثال: تعزيز رتبة ليق أوف ليجندز من الفضي إلى الذهبي"
                 className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
@@ -161,7 +161,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
-                  Game *
+                  اللعبة *
                 </label>
                 <select
                   name="game"
@@ -170,7 +170,7 @@ export default function CreateOfferPage() {
                   required
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-zinc-800">Select a game</option>
+                  <option value="" className="bg-zinc-800">اختر لعبة</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
                     <option key={key} value={key} className="bg-zinc-800">
                       {name}
@@ -183,7 +183,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Tag className="w-4 h-4 text-pink-400" />
-                  Service Category *
+                  فئة الخدمة *
                 </label>
                 <select
                   name="category"
@@ -192,7 +192,7 @@ export default function CreateOfferPage() {
                   required
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-zinc-800">Select a category</option>
+                  <option value="" className="bg-zinc-800">اختر فئة</option>
                   {Object.entries(CATEGORY_NAMES).map(([key, name]) => (
                     <option key={key} value={key} className="bg-zinc-800">
                       {name}
@@ -206,14 +206,14 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <Sparkles className="w-4 h-4 text-yellow-400" />
-                Game Details (Optional)
+                تفاصيل اللعبة (اختياري)
               </label>
               <input
                 type="text"
                 name="gameDetails"
                 value={formData.gameDetails}
                 onChange={handleChange}
-                placeholder="e.g., EUW Server, Any Role, Diamond+ Experience"
+                placeholder="مثال: سيرفر EUW، أي دور، خبرة دايموند+"
                 className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
@@ -222,7 +222,7 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <FileText className="w-4 h-4 text-cyan-400" />
-                Description *
+                الوصف *
               </label>
               <textarea
                 name="description"
@@ -230,7 +230,7 @@ export default function CreateOfferPage() {
                 onChange={handleChange}
                 required
                 rows={5}
-                placeholder="Describe your service in detail. What's included? What are the requirements? What makes your service unique?"
+                placeholder="صف خدمتك بالتفصيل. ما الذي يتضمنه؟ ما هي المتطلبات؟ ما الذي يميز خدمتك؟"
                 className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
               />
             </div>
@@ -239,7 +239,7 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <Tag className="w-4 h-4 text-violet-400" />
-                Tags (up to 6)
+                الوسوم (حتى 6)
               </label>
               
               {/* Selected Tags */}
@@ -270,7 +270,7 @@ export default function CreateOfferPage() {
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleTagKeyDown}
-                  placeholder="Type a tag and press Enter"
+                  placeholder="اكتب وسمًا واضغط Enter"
                   disabled={tags.length >= 6}
                   className="flex-1 bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50"
                 />
@@ -281,14 +281,14 @@ export default function CreateOfferPage() {
                   variant="outline"
                   className="px-4"
                 >
-                  Add
+                  إضافة
                 </Button>
               </div>
 
               {/* Suggested Tags */}
               {tags.length < 6 && (
                 <div className="mt-3">
-                  <p className="text-xs text-zinc-500 mb-2">Suggested tags:</p>
+                  <p className="text-xs text-zinc-500 mb-2">وسوم مقترحة:</p>
                   <div className="flex flex-wrap gap-2">
                     {SUGGESTED_TAGS.filter(t => !tags.includes(t)).slice(0, 8).map((tag) => (
                       <button
@@ -310,10 +310,10 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <DollarSign className="w-4 h-4 text-green-400" />
-                  Price (USD) *
+                  السعر (دولار) *
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-green-400 font-semibold">$</span>
+                  <span className="absolute start-4 top-1/2 -translate-y-1/2 text-green-400 font-semibold">$</span>
                   <input
                     type="number"
                     name="price"
@@ -323,7 +323,7 @@ export default function CreateOfferPage() {
                     min="1"
                     step="0.01"
                     placeholder="29.99"
-                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl pl-8 pr-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl ps-8 pe-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                 </div>
               </div>
@@ -331,7 +331,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Clock className="w-4 h-4 text-orange-400" />
-                  Delivery Time *
+                  مدة التسليم *
                 </label>
                 <input
                   type="text"
@@ -339,7 +339,7 @@ export default function CreateOfferPage() {
                   value={formData.deliveryTime}
                   onChange={handleChange}
                   required
-                  placeholder="e.g., 2-3 days"
+                  placeholder="مثال: 2-3 أيام"
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
@@ -356,12 +356,12 @@ export default function CreateOfferPage() {
                 {loading ? (
                   <span className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Creating...
+                    جاري الإنشاء...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5" />
-                    Create Offer
+                    إنشاء عرض
                   </span>
                 )}
               </Button>
@@ -373,7 +373,7 @@ export default function CreateOfferPage() {
                 className="px-8 border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
                 size="lg"
               >
-                Cancel
+                إلغاء
               </Button>
             </div>
           </form>
@@ -385,16 +385,16 @@ export default function CreateOfferPage() {
             <div className="p-2 bg-violet-600 rounded-lg">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xl text-white">Pro Tips for Success</h3>
+            <h3 className="font-bold text-xl text-white">نصائح احترافية للنجاح</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { icon: "✨", text: "Write a clear and specific title that stands out" },
-              { icon: "📝", text: "Provide detailed description of what's included" },
-              { icon: "💰", text: "Set competitive pricing based on market rates" },
-              { icon: "⏰", text: "Be realistic with delivery times" },
-              { icon: "📋", text: "Specify any requirements from the buyer" },
-              { icon: "🏆", text: "Highlight your experience and success rate" },
+              { icon: "✨", text: "اكتب عنوانًا واضحًا ومحددًا يلفت الانتباه" },
+              { icon: "📝", text: "قدم وصفًا تفصيليًا لما يتضمنه العرض" },
+              { icon: "💰", text: "حدد أسعارًا تنافسية بناءً على أسعار السوق" },
+              { icon: "⏰", text: "كن واقعيًا في مواعيد التسليم" },
+              { icon: "📋", text: "حدد أي متطلبات من المشتري" },
+              { icon: "🏆", text: "أبرز خبرتك ومعدل نجاحك" },
             ].map((tip, index) => (
               <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl border border-white/[0.08]">
                 <span className="text-xl">{tip.icon}</span>

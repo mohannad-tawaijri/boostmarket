@@ -98,11 +98,11 @@ export default function OrdersPage() {
         fetchOrders();
       } else {
         const error = await response.json();
-        alert(error.message || 'Failed to submit review');
+        alert(error.message || 'فشل إرسال التقييم');
       }
     } catch (error) {
       console.error('Error submitting review:', error);
-      alert('Failed to submit review');
+      alert('فشل إرسال التقييم');
     } finally {
       setSubmittingReview(false);
     }
@@ -111,13 +111,13 @@ export default function OrdersPage() {
   const getStatusConfig = (status: string) => {
     switch (status) {
       case 'COMPLETED':
-        return { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-500/20', label: 'Completed' };
+        return { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-500/20', label: 'مكتمل' };
       case 'IN_PROGRESS':
-        return { icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-500/20', label: 'In Progress' };
+        return { icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-500/20', label: 'قيد التنفيذ' };
       case 'PENDING':
-        return { icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Pending' };
+        return { icon: Package, color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'قيد الانتظار' };
       case 'CANCELLED':
-        return { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/20', label: 'Cancelled' };
+        return { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/20', label: 'ملغي' };
       default:
         return { icon: Package, color: 'text-zinc-400', bg: 'bg-gray-500/20', label: status };
     }
@@ -141,12 +141,12 @@ export default function OrdersPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">My Orders</h1>
-            <p className="text-zinc-400">Orders you've placed for boosting services</p>
+            <h1 className="text-3xl font-bold text-white mb-2">طلباتي</h1>
+            <p className="text-zinc-400">الطلبات التي قدمتها لخدمات التعزيز</p>
           </div>
           <Link href="/services">
             <Button className="mt-4 md:mt-0">
-              Browse Services
+              تصفح الخدمات
             </Button>
           </Link>
         </div>
@@ -154,11 +154,11 @@ export default function OrdersPage() {
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-8">
           {[
-            { id: 'all', label: 'All Orders' },
-            { id: 'IN_PROGRESS', label: 'In Progress' },
-            { id: 'COMPLETED', label: 'Completed' },
-            { id: 'PENDING', label: 'Pending' },
-            { id: 'CANCELLED', label: 'Cancelled' },
+            { id: 'all', label: 'جميع الطلبات' },
+            { id: 'IN_PROGRESS', label: 'قيد التنفيذ' },
+            { id: 'COMPLETED', label: 'مكتمل' },
+            { id: 'PENDING', label: 'قيد الانتظار' },
+            { id: 'CANCELLED', label: 'ملغي' },
           ].map((filterOption) => (
             <button
               key={filterOption.id}
@@ -179,14 +179,14 @@ export default function OrdersPage() {
           {filteredOrders.length === 0 ? (
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
               <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">No orders found</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">لم يتم العثور على طلبات</h3>
               <p className="text-zinc-400 mb-6">
                 {filter === 'all' 
-                  ? "You haven't placed any orders yet" 
-                  : "No orders matching this filter"}
+                  ? "لم تقدم أي طلبات بعد" 
+                  : "لا توجد طلبات تطابق هذا الفلتر"}
               </p>
               <Link href="/services">
-                <Button>Browse Services</Button>
+                <Button>تصفح الخدمات</Button>
               </Link>
             </div>
           ) : (
@@ -223,7 +223,7 @@ export default function OrdersPage() {
                         {order.status === 'COMPLETED' && !order.review && (
                           <div className="hidden sm:flex items-center gap-1 text-yellow-400">
                             <Star className="w-4 h-4" />
-                            <span className="text-xs">Needs review</span>
+                            <span className="text-xs">بحاجة لتقييم</span>
                           </div>
                         )}
                         <div className="text-right hidden sm:block">
@@ -244,15 +244,15 @@ export default function OrdersPage() {
                     <div className="px-6 pb-6 border-t border-white/[0.06] pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                          <p className="text-zinc-500 text-sm mb-1">Booster</p>
-                          <p className="text-white font-medium">{order.booster?.name || 'Booster'}</p>
+                          <p className="text-zinc-500 text-sm mb-1">المعزز</p>
+                          <p className="text-white font-medium">{order.booster?.name || 'المعزز'}</p>
                         </div>
                         <div>
-                          <p className="text-zinc-500 text-sm mb-1">Order ID</p>
+                          <p className="text-zinc-500 text-sm mb-1">رقم الطلب</p>
                           <p className="text-white font-medium text-sm">{order.id}</p>
                         </div>
                         <div>
-                          <p className="text-zinc-500 text-sm mb-1">Status</p>
+                          <p className="text-zinc-500 text-sm mb-1">الحالة</p>
                           <p className={`font-medium ${statusConfig.color}`}>{statusConfig.label}</p>
                         </div>
                       </div>
@@ -261,7 +261,7 @@ export default function OrdersPage() {
                         <Link href={`/messages?userId=${order.booster?.id}&serviceId=${order.service?.id}`}>
                           <Button variant="outline" className="gap-2">
                             <MessageSquare className="w-4 h-4" />
-                            Message Booster
+                            مراسلة المعزز
                           </Button>
                         </Link>
                         {order.status === 'COMPLETED' && !order.review && (
@@ -273,20 +273,20 @@ export default function OrdersPage() {
                             className="gap-2 bg-amber-500 hover:from-yellow-400 hover:to-orange-400"
                           >
                             <Star className="w-4 h-4" />
-                            Leave Review
+                            كتابة تقييم
                           </Button>
                         )}
                         {order.review && (
                           <div className="flex items-center gap-2 px-4 py-2 bg-green-500/20 rounded-lg">
                             <CheckCircle className="w-4 h-4 text-green-400" />
                             <span className="text-green-400 text-sm font-medium">
-                              Reviewed ({order.review.rating}/5)
+                              تم التقييم ({order.review.rating}/5)
                             </span>
                           </div>
                         )}
                         <Link href={`/services/${order.service?.id}`}>
                           <Button variant="ghost" className="gap-2">
-                            View Service
+                            عرض الخدمة
                             <ArrowRight className="w-4 h-4" />
                           </Button>
                         </Link>
@@ -305,7 +305,7 @@ export default function OrdersPage() {
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-[#141418] border border-white/[0.06] rounded-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">Leave a Review</h2>
+              <h2 className="text-xl font-bold text-white">اكتب تقييماً</h2>
               <button
                 onClick={() => {
                   setReviewModalOrder(null);
@@ -319,18 +319,18 @@ export default function OrdersPage() {
             </div>
 
             <div className="mb-4">
-              <p className="text-zinc-400 text-sm mb-1">Service</p>
+              <p className="text-zinc-400 text-sm mb-1">الخدمة</p>
               <p className="text-white font-medium">{reviewModalOrder.service.title}</p>
             </div>
 
             <div className="mb-4">
-              <p className="text-zinc-400 text-sm mb-1">Booster</p>
+              <p className="text-zinc-400 text-sm mb-1">المعزز</p>
               <p className="text-white font-medium">{reviewModalOrder.booster.name}</p>
             </div>
 
             {/* Star Rating */}
             <div className="mb-6">
-              <p className="text-zinc-400 text-sm mb-3">Your Rating</p>
+              <p className="text-zinc-400 text-sm mb-3">تقييمك</p>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -349,21 +349,21 @@ export default function OrdersPage() {
                 ))}
               </div>
               <p className="text-sm text-zinc-500 mt-2">
-                {reviewRating === 1 && 'Poor'}
-                {reviewRating === 2 && 'Fair'}
-                {reviewRating === 3 && 'Good'}
-                {reviewRating === 4 && 'Very Good'}
-                {reviewRating === 5 && 'Excellent'}
+                {reviewRating === 1 && 'ضعيف'}
+                {reviewRating === 2 && 'مقبول'}
+                {reviewRating === 3 && 'جيد'}
+                {reviewRating === 4 && 'جيد جداً'}
+                {reviewRating === 5 && 'ممتاز'}
               </p>
             </div>
 
             {/* Comment */}
             <div className="mb-6">
-              <label className="text-zinc-400 text-sm mb-2 block">Comment (optional)</label>
+              <label className="text-zinc-400 text-sm mb-2 block">تعليق (اختياري)</label>
               <textarea
                 value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
-                placeholder="Share your experience with this booster..."
+                placeholder="شارك تجربتك..."
                 rows={4}
                 className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
               />
@@ -380,7 +380,7 @@ export default function OrdersPage() {
                 }}
                 className="flex-1"
               >
-                Cancel
+                إلغاء
               </Button>
               <Button
                 onClick={submitReview}
@@ -390,7 +390,7 @@ export default function OrdersPage() {
                 {submittingReview ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  'Submit Review'
+                  'إرسال التقييم'
                 )}
               </Button>
             </div>

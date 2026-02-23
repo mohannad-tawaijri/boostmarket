@@ -9,89 +9,89 @@ export default function BecomeBoosterPage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-transparent" dir="rtl">
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Sell on BoostMarket</h1>
-          <p className="text-zinc-500 text-sm mb-10">If you are good at competitive games, you can get paid for it.</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">البيع على BoostMarket</h1>
+          <p className="text-zinc-500 text-sm mb-10">إذا كنت جيداً في الألعاب التنافسية، يمكنك كسب المال من ذلك.</p>
 
           <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">
             <p>
-              BoostMarket is a marketplace. You list your services, set your own prices, and work on
-              your own schedule. We handle payments, provide a chat system, and bring in the buyers.
-              You bring the skill.
+              BoostMarket هو سوق. تعرض خدماتك، وتحدد أسعارك الخاصة، وتعمل وفق
+              جدولك الخاص. نحن نتولى المدفوعات، ونوفر نظام دردشة، ونجلب المشترين.
+              أنت تقدم المهارة.
             </p>
 
             <div>
-              <h2 className="text-lg font-semibold text-white mb-3">How it works for sellers</h2>
+              <h2 className="text-lg font-semibold text-white mb-3">كيف يعمل للبائعين</h2>
               <div className="space-y-4">
                 <div className="flex gap-4 items-start">
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
                   <div>
-                    <span className="text-white font-medium">Create a free account.</span>{" "}
-                    Takes under a minute. No approval process or upfront fees.
+                    <span className="text-white font-medium">أنشئ حساباً مجانياً.</span>{" "}
+                    يستغرق أقل من دقيقة. لا عملية موافقة ولا رسوم مقدمة.
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
                   <div>
-                    <span className="text-white font-medium">List your services.</span>{" "}
-                    Pick a game, describe what you offer (rank boost, coaching, achievements),
-                    set a price, and publish. You can create as many listings as you want.
+                    <span className="text-white font-medium">أدرج خدماتك.</span>{" "}
+                    اختر لعبة، واصف ما تقدمه (تعزيز رتبة، تدريب، إنجازات)،
+                    حدد سعراً، وانشر. يمكنك إنشاء أي عدد تريده من الإعلانات.
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
                   <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
                   <div>
-                    <span className="text-white font-medium">Accept orders and deliver.</span>{" "}
-                    When someone buys your service, you get notified. Chat with the buyer,
-                    do the work, and mark it complete. Payment releases after the buyer confirms.
+                    <span className="text-white font-medium">اقبل الطلبات وسلّم.</span>{" "}
+                    عندما يشتري شخص ما خدمتك، تحصل على إشعار. تحدث مع المشتري،
+                    أنجز العمل، وحدده كمكتمل. يتم إصدار الدفع بعد تأكيد المشتري.
                   </div>
                 </div>
               </div>
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-white mb-3">What we take</h2>
+              <h2 className="text-lg font-semibold text-white mb-3">ما نأخذه</h2>
               <p>
-                A small platform fee on each completed order. That is how we keep the lights on.
-                There are no listing fees, no monthly subscriptions, and no hidden charges.
-                You only pay when you earn.
+                رسوم منصة صغيرة على كل طلب مكتمل. هكذا نبقي الأضواء مضاءة.
+                لا رسوم إدراج، لا اشتراكات شهرية، ولا رسوم مخفية.
+                أنت تدفع فقط عندما تكسب.
               </p>
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-white mb-3">What makes sellers successful here</h2>
+              <h2 className="text-lg font-semibold text-white mb-3">ما يجعل البائعين ناجحين هنا</h2>
               <ul className="space-y-2">
                 <li className="flex gap-2">
                   <span className="text-zinc-600"></span>
-                  <span>Clear, honest descriptions of what you deliver and how long it takes</span>
+                  <span>أوصاف واضحة وصادقة لما تقدمه والمدة التي يستغرقها</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-zinc-600"></span>
-                  <span>Competitive pricing (check what others charge for similar services)</span>
+                  <span>أسعار تنافسية (تحقق مما يتقاضاه الآخرون مقابل خدمات مماثلة)</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-zinc-600"></span>
-                  <span>Fast responses to messages  buyers notice</span>
+                  <span>ردود سريعة على الرسائل — المشترون يلاحظون</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-zinc-600"></span>
-                  <span>Delivering on time or communicating early if there is a delay</span>
+                  <span>التسليم في الوقت المحدد أو التواصل مبكراً إذا كان هناك تأخير</span>
                 </li>
                 <li className="flex gap-2">
                   <span className="text-zinc-600"></span>
-                  <span>Building up reviews  your first few orders matter the most</span>
+                  <span>بناء التقييمات — طلباتك الأولى هي الأهم</span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-white mb-3">A note on expectations</h2>
+              <h2 className="text-lg font-semibold text-white mb-3">ملاحظة حول التوقعات</h2>
               <p>
-                This is not passive income. Boosting takes real time and effort. The sellers who
-                do well here treat it like a job (or at least a serious side gig). If you are
-                looking to list something and forget about it, this probably is not for you.
+                هذا ليس دخلاً سلبياً. التعزيز يتطلب وقتاً وجهداً حقيقيين. البائعون الذين
+                يبلون حسناً هنا يعاملونه كعمل (أو على الأقل كعمل جانبي جاد). إذا كنت
+                تبحث عن إدراج شيء ونسيانه، فهذا على الأرجح ليس لك.
               </p>
             </div>
           </div>
@@ -99,8 +99,8 @@ export default function BecomeBoosterPage() {
           <div className="mt-12 pt-8 border-t border-white/[0.06]">
             <Link href={user ? "/create-offer" : "/register"}>
               <Button size="lg">
-                {user ? "Create Your First Listing" : "Create an Account"}
-                <ArrowRight className="w-4 h-4 ml-2" />
+                {user ? "أنشئ إعلانك الأول" : "أنشئ حساباً"}
+                <ArrowRight className="w-4 h-4 mr-2" />
               </Button>
             </Link>
           </div>

@@ -10,11 +10,11 @@ import { Service, GameCategory, GAME_NAMES } from "@/types";
 import { API_URL } from "@/lib/config";
 
 const SORT_OPTIONS = [
-  { value: "newest", label: "Newest First" },
-  { value: "most_liked", label: "Most Popular" },
-  { value: "most_viewed", label: "Most Viewed" },
-  { value: "price_low", label: "Price: Low to High" },
-  { value: "price_high", label: "Price: High to Low" },
+  { value: "newest", label: "الأحدث أولاً" },
+  { value: "most_liked", label: "الأكثر شعبية" },
+  { value: "most_viewed", label: "الأكثر مشاهدة" },
+  { value: "price_low", label: "السعر: من الأقل للأعلى" },
+  { value: "price_high", label: "السعر: من الأعلى للأقل" },
 ];
 
 function ServicesContent() {
@@ -96,26 +96,26 @@ function ServicesContent() {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/20 rounded-full border border-violet-500/20 mb-4">
               <Sparkles className="w-4 h-4 text-violet-400" />
-              <span className="text-sm text-violet-300">Discover Amazing Boosters</span>
+              <span className="text-sm text-violet-300">اكتشف أفضل المعززين</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Browse <span className="text-violet-400">Boost Services</span>
+              تصفح <span className="text-violet-400">خدمات التعزيز</span>
             </h1>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              Find the perfect booster for your gaming needs
+              اعثر على المعزز المثالي لاحتياجاتك في الألعاب
             </p>
           </div>
 
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
+              <Search className="absolute start-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search services, games, boosters..."
+                placeholder="ابحث عن خدمات، ألعاب، معززين..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                className="w-full ps-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
               />
             </div>
           </div>
@@ -129,21 +129,21 @@ function ServicesContent() {
             <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] p-6 sticky top-24">
               <h3 className="font-semibold text-lg text-white mb-6 flex items-center gap-2">
                 <SlidersHorizontal className="w-5 h-5 text-violet-400" />
-                Filters
+                التصفية
               </h3>
 
               {/* Game Filter */}
               <div className="mb-6">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
-                  Game
+                  اللعبة
                 </label>
                 <select
                   value={selectedGame}
                   onChange={(e) => setSelectedGame(e.target.value)}
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
-                  <option value="" className="bg-zinc-800">All Games</option>
+                  <option value="" className="bg-zinc-800">جميع الألعاب</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
                     <option key={key} value={key} className="bg-zinc-800">
                       {name}
@@ -156,7 +156,7 @@ function ServicesContent() {
               <div className="mb-6">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                   <Filter className="w-4 h-4 text-cyan-400" />
-                  Sort By
+                  ترتيب حسب
                 </label>
                 <select
                   value={sortBy}
@@ -176,7 +176,7 @@ function ServicesContent() {
                 <div className="mb-6">
                   <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
                     <Tag className="w-4 h-4 text-green-400" />
-                    Tags
+                    الوسوم
                   </label>
                   <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
                     {allTags.map((tag) => (
@@ -198,7 +198,7 @@ function ServicesContent() {
                       onClick={() => setSelectedTags([])}
                       className="mt-2 text-xs text-violet-400 hover:text-violet-300"
                     >
-                      Clear tags
+                      مسح الوسوم
                     </button>
                   )}
                 </div>
@@ -207,8 +207,8 @@ function ServicesContent() {
               <div className="pt-4 border-t border-white/[0.08]">
                 <Link href="/favorites">
                   <Button variant="outline" className="w-full border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
-                    <Heart className="w-4 h-4 mr-2 text-pink-400" />
-                    My Favorites
+                    <Heart className="w-4 h-4 me-2 text-pink-400" />
+                    مفضلاتي
                   </Button>
                 </Link>
               </div>
@@ -219,29 +219,29 @@ function ServicesContent() {
           <main className="flex-1">
             <div className="mb-6 flex justify-between items-center">
               <p className="text-zinc-400">
-                <span className="text-white font-semibold">{filteredServices.length}</span> services found
+                <span className="text-white font-semibold">{filteredServices.length}</span> خدمة متاحة
               </p>
             </div>
 
             {loading ? (
               <div className="text-center py-20">
                 <div className="inline-block w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
-                <p className="mt-6 text-zinc-400">Loading amazing offers...</p>
+                <p className="mt-6 text-zinc-400">جاري تحميل العروض...</p>
               </div>
             ) : filteredServices.length === 0 ? (
               <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-white/[0.08]">
                 <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
                   <Search className="w-10 h-10 text-zinc-500" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">No services found</h3>
+                <h3 className="text-xl font-semibold text-white mb-2">لم يتم العثور على خدمات</h3>
                 <p className="text-zinc-400 mb-6">
-                  Try adjusting your filters or search query
+                  جرب تعديل الفلاتر أو بحثك
                 </p>
                 <Button 
                   onClick={() => { setSelectedGame(""); setSearchQuery(""); setSelectedTags([]); }}
                   className="bg-violet-600 hover:bg-indigo-500"
                 >
-                  Clear Filters
+                  مسح الفلاتر
                 </Button>
               </div>
             ) : (
@@ -263,7 +263,7 @@ function ServicesLoading() {
     <div className="min-h-screen bg-transparent flex items-center justify-center">
       <div className="text-center">
         <div className="inline-block w-16 h-16 rounded-full border-4 border-violet-500/20 border-t-indigo-500 animate-spin"></div>
-        <p className="mt-6 text-zinc-400">Loading services...</p>
+        <p className="mt-6 text-zinc-400">جاري تحميل الخدمات...</p>
       </div>
     </div>
   );

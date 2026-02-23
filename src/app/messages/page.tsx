@@ -267,7 +267,7 @@ function MessagesContent() {
     if (file) {
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Image must be less than 5MB');
+        alert('يجب أن تكون الصورة أقل من 5 ميجابايت');
         return;
       }
       setSelectedImage(file);
@@ -491,10 +491,10 @@ function MessagesContent() {
       <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Please log in</h2>
-          <p className="text-zinc-400 mb-4">You need to be logged in to view messages</p>
+          <h2 className="text-xl font-semibold text-white mb-2">يرجى تسجيل الدخول</h2>
+          <p className="text-zinc-400 mb-4">يجب تسجيل الدخول لعرض الرسائل</p>
           <Link href="/login">
-            <Button>Log In</Button>
+            <Button>تسجيل الدخول</Button>
           </Link>
         </div>
       </div>
@@ -509,23 +509,23 @@ function MessagesContent() {
           <div className="flex items-center gap-4">
             <Link href="/dashboard">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-white">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
+                <ArrowLeft className="w-4 h-4 me-2" />
+                رجوع
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-white">Messages</h1>
+            <h1 className="text-2xl font-bold text-white">الرسائل</h1>
           </div>
           {/* Connection Status */}
           <div className="flex items-center gap-2 text-sm">
             {isConnected ? (
               <>
                 <Wifi className="w-4 h-4 text-green-400" />
-                <span className="text-green-400 hidden sm:inline">Live</span>
+                <span className="text-green-400 hidden sm:inline">متصل</span>
               </>
             ) : (
               <>
                 <WifiOff className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400 hidden sm:inline">Connecting...</span>
+                <span className="text-yellow-400 hidden sm:inline">جاري الاتصال...</span>
               </>
             )}
           </div>
@@ -538,13 +538,13 @@ function MessagesContent() {
             {/* Search */}
             <div className="p-4 border-b border-white/[0.06]">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 <input
                   type="text"
-                  placeholder="Search conversations..."
+                  placeholder="ابحث في المحادثات..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  className="w-full ps-10 pe-4 py-2 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -558,8 +558,8 @@ function MessagesContent() {
               ) : filteredConversations.length === 0 ? (
                 <div className="text-center py-12 px-4">
                   <MessageSquare className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">No conversations yet</p>
-                  <p className="text-zinc-500 text-sm mt-1">Contact a booster to start chatting</p>
+                  <p className="text-zinc-400">لا توجد محادثات بعد</p>
+                  <p className="text-zinc-500 text-sm mt-1">تواصل مع معزز لبدء الدردشة</p>
                 </div>
               ) : (
                 filteredConversations.map((conversation) => {
@@ -577,10 +577,10 @@ function MessagesContent() {
                       <div className="w-12 h-12 rounded-full bg-violet-600 flex items-center justify-center flex-shrink-0">
                         <UserIcon className="w-6 h-6 text-white" />
                       </div>
-                      <div className="flex-1 text-left overflow-hidden">
-                        <p className="text-white font-medium truncate">{other?.name || 'User'}</p>
+                      <div className="flex-1 text-right overflow-hidden">
+                        <p className="text-white font-medium truncate">{other?.name || 'مستخدم'}</p>
                         {conversation.service && (
-                          <p className="text-violet-400 text-xs truncate">Re: {conversation.service.title}</p>
+                          <p className="text-violet-400 text-xs truncate">بخصوص: {conversation.service.title}</p>
                         )}
                         {conversation.lastMessage && (
                           <p className="text-zinc-500 text-sm truncate">{conversation.lastMessage.content}</p>
@@ -620,7 +620,7 @@ function MessagesContent() {
                   </div>
                   <div>
                     <p className="text-white font-medium">
-                      {getOtherParticipant(activeConversation)?.name || 'User'}
+                      {getOtherParticipant(activeConversation)?.name || 'مستخدم'}
                     </p>
                     {activeConversation.service && (
                       <Link href={`/services/${activeConversation.service.id}`} className="text-violet-400 text-sm hover:underline">
@@ -635,8 +635,8 @@ function MessagesContent() {
                   {messages.length === 0 ? (
                     <div className="text-center py-12">
                       <MessageSquare className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                      <p className="text-zinc-400">No messages yet</p>
-                      <p className="text-zinc-500 text-sm">Send a message to start the conversation</p>
+                      <p className="text-zinc-400">لا توجد رسائل بعد</p>
+                      <p className="text-zinc-500 text-sm">أرسل رسالة لبدء المحادثة</p>
                     </div>
                   ) : (
                     messages.map((message) => {
@@ -657,14 +657,14 @@ function MessagesContent() {
                               {/* Offer Header */}
                               <div className="bg-violet-600/20 px-4 py-2 border-b border-violet-500/20 flex items-center gap-2">
                                 <FileText className="w-4 h-4 text-violet-400" />
-                                <span className="text-violet-300 font-medium text-sm">Custom Offer</span>
+                                <span className="text-violet-300 font-medium text-sm">عرض مخصص</span>
                                 {offer.status !== 'PENDING' && (
-                                  <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-medium ${
+                                  <span className={`ms-auto px-2 py-0.5 rounded-full text-xs font-medium ${
                                     offer.status === 'ACCEPTED' ? 'bg-green-500/20 text-green-400' :
                                     offer.status === 'DECLINED' ? 'bg-red-500/20 text-red-400' :
                                     'bg-gray-500/20 text-zinc-400'
                                   }`}>
-                                    {offer.status}
+                                    {offer.status === 'ACCEPTED' ? 'مقبول' : offer.status === 'DECLINED' ? 'مرفوض' : offer.status === 'EXPIRED' ? 'منتهي' : offer.status === 'CANCELLED' ? 'ملغي' : 'قيد الانتظار'}
                                   </span>
                                 )}
                               </div>
@@ -699,8 +699,8 @@ function MessagesContent() {
                                         <Loader2 className="w-4 h-4 animate-spin" />
                                       ) : (
                                         <>
-                                          <Check className="w-4 h-4 mr-1" />
-                                          Accept
+                                          <Check className="w-4 h-4 me-1" />
+                                          قبول
                                         </>
                                       )}
                                     </Button>
@@ -710,8 +710,8 @@ function MessagesContent() {
                                       variant="outline"
                                       className="flex-1 border-red-500/50 text-red-400 hover:bg-red-500/10"
                                     >
-                                      <XCircle className="w-4 h-4 mr-1" />
-                                      Decline
+                                      <XCircle className="w-4 h-4 me-1" />
+                                      رفض
                                     </Button>
                                   </div>
                                 )}
@@ -719,8 +719,8 @@ function MessagesContent() {
                                 {offer.status === 'ACCEPTED' && offer.orderId && (
                                   <Link href="/orders">
                                     <Button className="w-full bg-green-600/20 text-green-400 hover:bg-green-600/30">
-                                      <Check className="w-4 h-4 mr-1" />
-                                      Order Created - View Orders
+                                      <Check className="w-4 h-4 me-1" />
+                                      تم إنشاء الطلب - عرض الطلبات
                                     </Button>
                                   </Link>
                                 )}
@@ -753,7 +753,7 @@ function MessagesContent() {
                               <a href={message.imageUrl} target="_blank" rel="noopener noreferrer">
                                 <img 
                                   src={message.imageUrl} 
-                                  alt="Shared image" 
+                                  alt="صورة مشاركة" 
                                   className="max-w-full max-h-64 object-contain cursor-pointer hover:opacity-90"
                                 />
                               </a>
@@ -782,7 +782,7 @@ function MessagesContent() {
                         className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white rounded-xl text-sm font-medium transition-all"
                       >
                         <DollarSign className="w-4 h-4" />
-                        Send Custom Offer
+                        إرسال عرض مخصص
                       </button>
                     </div>
                   )}
@@ -792,12 +792,12 @@ function MessagesContent() {
                     <div className="mb-3 relative inline-block">
                       <img 
                         src={imagePreview} 
-                        alt="Preview" 
+                        alt="معاينة" 
                         className="max-h-32 rounded-lg border border-white/[0.08]"
                       />
                       <button
                         onClick={clearSelectedImage}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                        className="absolute -top-2 -end-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -816,7 +816,7 @@ function MessagesContent() {
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       className="px-3 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
-                      title="Send image"
+                      title="إرسال صورة"
                     >
                       <ImageIcon className="w-5 h-5" />
                     </button>
@@ -825,7 +825,7 @@ function MessagesContent() {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Type a message..."
+                      placeholder="اكتب رسالة..."
                       className="flex-1 px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                     />
                     <Button 
@@ -841,7 +841,7 @@ function MessagesContent() {
                     </Button>
                   </div>
                   {uploadingImage && (
-                    <p className="text-xs text-violet-400 mt-2">Uploading image...</p>
+                    <p className="text-xs text-violet-400 mt-2">جاري رفع الصورة...</p>
                   )}
                 </div>
               </>
@@ -849,8 +849,8 @@ function MessagesContent() {
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
                   <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-zinc-400">Select a conversation</p>
-                  <p className="text-zinc-500 text-sm">Choose from your existing chats or contact a booster</p>
+                  <p className="text-zinc-400">اختر محادثة</p>
+                  <p className="text-zinc-500 text-sm">اختر من محادثاتك الحالية أو تواصل مع معزز</p>
                 </div>
               </div>
             )}
@@ -866,7 +866,7 @@ function MessagesContent() {
             <div className="flex items-center justify-between p-4 border-b border-white/[0.08]">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-green-400" />
-                Create Custom Offer
+                إنشاء عرض مخصص
               </h3>
               <button
                 onClick={() => setShowOfferModal(false)}
@@ -880,25 +880,25 @@ function MessagesContent() {
             <div className="p-4 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-zinc-300 mb-1">
-                  Offer Title *
+                  عنوان العرض *
                 </label>
                 <input
                   type="text"
                   value={offerForm.title}
                   onChange={(e) => setOfferForm(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="e.g., Gold to Diamond Boost"
+                  placeholder="مثال: تعزيز من ذهبي إلى ماسي"
                   className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-zinc-300 mb-1">
-                  Description (optional)
+                  الوصف (اختياري)
                 </label>
                 <textarea
                   value={offerForm.description}
                   onChange={(e) => setOfferForm(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Describe what's included in this offer..."
+                  placeholder="صف ما يتضمنه هذا العرض..."
                   rows={3}
                   className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                 />
@@ -907,7 +907,7 @@ function MessagesContent() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
-                    Price ($) *
+                    السعر ($) *
                   </label>
                   <input
                     type="number"
@@ -920,26 +920,26 @@ function MessagesContent() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
-                    Delivery Time *
+                    مدة التسليم *
                   </label>
                   <select
                     value={offerForm.deliveryTime}
                     onChange={(e) => setOfferForm(prev => ({ ...prev, deliveryTime: e.target.value }))}
                     className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   >
-                    <option value="1 day">1 day</option>
-                    <option value="1-2 days">1-2 days</option>
-                    <option value="2-3 days">2-3 days</option>
-                    <option value="3-5 days">3-5 days</option>
-                    <option value="1 week">1 week</option>
-                    <option value="2 weeks">2 weeks</option>
+                    <option value="1 day">يوم واحد</option>
+                    <option value="1-2 days">1-2 أيام</option>
+                    <option value="2-3 days">2-3 أيام</option>
+                    <option value="3-5 days">3-5 أيام</option>
+                    <option value="1 week">أسبوع واحد</option>
+                    <option value="2 weeks">أسبوعين</option>
                   </select>
                 </div>
               </div>
 
               <div className="bg-white/[0.04] rounded-xl p-3 text-sm text-zinc-400">
-                <p>💡 This offer will be sent as a message. The buyer can accept or decline.</p>
-                <p className="mt-1">If accepted, an order will be created automatically.</p>
+                <p>💡 سيتم إرسال هذا العرض كرسالة. يمكن للمشتري قبوله أو رفضه.</p>
+                <p className="mt-1">إذا تم القبول، سيتم إنشاء طلب تلقائيًا.</p>
               </div>
             </div>
 
@@ -950,7 +950,7 @@ function MessagesContent() {
                 onClick={() => setShowOfferModal(false)}
                 className="flex-1"
               >
-                Cancel
+                إلغاء
               </Button>
               <Button
                 onClick={sendCustomOffer}
@@ -961,8 +961,8 @@ function MessagesContent() {
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Offer
+                    <Send className="w-4 h-4 me-2" />
+                    إرسال العرض
                   </>
                 )}
               </Button>

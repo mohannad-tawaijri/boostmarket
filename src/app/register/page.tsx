@@ -27,12 +27,12 @@ export default function RegisterPage() {
     setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError("كلمات المرور غير متطابقة");
       return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
       return;
     }
 
@@ -57,10 +57,10 @@ export default function RegisterPage() {
         login(data.access_token, data.user);
         router.push("/");
       } else {
-        setError(data.message || "Registration failed. Please try again.");
+        setError(data.message || "فشل التسجيل. يرجى المحاولة مرة أخرى.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError("حدث خطأ. يرجى المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
@@ -77,8 +77,8 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-900 flex items-center justify-center py-12 px-4 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute -top-40 -end-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute -bottom-40 -start-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
       </div>
 
@@ -91,8 +91,8 @@ export default function RegisterPage() {
         {/* Register Card */}
         <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden">
           <div className="p-8">
-            <h1 className="text-2xl font-bold text-white text-center mb-2">Create Account</h1>
-            <p className="text-zinc-400 text-center mb-8">Join the gaming boost community</p>
+            <h1 className="text-2xl font-bold text-white text-center mb-2">إنشاء حساب</h1>
+            <p className="text-zinc-400 text-center mb-8">انضم لمجتمع تعزيز الألعاب</p>
 
             {error && (
               <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-xl text-red-300 text-sm text-center">
@@ -105,7 +105,7 @@ export default function RegisterPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <User className="w-4 h-4 text-violet-400" />
-                  Full Name
+                  الاسم الكامل
                 </label>
                 <input
                   type="text"
@@ -113,7 +113,7 @@ export default function RegisterPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="John Doe"
+                  placeholder="محمد أحمد"
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
@@ -122,7 +122,7 @@ export default function RegisterPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Mail className="w-4 h-4 text-violet-400" />
-                  Email Address
+                  البريد الإلكتروني
                 </label>
                 <input
                   type="email"
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="you@example.com"
+                  placeholder="example@email.com"
                   className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
@@ -139,7 +139,7 @@ export default function RegisterPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Lock className="w-4 h-4 text-violet-400" />
-                  Password
+                  كلمة المرور
                 </label>
                 <div className="relative">
                   <input
@@ -149,12 +149,12 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                     placeholder="••••••••"
-                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 pr-12 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 pe-12 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                    className="absolute end-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -165,7 +165,7 @@ export default function RegisterPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Lock className="w-4 h-4 text-violet-400" />
-                  Confirm Password
+                  تأكيد كلمة المرور
                 </label>
                 <input
                   type={showPassword ? "text" : "password"}
@@ -188,11 +188,11 @@ export default function RegisterPage() {
                 {loading ? (
                   <span className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Creating account...
+                    جاري إنشاء الحساب...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    Create Account
+                    إنشاء حساب
                     <ArrowRight className="w-5 h-5" />
                   </span>
                 )}
@@ -200,10 +200,10 @@ export default function RegisterPage() {
 
               {/* Terms */}
               <p className="text-xs text-zinc-500 text-center">
-                By creating an account, you agree to our{" "}
-                <Link href="/terms" className="text-violet-400 hover:underline">Terms of Service</Link>
-                {" "}and{" "}
-                <Link href="/privacy" className="text-violet-400 hover:underline">Privacy Policy</Link>
+                بإنشاء حساب، أنت توافق على{" "}
+                <Link href="/terms" className="text-violet-400 hover:underline">شروط الخدمة</Link>
+                {" "}و{" "}
+                <Link href="/privacy" className="text-violet-400 hover:underline">سياسة الخصوصية</Link>
               </p>
             </form>
           </div>
@@ -211,9 +211,9 @@ export default function RegisterPage() {
           {/* Login Link */}
           <div className="px-8 py-6 bg-white/[0.03] border-t border-white/[0.08] text-center">
             <p className="text-zinc-400">
-              Already have an account?{" "}
+              لديك حساب بالفعل؟{" "}
               <Link href="/login" className="text-violet-400 hover:text-violet-300 font-medium">
-                Sign in
+                تسجيل الدخول
               </Link>
             </p>
           </div>

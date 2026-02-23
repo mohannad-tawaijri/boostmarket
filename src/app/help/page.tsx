@@ -7,36 +7,36 @@ import { useState } from "react";
 
 const faqs = [
   {
-    question: "How does BoostMarket work?",
-    answer: "It is a marketplace. Sellers list boosting services (rank boosts, coaching, achievements, etc.) and set their own prices. Buyers browse, pick a seller, and place an order. We hold the payment until the service is delivered and confirmed. Think of us like a middleman that keeps both sides honest."
+    question: "كيف يعمل BoostMarket؟",
+    answer: "هو سوق. يعرض البائعون خدمات التعزيز (تعزيز الرتب، التدريب، الإنجازات، إلخ) ويحددون أسعارهم الخاصة. يتصفح المشترون، ويختارون بائعاً، ويقدمون طلباً. نحتفظ بالدفع حتى يتم تسليم الخدمة وتأكيدها. فكر بنا كوسيط يحافظ على نزاهة الطرفين."
   },
   {
-    question: "Is boosting safe for my game account?",
-    answer: "It depends on the game and the type of service. Duo queue and coaching never need your login. Account-sharing services carry more risk  both from the booster having access and from the game publisher potentially flagging unusual activity. We cannot guarantee your account will not face consequences from the game developer. That is a decision you need to weigh for yourself."
+    question: "هل التعزيز آمن لحساب لعبتي؟",
+    answer: "يعتمد على اللعبة ونوع الخدمة. اللعب الثنائي والتدريب لا يحتاجان أبداً لبيانات تسجيل دخولك. خدمات مشاركة الحساب تحمل مخاطر أكبر — سواء من وصول المعزز لحسابك أو من احتمال رصد ناشر اللعبة لنشاط غير عادي. لا يمكننا ضمان أن حسابك لن يواجه عواقب من مطور اللعبة. هذا قرار عليك أن تزنه بنفسك."
   },
   {
-    question: "How do I become a booster?",
-    answer: "Create a free account, then go to \"Create Offer\" to list your first service. There is no approval process  you can start immediately. That said, buyers will look at your reviews and profile before ordering, so put effort into your listing descriptions and deliver on what you promise."
+    question: "كيف أصبح معززاً؟",
+    answer: "أنشئ حساباً مجانياً، ثم اذهب إلى \"إنشاء عرض\" لإدراج خدمتك الأولى. لا توجد عملية موافقة — يمكنك البدء فوراً. ومع ذلك، سينظر المشترون إلى تقييماتك وملفك الشخصي قبل الطلب، لذا ابذل جهداً في أوصاف إعلاناتك وسلّم ما تعد به."
   },
   {
-    question: "What payment methods do you accept?",
-    answer: "Major credit and debit cards through our payment processor. We do not handle payment information directly  it goes through an encrypted third-party provider."
+    question: "ما طرق الدفع التي تقبلونها؟",
+    answer: "بطاقات الائتمان والخصم الرئيسية عبر معالج الدفع لدينا. نحن لا نتعامل مع معلومات الدفع مباشرة — تمر عبر مزود طرف ثالث مشفر."
   },
   {
-    question: "How do refunds work?",
-    answer: "If a booster does not deliver what was promised, you can open a dispute from your order page. Our team reviews the chat history, order details, and any evidence from both sides. Depending on the situation, we may issue a partial or full refund. We do not do automatic refunds  each case is reviewed individually."
+    question: "كيف يعمل الاسترداد؟",
+    answer: "إذا لم يسلم المعزز ما تم الوعد به، يمكنك فتح نزاع من صفحة طلبك. يراجع فريقنا سجل الدردشة وتفاصيل الطلب وأي أدلة من كلا الطرفين. حسب الحالة، قد نصدر استرداداً جزئياً أو كاملاً. لا نقوم باسترداد تلقائي — كل حالة تُراجع بشكل فردي."
   },
   {
-    question: "Can I talk to the booster before ordering?",
-    answer: "Yes. Every listing has a chat option. We actually recommend messaging the booster first to discuss specifics  timelines, champion preferences, play schedule, whatever matters for your order."
+    question: "هل يمكنني التحدث مع المعزز قبل الطلب؟",
+    answer: "نعم. كل إعلان يحتوي على خيار دردشة. ننصح فعلاً بمراسلة المعزز أولاً لمناقشة التفاصيل — الجداول الزمنية، تفضيلات الأبطال، جدول اللعب، أي شيء يهم لطلبك."
   },
   {
-    question: "How long does a boost usually take?",
-    answer: "It varies. Each listing shows an estimated delivery time. A single-division boost might take a day; a full rank climb could take a week or more. The booster can give you a better estimate once they know your starting point."
+    question: "كم يستغرق التعزيز عادة؟",
+    answer: "يختلف. كل إعلان يعرض وقت تسليم تقديري. تعزيز قسم واحد قد يستغرق يوماً؛ صعود رتبة كامل قد يستغرق أسبوعاً أو أكثر. يمكن للمعزز إعطاؤك تقديراً أفضل بمجرد معرفة نقطة البداية."
   },
   {
-    question: "What happens if the booster goes dark?",
-    answer: "If the booster stops responding or fails to deliver within a reasonable time, open a dispute. We will investigate and can reassign or refund the order. Boosters who ghost orders get flagged and eventually removed from the platform."
+    question: "ماذا يحدث إذا اختفى المعزز؟",
+    answer: "إذا توقف المعزز عن الرد أو فشل في التسليم خلال وقت معقول، افتح نزاعاً. سنحقق ويمكننا إعادة تعيين أو استرداد الطلب. المعززون الذين يتخلون عن الطلبات يتم الإبلاغ عنهم ويُزالون في النهاية من المنصة."
   }
 ];
 
@@ -63,17 +63,17 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-transparent py-16">
+    <div className="min-h-screen bg-transparent py-16" dir="rtl">
       <div className="container mx-auto px-4 max-w-3xl">
         <Link href="/">
           <Button variant="ghost" className="mb-8 text-zinc-400 hover:text-white">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
+            <ArrowLeft className="w-4 h-4 ml-2" />
+            العودة للرئيسية
           </Button>
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">Help</h1>
-        <p className="text-zinc-500 text-sm mb-10">Answers to the questions we get asked most.</p>
+        <h1 className="text-3xl font-bold text-white mb-2">المساعدة</h1>
+        <p className="text-zinc-500 text-sm mb-10">إجابات على الأسئلة الأكثر شيوعاً.</p>
 
         <div className="mb-12">
           {faqs.map((faq, index) => (
@@ -83,14 +83,14 @@ export default function HelpPage() {
 
         <div className="pt-6 border-t border-white/[0.06]">
           <p className="text-zinc-400 text-[15px] mb-1">
-            Did not find what you are looking for?
+            لم تجد ما تبحث عنه؟
           </p>
           <p className="text-zinc-500 text-sm">
-            Email us at{" "}
+            راسلنا على{" "}
             <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
               support@boostmarket.com
             </a>{" "}
-            and we will get back to you within 24 hours.
+            وسنرد عليك خلال 24 ساعة.
           </p>
         </div>
       </div>
