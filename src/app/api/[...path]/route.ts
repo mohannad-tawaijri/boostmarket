@@ -20,7 +20,8 @@ export async function GET(
 
   try {
     const response = await fetch(url, { headers });
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     console.error('Proxy error:', error);
@@ -66,15 +67,24 @@ export async function POST(
         headers['Authorization'] = authHeader;
       }
 
-      const body = await request.json();
+      // Some POST endpoints (like favorites) don't send a body
+      let body: string | undefined;
+      try {
+        const json = await request.json();
+        body = JSON.stringify(json);
+      } catch {
+        // No body — that's fine
+      }
+
       response = await fetch(url, {
         method: 'POST',
         headers,
-        body: JSON.stringify(body),
+        body,
       });
     }
 
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     console.error('Proxy error:', error);
@@ -105,7 +115,8 @@ export async function PATCH(
       headers,
       body: JSON.stringify(body),
     });
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     console.error('Proxy error:', error);
@@ -134,7 +145,8 @@ export async function DELETE(
       method: 'DELETE',
       headers,
     });
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     console.error('Proxy error:', error);
