@@ -15,7 +15,7 @@ const faqs = [
     answer: "يعتمد على اللعبة ونوع الخدمة. اللعب الثنائي والتدريب لا يحتاجان أبداً لبيانات تسجيل دخولك. خدمات مشاركة الحساب تحمل مخاطر أكبر — سواء من وصول البوستر لحسابك أو من احتمال رصد ناشر اللعبة لنشاط غير عادي. لا يمكننا ضمان أن حسابك لن يواجه عواقب من مطور اللعبة. هذا قرار عليك أن تزنه بنفسك."
   },
   {
-    question: "كيف أصبح بوستر؟",
+    question: "كيف أصير بوستر؟",
     answer: "أنشئ حساباً مجانياً، ثم اذهب إلى \"إنشاء عرض\" لإدراج خدمتك الأولى. لا توجد عملية موافقة — يمكنك البدء فوراً. ومع ذلك، سينظر المشترون إلى تقييماتك وملفك الشخصي قبل الطلب، لذا ابذل جهداً في أوصاف إعلاناتك وسلّم ما تعد به."
   },
   {
@@ -73,7 +73,7 @@ export default function HelpPage() {
         </Link>
 
         <h1 className="text-3xl font-bold text-white mb-2">المساعدة</h1>
-        <p className="text-zinc-500 text-sm mb-10">إجابات على الأسئلة الأكثر شيوعاً.</p>
+        <p className="text-zinc-500 text-sm mb-10">عندك سؤال؟ الجواب هنا.</p>
 
         <div className="mb-12">
           {faqs.map((faq, index) => (
@@ -83,14 +83,14 @@ export default function HelpPage() {
 
         <div className="pt-6 border-t border-white/[0.06]">
           <p className="text-zinc-400 text-[15px] mb-1">
-            لم تجد ما تبحث عنه؟
+            ما لقيت جوابك؟
           </p>
           <p className="text-zinc-500 text-sm">
             راسلنا على{" "}
             <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
               support@boostmarket.com
             </a>{" "}
-            وسنرد عليك خلال 24 ساعة.
+            ونرد عليك خلال 24 ساعة.
           </p>
         </div>
       </div>

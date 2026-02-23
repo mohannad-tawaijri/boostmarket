@@ -151,9 +151,9 @@ export default function ServiceDetailPage() {
           <div className="w-20 h-20 mx-auto mb-6 bg-white/[0.06] rounded-full flex items-center justify-center">
             <Gamepad2 className="w-10 h-10 text-zinc-500" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-4">الخدمة غير موجودة</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">هالخدمة مو موجودة</h2>
           <Link href="/services">
-            <Button>تصفح الخدمات</Button>
+            <Button>رجوع للخدمات</Button>
           </Link>
         </div>
       </div>
@@ -212,7 +212,7 @@ export default function ServiceDetailPage() {
 
               {/* Description */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-white mb-4">عن هذه الخدمة</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">عن الخدمة</h3>
                 <p className="text-zinc-300 whitespace-pre-wrap leading-relaxed">{service.description}</p>
               </div>
 
@@ -221,7 +221,7 @@ export default function ServiceDetailPage() {
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                     <Tag className="w-5 h-5 text-violet-400" />
-                    الوسوم
+                    التاقز
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {service.tags.map((tag) => (
@@ -243,7 +243,7 @@ export default function ServiceDetailPage() {
                     <div className="p-2 bg-indigo-500/20 rounded-lg">
                       <Clock className="w-5 h-5 text-violet-400" />
                     </div>
-                    <span className="text-sm text-zinc-400">وقت التسليم</span>
+                    <span className="text-sm text-zinc-400">مدة التنفيذ</span>
                   </div>
                   <p className="font-semibold text-white text-lg">{service.deliveryTime}</p>
                 </div>
@@ -252,17 +252,17 @@ export default function ServiceDetailPage() {
                     <div className="p-2 bg-green-500/20 rounded-lg">
                       <Shield className="w-5 h-5 text-green-400" />
                     </div>
-                    <span className="text-sm text-zinc-400">خدمة آمنة</span>
+                    <span className="text-sm text-zinc-400">خدمة مضمونة</span>
                   </div>
-                  <p className="font-semibold text-white text-lg">محمية 100%</p>
+                  <p className="font-semibold text-white text-lg">حماية كاملة</p>
                 </div>
               </div>
 
               {/* What's Included */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-white mb-4">ما يتضمنه</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">وش تحصل</h3>
                 <div className="space-y-3">
-                  {["خدمة تعزيز احترافية", "تحديثات التقدم في الوقت الفعلي", "سلامة الحساب مضمونة", "دعم العملاء 24/7"].map((item, index) => (
+                  {["بوست احترافي", "متابعة لحظية", "حسابك بأمان", "دعم 24/7"].map((item, index) => (
                     <div key={index} className="flex items-center gap-3 text-zinc-300">
                       <CheckCircle className="w-5 h-5 text-green-400" />
                       <span>{item}</span>
@@ -290,8 +290,8 @@ export default function ServiceDetailPage() {
                 {reviews.length === 0 ? (
                   <div className="bg-slate-700/30 rounded-xl p-6 text-center">
                     <Star className="w-10 h-10 text-gray-600 mx-auto mb-3" />
-                    <p className="text-zinc-400">لا توجد تقييمات بعد</p>
-                    <p className="text-zinc-500 text-sm">كن أول من يقيّم بعد إتمام الطلب!</p>
+                    <p className="text-zinc-400">لا يوجد تقييمات حالياً</p>
+                    <p className="text-zinc-500 text-sm">كن أول من يقيّم!</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -342,14 +342,14 @@ export default function ServiceDetailPage() {
                 <div className="text-4xl font-bold text-violet-400 mb-2">
                   ${service.price}
                 </div>
-                <p className="text-zinc-500 text-xs">السعر النهائي يتم الاتفاق عليه عبر المحادثة</p>
+                <p className="text-zinc-500 text-xs">السعر النهائي بعد الاتفاق بالمحادثة</p>
               </div>
 
               {isOwnService ? (
                 <div className="text-center text-zinc-400 py-4">
                   <p>هذا عرضك</p>
                   <Link href="/dashboard" className="text-violet-400 hover:underline text-sm">
-                    إدارة في لوحة التحكم
+                    إدارة من حسابي
                   </Link>
                 </div>
               ) : (
@@ -360,11 +360,11 @@ export default function ServiceDetailPage() {
                     onClick={handleContactBooster}
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
-                    احصل على عرض مخصص
+                    اطلب عرض خاص
                   </Button>
 
                   <p className="text-center text-zinc-500 text-xs">
-                    راسل البوستر لمناقشة متطلباتك والحصول على عرض مخصص
+                    كلّم البوستر وناقش طلبك
                   </p>
                 </>
               )}
@@ -376,7 +376,7 @@ export default function ServiceDetailPage() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>ضمان استرداد الأموال</span>
+                  <span>استرجاع مضمون</span>
                 </div>
               </div>
             </div>
@@ -391,7 +391,7 @@ export default function ServiceDetailPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-white text-lg">{service.booster.name}</p>
-                    <p className="text-violet-400 text-sm">بوستر محترف موثق</p>
+                    <p className="text-violet-400 text-sm">بوستر موثق</p>
                   </div>
                 </div>
                 {service.booster.bio && (

@@ -142,11 +142,11 @@ export default function OrdersPage() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">طلباتي</h1>
-            <p className="text-zinc-400">الطلبات التي قدمتها لخدمات التعزيز</p>
+            <p className="text-zinc-400">كل طلباتك هنا</p>
           </div>
           <Link href="/services">
             <Button className="mt-4 md:mt-0">
-              تصفح الخدمات
+              استعرض الخدمات
             </Button>
           </Link>
         </div>
@@ -179,14 +179,14 @@ export default function OrdersPage() {
           {filteredOrders.length === 0 ? (
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
               <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">لم يتم العثور على طلبات</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">ما فيه طلبات</h3>
               <p className="text-zinc-400 mb-6">
                 {filter === 'all' 
-                  ? "لم تقدم أي طلبات بعد" 
-                  : "لا توجد طلبات تطابق هذا الفلتر"}
+                  ? "ما طلبت شي بعد" 
+                  : "ما فيه طلبات بهالفلتر"}
               </p>
               <Link href="/services">
-                <Button>تصفح الخدمات</Button>
+                <Button>استعرض الخدمات</Button>
               </Link>
             </div>
           ) : (
@@ -223,7 +223,7 @@ export default function OrdersPage() {
                         {order.status === 'COMPLETED' && !order.review && (
                           <div className="hidden sm:flex items-center gap-1 text-yellow-400">
                             <Star className="w-4 h-4" />
-                            <span className="text-xs">بحاجة لتقييم</span>
+                            <span className="text-xs">قيّم الخدمة</span>
                           </div>
                         )}
                         <div className="text-right hidden sm:block">
@@ -273,7 +273,7 @@ export default function OrdersPage() {
                             className="gap-2 bg-amber-500 hover:from-yellow-400 hover:to-orange-400"
                           >
                             <Star className="w-4 h-4" />
-                            كتابة تقييم
+                            قيّم
                           </Button>
                         )}
                         {order.review && (
@@ -286,7 +286,7 @@ export default function OrdersPage() {
                         )}
                         <Link href={`/services/${order.service?.id}`}>
                           <Button variant="ghost" className="gap-2">
-                            عرض الخدمة
+                            شوف الخدمة
                             <ArrowRight className="w-4 h-4" />
                           </Button>
                         </Link>
@@ -305,7 +305,7 @@ export default function OrdersPage() {
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-[#141418] border border-white/[0.06] rounded-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">اكتب تقييماً</h2>
+              <h2 className="text-xl font-bold text-white">تقييمك</h2>
               <button
                 onClick={() => {
                   setReviewModalOrder(null);
@@ -363,7 +363,7 @@ export default function OrdersPage() {
               <textarea
                 value={reviewComment}
                 onChange={(e) => setReviewComment(e.target.value)}
-                placeholder="شارك تجربتك..."
+                placeholder="كيف كانت تجربتك..."
                 rows={4}
                 className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
               />
@@ -390,7 +390,7 @@ export default function OrdersPage() {
                 {submittingReview ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  'إرسال التقييم'
+                  'أرسل'
                 )}
               </Button>
             </div>

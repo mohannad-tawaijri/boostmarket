@@ -12,7 +12,7 @@ export default function BecomeBoosterPage() {
     <div className="min-h-screen bg-transparent" dir="rtl">
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">البيع على BoostMarket</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">صِر بوستر على BoostMarket</h1>
           <p className="text-zinc-500 text-sm mb-10">إذا كنت جيداً في الألعاب التنافسية، يمكنك كسب المال من ذلك.</p>
 
           <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">

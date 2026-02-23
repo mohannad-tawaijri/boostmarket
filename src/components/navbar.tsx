@@ -36,13 +36,13 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <Link href="/services" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              تصفح العروض
+              استعراض الخدمات
             </Link>
             <Link href="/create-offer" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              إنشاء عرض
+              أضف خدمتك
             </Link>
             <Link href="/how-it-works" className="text-zinc-400 hover:text-white text-sm transition-colors">
-              كيف يعمل
+              طريقة العمل
             </Link>
           </div>
 
@@ -159,7 +159,7 @@ export default function Navbar() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="ابحث عن الخدمات..."
+                    placeholder="ابحث عن لعبة أو خدمة..."
                     className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
                   />
                   <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
@@ -171,21 +171,21 @@ export default function Navbar() {
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                تصفح العروض
+                استعراض الخدمات
               </Link>
               <Link
                 href="/create-offer"
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                إنشاء عرض
+                أضف خدمتك
               </Link>
               <Link
                 href="/how-it-works"
                 className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                كيف يعمل
+                طريقة العمل
               </Link>
               <Link
                 href="/about"
@@ -211,7 +211,7 @@ export default function Navbar() {
                     className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    لوحة التحكم
+                    حسابي
                   </Link>
                   <Link
                     href="/messages"

@@ -13,7 +13,7 @@ export default function Home() {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-violet-400 text-sm font-medium tracking-wide uppercase mb-5">
-              موثوق من أكثر من 50,000 لاعب
+              +50,000 لاعب يثقون بنا
             </p>
             
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] tracking-tight">
@@ -22,19 +22,19 @@ export default function Home() {
             </h1>
             
             <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed">
-              ابحث عن محترفين موثقين يساعدونك في تسلق التصنيفات في ألعابك المفضلة. سرعة في التنفيذ، نتائج حقيقية، وحماية للمشتري في كل طلب.
+              محترفين موثقين يوصلونك للرانك اللي تبيه. تنفيذ سريع، نتائج مضمونة، وفلوسك محمية لين تستلم.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/services">
                 <Button size="lg" className="px-8 py-6 text-base">
-                  تصفح العروض
+                  استعرض الخدمات
                   <ArrowRight className="w-4 h-4 me-1 rotate-180" />
                 </Button>
               </Link>
               <Link href="/create-offer">
                 <Button size="lg" variant="outline" className="px-8 py-6 text-base">
-                  ابدأ البيع
+                  قدّم خدماتك
                 </Button>
               </Link>
             </div>
@@ -43,10 +43,10 @@ export default function Home() {
           {/* إشارات الثقة */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-16 text-sm text-zinc-500">
             {[
-              "جميع الألعاب الرئيسية",
-              "حماية المشتري",
-              "متوسط التسليم < 24 ساعة",
-              "دردشة مباشرة مع البوسترز",
+              "ندعم جميع الألعاب",
+              "فلوسك محمية",
+              "التسليم خلال 24 ساعة",
+              "تواصل مباشر مع البوستر",
             ].map((item, i) => (
               <span key={i} className="flex items-center gap-1.5">
                 <CheckCircle className="w-3.5 h-3.5 text-violet-500" />
@@ -61,16 +61,16 @@ export default function Home() {
       <section className="py-20 section-alt">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center mb-14">
-            <h2 className="text-3xl font-bold text-white mb-3">لماذا يختار الناس BoostMarket</h2>
-            <p className="text-zinc-500">ليس الأكثر بهرجة — فقط الأكثر موثوقية.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">ليش BoostMarket؟</h2>
+            <p className="text-zinc-500">ما نبيع كلام — نبيع ثقة.</p>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
-              { icon: Shield, title: "حماية المشتري", desc: "المدفوعات محفوظة حتى تؤكد أن التعزيز تم بنجاح." },
-              { icon: Star, title: "بوسترز موثقين", desc: "كل بائع يتم مراجعته يدوياً. لا بوتات، لا محتالين." },
-              { icon: Zap, title: "تنفيذ سريع", desc: "معظم الطلبات تبدأ خلال ساعة. تتبع التقدم في الوقت الفعلي." },
-              { icon: Trophy, title: "ضمان استرداد المال", desc: "غير راضٍ؟ سنعيد لك أموالك — بدون مشاكل." },
+              { icon: Shield, title: "فلوسك بأمان", desc: "ما ندفع للبوستر إلا بعد ما تأكد إن الشغل تم." },
+              { icon: Star, title: "بوسترز محترفين", desc: "كل بوستر يمر بمراجعة. بدون بوتات، بدون نصب." },
+              { icon: Zap, title: "بداية فورية", desc: "أغلب الطلبات تبدأ خلال ساعة مع متابعة لحظية." },
+              { icon: Trophy, title: "استرجاع مضمون", desc: "مو راضي؟ نرجع لك فلوسك بدون أي تعقيد." },
             ].map((feature, index) => (
               <div key={index} className="solid-card rounded-xl p-5 card-hover">
                 <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4">
@@ -89,11 +89,11 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">الألعاب الشائعة</h2>
-              <p className="text-sm text-zinc-500 mt-1">انطلق فيما هو رائج</p>
+              <h2 className="text-2xl font-bold text-white">أشهر الألعاب</h2>
+              <p className="text-sm text-zinc-500 mt-1">اختر لعبتك وابدأ</p>
             </div>
             <Link href="/services" className="text-sm text-violet-400 hover:text-violet-300 hidden sm:block transition-colors">
-              عرض الكل ←
+              شوف الكل ←
             </Link>
           </div>
           
@@ -121,15 +121,15 @@ export default function Home() {
       <section className="py-20 section-alt">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center mb-14">
-            <h2 className="text-3xl font-bold text-white mb-3">ثلاث خطوات. هذا كل شيء.</h2>
-            <p className="text-zinc-500">بدون تعقيدات، بدون رسوم خفية.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">3 خطوات بس.</h2>
+            <p className="text-zinc-500">بدون تعقيد، بدون رسوم مخفية.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
-              { step: "1", title: "اختر خدمة", desc: "تصفح العروض من بوسترز موثقين عبر جميع الألعاب المدعومة." },
-              { step: "2", title: "ادفع بأمان", desc: "أكمل الطلب مع حماية المشتري — أموالك محفوظة حتى التسليم." },
-              { step: "3", title: "شاهد النتيجة", desc: "تتبع التقدم مباشرة وتحدث مع البوستر في الوقت الفعلي." },
+              { step: "1", title: "اختر خدمتك", desc: "تصفح عروض البوسترز في جميع الألعاب واختر اللي يناسبك." },
+              { step: "2", title: "ادفع بأمان", desc: "فلوسك تنحفظ عندنا لين البوستر ينهي الشغل." },
+              { step: "3", title: "استلم النتيجة", desc: "تابع التقدم لحظة بلحظة وتواصل مع البوستر مباشرة." },
             ].map((item, index) => (
               <div key={index} className="text-center solid-card rounded-xl p-6">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-b from-violet-500 to-violet-700 text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-600/20">
@@ -150,23 +150,23 @@ export default function Home() {
           <div className="max-w-xl mx-auto text-center">
             <div className="flex items-center justify-center gap-2 text-sm text-zinc-500 mb-5">
               <Users className="w-4 h-4" />
-              <span>انضم لآلاف اللاعبين الذين يرفعون تصنيفهم</span>
+              <span>آلاف اللاعبين رفعوا رانكهم معنا</span>
             </div>
             
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">مستعد للصعود؟</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">جاهز ترفع رانكك؟</h2>
             <p className="text-zinc-400 mb-8">
-              أنشئ حساباً مجانياً وتصفح العروض في أقل من دقيقة.
+              سجّل مجاناً وابدأ خلال دقيقة.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/register">
                 <Button size="lg" className="px-8 py-6 text-base">
-                  ابدأ الآن — مجاناً
+                  سجّل الآن — مجاناً
                 </Button>
               </Link>
               <Link href="/services">
                 <Button size="lg" variant="outline" className="px-8 py-6 text-base">
-                  استكشف الخدمات
+                  تصفح الخدمات
                 </Button>
               </Link>
             </div>

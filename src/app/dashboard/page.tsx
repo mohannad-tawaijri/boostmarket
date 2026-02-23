@@ -99,7 +99,7 @@ export default function DashboardPage() {
   const completedOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'COMPLETED').length;
 
   const stats = [
-    { label: 'طلبات قدمتها', value: myOrders.length.toString(), icon: ShoppingBag, color: 'text-blue-400' },
+    { label: 'طلباتي', value: myOrders.length.toString(), icon: ShoppingBag, color: 'text-blue-400' },
     { label: 'طلبات العملاء', value: customerOrders.length.toString(), icon: DollarSign, color: 'text-emerald-400' },
     { label: 'عروضي', value: offers.length.toString(), icon: Gamepad2, color: 'text-amber-400' },
     { label: 'مكتمل', value: completedOrders.toString(), icon: CheckCircle, color: 'text-violet-400' },
@@ -127,13 +127,13 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-bold text-white mb-2">
               مرحباً بعودتك، <span className="text-violet-400">{user?.name || 'لاعب'}</span>
             </h1>
-            <p className="text-zinc-400">إليك ما يحدث في حسابك</p>
+            <p className="text-zinc-400">نظرة على حسابك</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-3">
             <Link href="/create-offer">
               <Button className="gap-2">
                 <Plus className="w-4 h-4" />
-                إنشاء عرض
+                أضف خدمة
               </Button>
             </Link>
           </div>
@@ -162,8 +162,8 @@ export default function DashboardPage() {
         {/* Tabs */}
         <div className="flex gap-2 mb-6 border-b border-white/[0.06] pb-4 overflow-x-auto">
           {[
-            { id: 'overview', label: 'نظرة عامة', icon: TrendingUp },
-            { id: 'orders', label: 'طلبات قدمتها', icon: ShoppingBag },
+            { id: 'overview', label: 'الرئيسية', icon: TrendingUp },
+            { id: 'orders', label: 'طلباتي', icon: ShoppingBag },
             { id: 'customer-orders', label: 'طلبات العملاء', icon: DollarSign },
             { id: 'offers', label: 'عروضي', icon: Gamepad2 },
           ].map((tab) => (
@@ -188,9 +188,9 @@ export default function DashboardPage() {
             {/* Recent Orders */}
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-white">الطلبات الأخيرة</h2>
+                <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
                 <Link href="/orders" className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
-                  عرض الكل <ArrowRight className="w-4 h-4" />
+                  الكل <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
               {loading ? (
@@ -200,9 +200,9 @@ export default function DashboardPage() {
               ) : [...myOrders, ...customerOrders].length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">لا توجد طلبات بعد</p>
+                  <p className="text-zinc-400">ما عندك طلبات بعد</p>
                   <Link href="/services">
-                    <Button variant="outline" size="sm" className="mt-3">تصفح الخدمات</Button>
+                    <Button variant="outline" size="sm" className="mt-3">استعرض الخدمات</Button>
                   </Link>
                 </div>
               ) : (
@@ -225,27 +225,27 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">إجراءات سريعة</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">اختصارات</h2>
               <div className="grid grid-cols-2 gap-4">
                 <Link href="/services" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
                   <ShoppingBag className="w-8 h-8 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">تصفح العروض</p>
-                  <p className="text-zinc-500 text-sm">ابحث عن خدمات التعزيز</p>
+                  <p className="text-white font-medium">استعرض الخدمات</p>
+                  <p className="text-zinc-500 text-sm">شوف خدمات البوست</p>
                 </Link>
                 <Link href="/create-offer" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
                   <Plus className="w-8 h-8 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">إنشاء عرض</p>
-                  <p className="text-zinc-500 text-sm">ابدأ بيع خدماتك</p>
+                  <p className="text-white font-medium">أضف خدمة</p>
+                  <p className="text-zinc-500 text-sm">ابدأ تبيع</p>
                 </Link>
                 <Link href="/orders" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
                   <Clock className="w-8 h-8 text-yellow-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">تتبع الطلبات</p>
-                  <p className="text-zinc-500 text-sm">عرض حالة الطلب</p>
+                  <p className="text-white font-medium">طلباتي</p>
+                  <p className="text-zinc-500 text-sm">تابع طلباتك</p>
                 </Link>
                 <Link href="/profile" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
                   <MessageSquare className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">الرسائل</p>
-                  <p className="text-zinc-500 text-sm">تحدث مع المستخدمين</p>
+                  <p className="text-zinc-500 text-sm">ردّ على رسائلك</p>
                 </Link>
               </div>
             </div>
@@ -255,8 +255,8 @@ export default function DashboardPage() {
         {activeTab === 'orders' && (
           <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-white/[0.06]">
-              <h2 className="text-lg font-semibold text-white">طلبات قدمتها</h2>
-              <p className="text-zinc-400 text-sm">الخدمات التي اشتريتها من بوسترز آخرين</p>
+              <h2 className="text-lg font-semibold text-white">طلباتي</h2>
+              <p className="text-zinc-400 text-sm">خدمات طلبتها من بوسترز</p>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -265,9 +265,9 @@ export default function DashboardPage() {
             ) : myOrders.length === 0 ? (
               <div className="text-center py-12">
                 <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-zinc-400 mb-4">لم تشترِ أي خدمات بعد</p>
+                <p className="text-zinc-400 mb-4">ما طلبت شي بعد</p>
                 <Link href="/services">
-                  <Button>تصفح الخدمات</Button>
+                  <Button>استعرض الخدمات</Button>
                 </Link>
               </div>
             ) : (
@@ -303,7 +303,7 @@ export default function DashboardPage() {
           <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-white/[0.06]">
               <h2 className="text-lg font-semibold text-white">طلبات العملاء</h2>
-              <p className="text-zinc-400 text-sm">طلبات العملاء الذين اشتروا خدماتك</p>
+              <p className="text-zinc-400 text-sm">الطلبات اللي جتك من العملاء</p>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -312,10 +312,10 @@ export default function DashboardPage() {
             ) : customerOrders.length === 0 ? (
               <div className="text-center py-12">
                 <DollarSign className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-zinc-400 mb-2">لا توجد طلبات عملاء بعد</p>
-                <p className="text-zinc-500 text-sm mb-4">أنشئ عرضاً وابدأ بيع خدماتك!</p>
+                <p className="text-zinc-400 mb-2">ما جاك أي طلب بعد</p>
+                <p className="text-zinc-500 text-sm mb-4">أضف خدمتك وابدأ!</p>
                 <Link href="/create-offer">
-                  <Button>إنشاء عرض</Button>
+                  <Button>أضف خدمة</Button>
                 </Link>
               </div>
             ) : (
@@ -360,12 +360,12 @@ export default function DashboardPage() {
             ) : offers.length === 0 ? (
               <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
                 <Gamepad2 className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">لا توجد عروض بعد</h3>
-                <p className="text-zinc-400 mb-6">ابدأ بيع خدمات التعزيز الخاصة بك اليوم!</p>
+                <h3 className="text-xl font-semibold text-white mb-2">ما عندك خدمات بعد</h3>
+                <p className="text-zinc-400 mb-6">ابدأ تبيع خدماتك اليوم!</p>
                 <Link href="/create-offer">
                   <Button className="gap-2">
                     <Plus className="w-4 h-4" />
-                    أنشئ عرضك الأول
+                    أضف أول خدمة
                   </Button>
                 </Link>
               </div>
@@ -383,7 +383,7 @@ export default function DashboardPage() {
                         <p className="text-zinc-500 text-sm">السعر</p>
                       </div>
                       <Link href={`/services/${offer.id}`}>
-                        <Button variant="outline">عرض العرض</Button>
+                        <Button variant="outline">فتح</Button>
                       </Link>
                     </div>
                   </div>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                 <Link href="/create-offer" className="mt-4 block">
                   <div className="bg-zinc-900/30 border-2 border-dashed border-white/[0.08] rounded-xl p-8 flex flex-col items-center justify-center hover:border-white/[0.08] transition-colors cursor-pointer">
                     <Plus className="w-12 h-12 text-zinc-500 mb-2" />
-                    <p className="text-zinc-400">إنشاء عرض جديد</p>
+                    <p className="text-zinc-400">أضف خدمة جديدة</p>
                   </div>
                 </Link>
               </>

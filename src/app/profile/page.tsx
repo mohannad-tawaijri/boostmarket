@@ -38,7 +38,7 @@ export default function ProfilePage() {
   };
 
   const sections = [
-    { id: 'profile', label: 'الملف الشخصي', icon: User },
+    { id: 'profile', label: 'البروفايل', icon: User },
     { id: 'security', label: 'الأمان', icon: Lock },
     { id: 'notifications', label: 'الإشعارات', icon: Bell },
     { id: 'payment', label: 'الدفع', icon: CreditCard },
@@ -50,8 +50,8 @@ export default function ProfilePage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">إعدادات الحساب</h1>
-          <p className="text-zinc-400">أدر ملفك الشخصي وتفضيلاتك</p>
+          <h1 className="text-3xl font-bold text-white mb-2">الإعدادات</h1>
+          <p className="text-zinc-400">عدّل بياناتك وتفضيلاتك</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -142,7 +142,7 @@ export default function ProfilePage() {
                       value={formData.bio}
                       onChange={handleChange}
                       rows={4}
-                      placeholder="أخبر الآخرين عن نفسك..."
+                      placeholder="اكتب نبذة عنك..."
                       className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                     />
                   </div>

@@ -46,7 +46,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           
           {/* Price */}
           <div className="self-start">
-            <span className="text-xs text-zinc-400">يبدأ من </span>
+            <span className="text-xs text-zinc-400">من </span>
             <span className="text-xl font-bold text-white">${service.price}</span>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function ServiceCard({ service }: { service: Service }) {
               {service.deliveryTime}
             </div>
             <span className="text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors">
-              عرض ←
+              التفاصيل ←
             </span>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function Footer() {
               <Logo size="sm" />
             </div>
             <p className="text-zinc-500 text-sm leading-relaxed">
-              سوق يربط اللاعبين ببوسترز موثوقين. بسيط، آمن، وشفاف.
+              منصة تجمع اللاعبين مع بوسترز محترفين. سهل، آمن، وواضح.
             </p>
           </div>
 
@@ -20,9 +20,9 @@ export default function Footer() {
           <div>
             <h4 className="text-zinc-300 font-medium text-sm mb-4">المنتج</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><Link href="/services" className="text-zinc-500 hover:text-zinc-300 transition-colors">تصفح الخدمات</Link></li>
-              <li><Link href="/how-it-works" className="text-zinc-500 hover:text-zinc-300 transition-colors">كيف يعمل</Link></li>
-              <li><Link href="/become-booster" className="text-zinc-500 hover:text-zinc-300 transition-colors">كن بوستر</Link></li>
+              <li><Link href="/services" className="text-zinc-500 hover:text-zinc-300 transition-colors">استعراض الخدمات</Link></li>
+              <li><Link href="/how-it-works" className="text-zinc-500 hover:text-zinc-300 transition-colors">طريقة العمل</Link></li>
+              <li><Link href="/become-booster" className="text-zinc-500 hover:text-zinc-300 transition-colors">صِر بوستر</Link></li>
               <li><Link href="/about" className="text-zinc-500 hover:text-zinc-300 transition-colors">من نحن</Link></li>
             </ul>
           </div>
@@ -44,7 +44,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/terms" className="text-zinc-500 hover:text-zinc-300 transition-colors">شروط الخدمة</Link></li>
               <li><Link href="/privacy" className="text-zinc-500 hover:text-zinc-300 transition-colors">سياسة الخصوصية</Link></li>
-              <li><Link href="/cookies" className="text-zinc-500 hover:text-zinc-300 transition-colors">ملفات تعريف الارتباط</Link></li>
+              <li><Link href="/cookies" className="text-zinc-500 hover:text-zinc-300 transition-colors">الكوكيز</Link></li>
               <li><Link href="/disclaimer" className="text-zinc-500 hover:text-zinc-300 transition-colors">إخلاء المسؤولية</Link></li>
             </ul>
           </div>

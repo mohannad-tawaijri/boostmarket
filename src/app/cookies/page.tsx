@@ -15,7 +15,7 @@ export default function CookiesPage() {
           </Button>
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">سياسة ملفات تعريف الارتباط</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">سياسة الكوكيز</h1>
         <p className="text-sm text-zinc-500 mb-10">آخر تحديث: فبراير 2026</p>
         
         <div className="space-y-8 text-[15px] leading-relaxed text-zinc-400">

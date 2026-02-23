@@ -113,13 +113,13 @@ export default function CreateOfferPage() {
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 rounded-full border border-violet-500/20 mb-4">
             <Sparkles className="w-4 h-4 text-violet-400" />
-            <span className="text-sm text-violet-300">أنشئ عرضك</span>
+            <span className="text-sm text-violet-300">أضف خدمتك</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            شارك <span className="text-violet-400">مهاراتك في الألعاب</span>
+            ابدأ تبيع <span className="text-violet-400">مهاراتك</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            أنشئ عرضًا مميزًا لعرض خبرتك في التعزيز وابدأ بالكسب
+            أضف خدمة بوست وابدأ تكسب
           </p>
         </div>
 
@@ -131,8 +131,8 @@ export default function CreateOfferPage() {
                 <Plus className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">عرض تعزيز جديد</h2>
-                <p className="text-indigo-200 text-sm">املأ التفاصيل أدناه</p>
+                <h2 className="text-xl font-bold text-white">خدمة جديدة</h2>
+                <p className="text-indigo-200 text-sm">عبّي البيانات</p>
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Tag className="w-4 h-4 text-pink-400" />
-                  فئة الخدمة *
+                  نوع الخدمة *
                 </label>
                 <select
                   name="category"
@@ -206,7 +206,7 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <Sparkles className="w-4 h-4 text-yellow-400" />
-                تفاصيل اللعبة (اختياري)
+                تفاصيل إضافية (اختياري)
               </label>
               <input
                 type="text"
@@ -239,7 +239,7 @@ export default function CreateOfferPage() {
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <Tag className="w-4 h-4 text-violet-400" />
-                الوسوم (حتى 6)
+                التاقز (حتى 6)
               </label>
               
               {/* Selected Tags */}
@@ -270,7 +270,7 @@ export default function CreateOfferPage() {
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleTagKeyDown}
-                  placeholder="اكتب وسمًا واضغط Enter"
+                  placeholder="اكتب تاق واضغط Enter"
                   disabled={tags.length >= 6}
                   className="flex-1 bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50"
                 />
@@ -288,7 +288,7 @@ export default function CreateOfferPage() {
               {/* Suggested Tags */}
               {tags.length < 6 && (
                 <div className="mt-3">
-                  <p className="text-xs text-zinc-500 mb-2">وسوم مقترحة:</p>
+                  <p className="text-xs text-zinc-500 mb-2">مقترحات:</p>
                   <div className="flex flex-wrap gap-2">
                     {SUGGESTED_TAGS.filter(t => !tags.includes(t)).slice(0, 8).map((tag) => (
                       <button
@@ -310,7 +310,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <DollarSign className="w-4 h-4 text-green-400" />
-                  السعر (دولار) *
+                  السعر ($) *
                 </label>
                 <div className="relative">
                   <span className="absolute start-4 top-1/2 -translate-y-1/2 text-green-400 font-semibold">$</span>
@@ -331,7 +331,7 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Clock className="w-4 h-4 text-orange-400" />
-                  مدة التسليم *
+                  مدة التنفيذ *
                 </label>
                 <input
                   type="text"
@@ -356,12 +356,12 @@ export default function CreateOfferPage() {
                 {loading ? (
                   <span className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    جاري الإنشاء...
+                    جاري النشر...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5" />
-                    إنشاء عرض
+                    نشر الخدمة
                   </span>
                 )}
               </Button>
@@ -385,16 +385,16 @@ export default function CreateOfferPage() {
             <div className="p-2 bg-violet-600 rounded-lg">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xl text-white">نصائح احترافية للنجاح</h3>
+            <h3 className="font-bold text-xl text-white">نصائح للنجاح</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { icon: "✨", text: "اكتب عنوانًا واضحًا ومحددًا يلفت الانتباه" },
-              { icon: "📝", text: "قدم وصفًا تفصيليًا لما يتضمنه العرض" },
-              { icon: "💰", text: "حدد أسعارًا تنافسية بناءً على أسعار السوق" },
-              { icon: "⏰", text: "كن واقعيًا في مواعيد التسليم" },
-              { icon: "📋", text: "حدد أي متطلبات من المشتري" },
-              { icon: "🏆", text: "أبرز خبرتك ومعدل نجاحك" },
+              { icon: "✨", text: "اختر عنوان واضح ويلفت الانتباه" },
+              { icon: "📝", text: "وصّف خدمتك بالتفصيل" },
+              { icon: "💰", text: "حط سعر منافس" },
+              { icon: "⏰", text: "حط وقت تنفيذ واقعي" },
+              { icon: "📋", text: "وضّح المتطلبات من العميل" },
+              { icon: "🏆", text: "أبرز خبرتك ونسبة نجاحك" },
             ].map((tip, index) => (
               <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl border border-white/[0.08]">
                 <span className="text-xl">{tip.icon}</span>
