@@ -244,8 +244,8 @@ export default function OrdersPage() {
                     <div className="px-6 pb-6 border-t border-white/[0.06] pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                          <p className="text-zinc-500 text-sm mb-1">المعزز</p>
-                          <p className="text-white font-medium">{order.booster?.name || 'المعزز'}</p>
+                          <p className="text-zinc-500 text-sm mb-1">البوستر</p>
+                          <p className="text-white font-medium">{order.booster?.name || 'البوستر'}</p>
                         </div>
                         <div>
                           <p className="text-zinc-500 text-sm mb-1">رقم الطلب</p>
@@ -261,7 +261,7 @@ export default function OrdersPage() {
                         <Link href={`/messages?userId=${order.booster?.id}&serviceId=${order.service?.id}`}>
                           <Button variant="outline" className="gap-2">
                             <MessageSquare className="w-4 h-4" />
-                            مراسلة المعزز
+                            مراسلة البوستر
                           </Button>
                         </Link>
                         {order.status === 'COMPLETED' && !order.review && (
@@ -324,7 +324,7 @@ export default function OrdersPage() {
             </div>
 
             <div className="mb-4">
-              <p className="text-zinc-400 text-sm mb-1">المعزز</p>
+              <p className="text-zinc-400 text-sm mb-1">البوستر</p>
               <p className="text-white font-medium">{reviewModalOrder.booster.name}</p>
             </div>
 

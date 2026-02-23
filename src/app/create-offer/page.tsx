@@ -150,7 +150,7 @@ export default function CreateOfferPage() {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                placeholder="مثال: تعزيز رتبة ليق أوف ليجندز من الفضي إلى الذهبي"
+                placeholder="مثال: تعزيز رتبة League of Legends من Silver إلى Gold"
                 className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>

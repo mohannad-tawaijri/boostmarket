@@ -149,16 +149,16 @@ export enum GameCategory {
 }
 
 export const GAME_NAMES: Record<GameCategory, string> = {
-  [GameCategory.LEAGUE_OF_LEGENDS]: 'ليق أوف ليجندز',
-  [GameCategory.VALORANT]: 'فالورانت',
-  [GameCategory.CSGO]: 'كاونتر سترايك 2',
-  [GameCategory.DOTA2]: 'دوتا 2',
-  [GameCategory.OVERWATCH]: 'أوفرواتش 2',
-  [GameCategory.APEX_LEGENDS]: 'أبيكس ليجندز',
-  [GameCategory.FORTNITE]: 'فورتنايت',
-  [GameCategory.ROCKET_LEAGUE]: 'روكيت ليق',
-  [GameCategory.RAINBOW_SIX]: 'رينبو سيكس سيج',
-  [GameCategory.COD_WARZONE]: 'كول أوف ديوتي: وورزون',
+  [GameCategory.LEAGUE_OF_LEGENDS]: 'League of Legends',
+  [GameCategory.VALORANT]: 'Valorant',
+  [GameCategory.CSGO]: 'CS2',
+  [GameCategory.DOTA2]: 'Dota 2',
+  [GameCategory.OVERWATCH]: 'Overwatch 2',
+  [GameCategory.APEX_LEGENDS]: 'Apex Legends',
+  [GameCategory.FORTNITE]: 'Fortnite',
+  [GameCategory.ROCKET_LEAGUE]: 'Rocket League',
+  [GameCategory.RAINBOW_SIX]: 'Rainbow Six Siege',
+  [GameCategory.COD_WARZONE]: 'Call of Duty: Warzone',
   [GameCategory.OTHER]: 'أخرى',
 };
 

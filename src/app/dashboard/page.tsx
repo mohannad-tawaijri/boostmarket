@@ -256,7 +256,7 @@ export default function DashboardPage() {
           <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-white/[0.06]">
               <h2 className="text-lg font-semibold text-white">طلبات قدمتها</h2>
-              <p className="text-zinc-400 text-sm">الخدمات التي اشتريتها من معززين آخرين</p>
+              <p className="text-zinc-400 text-sm">الخدمات التي اشتريتها من بوسترز آخرين</p>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -276,7 +276,7 @@ export default function DashboardPage() {
                   <thead className="bg-white/[0.04]">
                     <tr>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">الخدمة</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">المعزز</th>
+                      <th className="text-left text-zinc-400 font-medium px-6 py-4">البوستر</th>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">الحالة</th>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">السعر</th>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">التاريخ</th>

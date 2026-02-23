@@ -559,7 +559,7 @@ function MessagesContent() {
                 <div className="text-center py-12 px-4">
                   <MessageSquare className="w-12 h-12 text-gray-600 mx-auto mb-3" />
                   <p className="text-zinc-400">لا توجد محادثات بعد</p>
-                  <p className="text-zinc-500 text-sm mt-1">تواصل مع معزز لبدء الدردشة</p>
+                  <p className="text-zinc-500 text-sm mt-1">تواصل مع بوستر لبدء الدردشة</p>
                 </div>
               ) : (
                 filteredConversations.map((conversation) => {
@@ -850,7 +850,7 @@ function MessagesContent() {
                 <div className="text-center">
                   <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                   <p className="text-zinc-400">اختر محادثة</p>
-                  <p className="text-zinc-500 text-sm">اختر من محادثاتك الحالية أو تواصل مع معزز</p>
+                  <p className="text-zinc-500 text-sm">اختر من محادثاتك الحالية أو تواصل مع بوستر</p>
                 </div>
               </div>
             )}

@@ -11,7 +11,7 @@ const arabic = Noto_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "500", "6
 
 export const metadata: Metadata = {
   title: "بوست ماركت — تعزيز ألعابك باحترافية",
-  description: "سوق يجمع اللاعبين مع معززين موثوقين لرفع تصنيفك — بسرعة وأمان وشفافية.",
+  description: "سوق يجمع اللاعبين مع بوسترز موثوقين لرفع رانكك — بسرعة وأمان وشفافية.",
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ export default function HowItWorksPage() {
       <section className="py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">كيف يعمل</h1>
-          <p className="text-zinc-500 text-sm mb-10">من إيجاد معزز إلى الحصول على رتبتك — إليك المسار الكامل.</p>
+          <p className="text-zinc-500 text-sm mb-10">من إيجاد بوستر إلى الحصول على رتبتك — إليك المسار الكامل.</p>
 
           <div className="space-y-10 text-[15px] leading-relaxed text-zinc-400">
 
@@ -18,7 +18,7 @@ export default function HowItWorksPage() {
                 <h2 className="text-lg font-semibold text-white mb-2">تصفح السوق</h2>
                 <p>
                   توجه إلى صفحة الخدمات وقم بالتصفية حسب اللعبة أو نطاق الرتبة أو السعر. كل إعلان
-                  يوضح ما يقدمه المعزز، والمدة المعتادة، وما اعتقده المشترون السابقون
+                  يوضح ما يقدمه البوستر، والمدة المعتادة، وما اعتقده المشترون السابقون
                   عنهم. لا تخمين.
                 </p>
               </div>
@@ -28,9 +28,9 @@ export default function HowItWorksPage() {
             <div className="flex gap-5">
               <div className="flex-shrink-0 w-9 h-9 rounded-full bg-violet-600/20 text-violet-400 flex items-center justify-center text-sm font-bold mt-0.5">2</div>
               <div>
-                <h2 className="text-lg font-semibold text-white mb-2">راسل المعزز</h2>
+                <h2 className="text-lg font-semibold text-white mb-2">راسل البوستر</h2>
                 <p>
-                  قبل الشراء، يمكنك الدردشة مع المعزز مباشرة. اسأل عن طريقته،
+                  قبل الشراء، يمكنك الدردشة مع البوستر مباشرة. اسأل عن طريقته،
                   وأكد الجداول الزمنية، أو ناقش التفاصيل مثل تفضيلات الأبطال أو جدول اللعب.
                   هذه ليست آلة بيع — أنت توظف شخصاً.
                 </p>
@@ -44,7 +44,7 @@ export default function HowItWorksPage() {
                 <h2 className="text-lg font-semibold text-white mb-2">قدم طلبك</h2>
                 <p>
                   عندما تكون مستعداً، قدم الطلب وادفع عبر BoostMarket. يتم الاحتفاظ بمدفوعاتك
-                  بأمان حتى يتم إنجاز العمل — لا يحصل المعزز على أجره حتى تؤكد
+                  بأمان حتى يتم إنجاز العمل — لا يحصل البوستر على أجره حتى تؤكد
                   التسليم (أو حتى تنتهي فترة الإصدار التلقائي).
                 </p>
               </div>
@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
               <div>
                 <h2 className="text-lg font-semibold text-white mb-2">تابع التقدم</h2>
                 <p>
-                  بمجرد أن يبدأ المعزز، يمكنك المتابعة من لوحة التحكم الخاصة بك. معظم المعززين
+                  بمجرد أن يبدأ البوستر، يمكنك المتابعة من لوحة التحكم الخاصة بك. معظم البوسترز
                   يرسلون تحديثات عبر الدردشة. إذا شعرت بأي شيء غير طبيعي، يمكنك الإيقاف أو فتح نزاع
                   في أي وقت.
                 </p>
@@ -70,7 +70,7 @@ export default function HowItWorksPage() {
                 <h2 className="text-lg font-semibold text-white mb-2">أكد وقيّم</h2>
                 <p>
                   عند اكتمال التعزيز، أكد التسليم واترك تقييماً. الملاحظات الصادقة
-                  تساعد المشترين الآخرين وتكافئ المعززين الذين يقومون بعمل جيد.
+                  تساعد المشترين الآخرين وتكافئ البوسترز الذين يقومون بعمل جيد.
                 </p>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function HowItWorksPage() {
                 <p>
                   يعتمد على الخدمة. بعض التعزيزات (مثل التدريب أو اللعب الثنائي) لا تحتاج
                   أبداً لبيانات تسجيل دخولك. والبعض الآخر يحتاج. إذا شاركت بياناتك، غيّر كلمة المرور بعدها
-                  وفعّل التحقق بخطوتين. ننصح أيضاً باختيار معززين لديهم سجل تقييمات قوي.
+                  وفعّل التحقق بخطوتين. ننصح أيضاً باختيار بوسترز لديهم سجل تقييمات قوي.
                 </p>
               </div>
 
@@ -92,7 +92,7 @@ export default function HowItWorksPage() {
                 <h3 className="font-medium text-zinc-300 mb-1">كم يستغرق الأمر؟</h3>
                 <p>
                   يختلف حسب الخدمة. كل إعلان يحتوي على وقت تسليم تقديري. تعزيز قسم واحد
-                  قد يستغرق يوماً أو يومين؛ صعود كامل قد يستغرق أسبوعاً. سيعطيك المعزز
+                  قد يستغرق يوماً أو يومين؛ صعود كامل قد يستغرق أسبوعاً. سيعطيك البوستر
                   تقديراً أكثر تحديداً بمجرد رؤية حسابك.
                 </p>
               </div>

@@ -17,8 +17,8 @@ export default function Home() {
             </p>
             
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] tracking-tight">
-              تصنيفك. <br className="hidden sm:block" />
-              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">معززونا.</span>
+              رتبتك. <br className="hidden sm:block" />
+              <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">خبراؤنا.</span>
             </h1>
             
             <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto leading-relaxed">
@@ -46,7 +46,7 @@ export default function Home() {
               "جميع الألعاب الرئيسية",
               "حماية المشتري",
               "متوسط التسليم < 24 ساعة",
-              "دردشة مباشرة مع المعززين",
+              "دردشة مباشرة مع البوسترز",
             ].map((item, i) => (
               <span key={i} className="flex items-center gap-1.5">
                 <CheckCircle className="w-3.5 h-3.5 text-violet-500" />
@@ -68,7 +68,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
             {[
               { icon: Shield, title: "حماية المشتري", desc: "المدفوعات محفوظة حتى تؤكد أن التعزيز تم بنجاح." },
-              { icon: Star, title: "معززون موثقون", desc: "كل بائع يتم مراجعته يدوياً. لا بوتات، لا محتالين." },
+              { icon: Star, title: "بوسترز موثقين", desc: "كل بائع يتم مراجعته يدوياً. لا بوتات، لا محتالين." },
               { icon: Zap, title: "تنفيذ سريع", desc: "معظم الطلبات تبدأ خلال ساعة. تتبع التقدم في الوقت الفعلي." },
               { icon: Trophy, title: "ضمان استرداد المال", desc: "غير راضٍ؟ سنعيد لك أموالك — بدون مشاكل." },
             ].map((feature, index) => (
@@ -99,12 +99,12 @@ export default function Home() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { name: "ليق أوف ليجندز", abbr: "LoL", bg: "from-amber-600/20 to-amber-900/30" },
-              { name: "فالورانت", abbr: "VAL", bg: "from-red-500/20 to-red-900/30" },
+              { name: "League of Legends", abbr: "LoL", bg: "from-amber-600/20 to-amber-900/30" },
+              { name: "Valorant", abbr: "VAL", bg: "from-red-500/20 to-red-900/30" },
               { name: "CS2", abbr: "CS2", bg: "from-orange-500/20 to-orange-900/30" },
-              { name: "دوتا 2", abbr: "D2", bg: "from-rose-500/20 to-rose-900/30" },
-              { name: "أوفرواتش 2", abbr: "OW2", bg: "from-orange-400/15 to-orange-800/30" },
-              { name: "أبيكس ليجندز", abbr: "APX", bg: "from-red-500/15 to-red-900/30" },
+              { name: "Dota 2", abbr: "D2", bg: "from-rose-500/20 to-rose-900/30" },
+              { name: "Overwatch 2", abbr: "OW2", bg: "from-orange-400/15 to-orange-800/30" },
+              { name: "Apex Legends", abbr: "APX", bg: "from-red-500/15 to-red-900/30" },
             ].map((game, index) => (
               <Link href={`/services?game=${game.name.toUpperCase().replace(/\s+/g, '_').replace('2', '')}`} key={index}>
                 <div className={`bg-gradient-to-br ${game.bg} rounded-xl p-4 aspect-[4/3] flex flex-col justify-between border border-white/[0.06] hover:border-white/[0.12] transition-all cursor-pointer group hover:scale-[1.02]`}>
@@ -127,9 +127,9 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
-              { step: "1", title: "اختر خدمة", desc: "تصفح العروض من معززين موثقين عبر جميع الألعاب المدعومة." },
+              { step: "1", title: "اختر خدمة", desc: "تصفح العروض من بوسترز موثقين عبر جميع الألعاب المدعومة." },
               { step: "2", title: "ادفع بأمان", desc: "أكمل الطلب مع حماية المشتري — أموالك محفوظة حتى التسليم." },
-              { step: "3", title: "شاهد النتيجة", desc: "تتبع التقدم مباشرة وتحدث مع المعزز في الوقت الفعلي." },
+              { step: "3", title: "شاهد النتيجة", desc: "تتبع التقدم مباشرة وتحدث مع البوستر في الوقت الفعلي." },
             ].map((item, index) => (
               <div key={index} className="text-center solid-card rounded-xl p-6">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-b from-violet-500 to-violet-700 text-white text-sm font-bold flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-600/20">

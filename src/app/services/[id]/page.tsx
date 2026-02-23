@@ -364,7 +364,7 @@ export default function ServiceDetailPage() {
                   </Button>
 
                   <p className="text-center text-zinc-500 text-xs">
-                    راسل المعزز لمناقشة متطلباتك والحصول على عرض مخصص
+                    راسل البوستر لمناقشة متطلباتك والحصول على عرض مخصص
                   </p>
                 </>
               )}
@@ -384,14 +384,14 @@ export default function ServiceDetailPage() {
             {/* Booster Card */}
             {service.booster && (
               <div className="bg-white/[0.03] rounded-2xl border border-white/[0.08] p-6">
-                <h3 className="font-semibold text-white mb-4">عن المعزز</h3>
+                <h3 className="font-semibold text-white mb-4">عن البوستر</h3>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     {service.booster.name?.charAt(0) || "B"}
                   </div>
                   <div>
                     <p className="font-semibold text-white text-lg">{service.booster.name}</p>
-                    <p className="text-violet-400 text-sm">معزز محترف موثق</p>
+                    <p className="text-violet-400 text-sm">بوستر محترف موثق</p>
                   </div>
                 </div>
                 {service.booster.bio && (

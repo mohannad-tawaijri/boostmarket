@@ -96,13 +96,13 @@ function ServicesContent() {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/20 rounded-full border border-violet-500/20 mb-4">
               <Sparkles className="w-4 h-4 text-violet-400" />
-              <span className="text-sm text-violet-300">اكتشف أفضل المعززين</span>
+              <span className="text-sm text-violet-300">اكتشف أفضل البوسترز</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               تصفح <span className="text-violet-400">خدمات التعزيز</span>
             </h1>
             <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
-              اعثر على المعزز المثالي لاحتياجاتك في الألعاب
+              اعثر على البوستر المثالي لاحتياجاتك في الألعاب
             </p>
           </div>
 
@@ -112,7 +112,7 @@ function ServicesContent() {
               <Search className="absolute start-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
               <input
                 type="text"
-                placeholder="ابحث عن خدمات، ألعاب، معززين..."
+                placeholder="ابحث عن خدمات، ألعاب، بوسترز..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full ps-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"

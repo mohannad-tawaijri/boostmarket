@@ -12,7 +12,7 @@ export default function Footer() {
               <Logo size="sm" />
             </div>
             <p className="text-zinc-500 text-sm leading-relaxed">
-              سوق يربط اللاعبين بمعززين موثوقين. بسيط، آمن، وشفاف.
+              سوق يربط اللاعبين ببوسترز موثوقين. بسيط، آمن، وشفاف.
             </p>
           </div>
 
@@ -22,7 +22,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li><Link href="/services" className="text-zinc-500 hover:text-zinc-300 transition-colors">تصفح الخدمات</Link></li>
               <li><Link href="/how-it-works" className="text-zinc-500 hover:text-zinc-300 transition-colors">كيف يعمل</Link></li>
-              <li><Link href="/become-booster" className="text-zinc-500 hover:text-zinc-300 transition-colors">كن معززاً</Link></li>
+              <li><Link href="/become-booster" className="text-zinc-500 hover:text-zinc-300 transition-colors">كن بوستر</Link></li>
               <li><Link href="/about" className="text-zinc-500 hover:text-zinc-300 transition-colors">من نحن</Link></li>
             </ul>
           </div>
