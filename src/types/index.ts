@@ -162,6 +162,20 @@ export const GAME_NAMES: Record<GameCategory, string> = {
   [GameCategory.OTHER]: 'أخرى',
 };
 
+export const GAME_IMAGES: Record<GameCategory, string> = {
+  [GameCategory.LEAGUE_OF_LEGENDS]: '/games/league-of-legends.svg',
+  [GameCategory.VALORANT]: '/games/valorant.svg',
+  [GameCategory.CSGO]: '/games/cs2.svg',
+  [GameCategory.DOTA2]: '/games/dota2.svg',
+  [GameCategory.OVERWATCH]: '/games/overwatch2.svg',
+  [GameCategory.APEX_LEGENDS]: '/games/apex-legends.svg',
+  [GameCategory.FORTNITE]: '/games/fortnite.svg',
+  [GameCategory.ROCKET_LEAGUE]: '/games/rocket-league.svg',
+  [GameCategory.RAINBOW_SIX]: '/games/rainbow-six.svg',
+  [GameCategory.COD_WARZONE]: '/games/warzone.svg',
+  [GameCategory.OTHER]: '',
+};
+
 export const CATEGORY_NAMES: Record<ServiceCategory, string> = {
   RANK_BOOST: 'تعزيز الرتبة',
   COACHING: 'تدريب',

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Shield, Zap, Users, Trophy, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -97,19 +98,34 @@ export default function Home() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
-              { name: "League of Legends", abbr: "LoL", bg: "from-amber-600/20 to-amber-900/30" },
-              { name: "Valorant", abbr: "VAL", bg: "from-red-500/20 to-red-900/30" },
-              { name: "CS2", abbr: "CS2", bg: "from-orange-500/20 to-orange-900/30" },
-              { name: "Dota 2", abbr: "D2", bg: "from-rose-500/20 to-rose-900/30" },
-              { name: "Overwatch 2", abbr: "OW2", bg: "from-orange-400/15 to-orange-800/30" },
-              { name: "Apex Legends", abbr: "APX", bg: "from-red-500/15 to-red-900/30" },
+              { name: "League of Legends", key: "LEAGUE_OF_LEGENDS", img: "/games/league-of-legends.svg" },
+              { name: "Valorant", key: "VALORANT", img: "/games/valorant.svg" },
+              { name: "CS2", key: "CS2", img: "/games/cs2.svg" },
+              { name: "Dota 2", key: "DOTA2", img: "/games/dota2.svg" },
+              { name: "Overwatch 2", key: "OVERWATCH", img: "/games/overwatch2.svg" },
+              { name: "Apex Legends", key: "APEX_LEGENDS", img: "/games/apex-legends.svg" },
+              { name: "Fortnite", key: "FORTNITE", img: "/games/fortnite.svg" },
+              { name: "Rocket League", key: "ROCKET_LEAGUE", img: "/games/rocket-league.svg" },
+              { name: "Call of Duty: Warzone", key: "COD_WARZONE", img: "/games/warzone.svg" },
+              { name: "PUBG", key: "PUBG", img: "/games/pubg.svg" },
             ].map((game, index) => (
-              <Link href={`/services?game=${game.name.toUpperCase().replace(/\s+/g, '_').replace('2', '')}`} key={index}>
-                <div className={`bg-gradient-to-br ${game.bg} rounded-xl p-4 aspect-[4/3] flex flex-col justify-between border border-white/[0.06] hover:border-white/[0.12] transition-all cursor-pointer group hover:scale-[1.02]`}>
-                  <span className="text-2xl font-bold text-white/15 group-hover:text-white/25 transition-colors">{game.abbr}</span>
-                  <span className="text-sm font-medium text-zinc-300">{game.name}</span>
+              <Link href={`/services?game=${game.key}`} key={index}>
+                <div className="relative rounded-xl overflow-hidden aspect-[4/3] border border-white/[0.06] hover:border-white/[0.15] transition-all cursor-pointer group hover:scale-[1.03] hover:shadow-lg hover:shadow-violet-500/10">
+                  {/* صورة اللعبة */}
+                  <Image
+                    src={game.img}
+                    alt={game.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  {/* تدرج للقراءة */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* اسم اللعبة */}
+                  <div className="absolute bottom-0 right-0 left-0 p-3">
+                    <span className="text-sm font-semibold text-white drop-shadow-lg">{game.name}</span>
+                  </div>
                 </div>
               </Link>
             ))}

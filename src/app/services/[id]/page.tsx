@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, Heart, MessageCircle, Shield, ArrowRight, CheckCircle, Gamepad2, Star, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Service, GAME_NAMES, CATEGORY_NAMES, GameCategory, ServiceCategory, Review } from "@/types";
+import { Service, GAME_NAMES, CATEGORY_NAMES, GAME_IMAGES, GameCategory, ServiceCategory, Review } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import { API_URL } from "@/lib/config";
 
@@ -166,6 +167,15 @@ export default function ServiceDetailPage() {
     <div className="min-h-screen bg-transparent">
       {/* Hero Banner */}
       <div className={`relative h-64 bg-gradient-to-br ${gradient} overflow-hidden`}>
+        {/* صورة اللعبة كخلفية */}
+        {GAME_IMAGES[service.game as GameCategory] && (
+          <Image
+            src={GAME_IMAGES[service.game as GameCategory]}
+            alt={GAME_NAMES[service.game as GameCategory] || service.game}
+            fill
+            className="object-cover opacity-40"
+          />
+        )}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#111114] via-transparent to-transparent"></div>
         

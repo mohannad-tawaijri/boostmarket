@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, Star, Tag } from "lucide-react";
-import { Service, GAME_NAMES, GameCategory } from "@/types";
+import { Service, GAME_NAMES, GAME_IMAGES, GameCategory } from "@/types";
 
 export default function ServiceCard({ service }: { service: Service }) {
   // Game-specific gradient backgrounds
@@ -20,6 +21,7 @@ export default function ServiceCard({ service }: { service: Service }) {
 
   const gameBg = gameBgs[service.game] || gameBgs.OTHER;
   const gameName = GAME_NAMES[service.game as GameCategory] || service.game;
+  const gameImage = GAME_IMAGES[service.game as GameCategory] || '';
 
   const reviews = service.reviews || [];
   const averageRating = reviews.length > 0 
@@ -31,9 +33,19 @@ export default function ServiceCard({ service }: { service: Service }) {
     <Link href={`/services/${service.id}`} className="block group">
       <div className="bg-white/[0.03] rounded-xl border border-white/[0.07] overflow-hidden hover:border-violet-500/25 transition-all card-hover cursor-pointer hover:shadow-lg hover:shadow-violet-600/5">
         {/* Header area */}
-        <div className={`relative h-40 bg-gradient-to-br ${gameBg} flex flex-col justify-between p-4`}>
+        <div className={`relative h-40 bg-gradient-to-br ${gameBg} flex flex-col justify-between p-4 overflow-hidden`}>
+          {/* صورة اللعبة كخلفية */}
+          {gameImage && (
+            <Image
+              src={gameImage}
+              alt={gameName}
+              fill
+              className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-all duration-500"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
           {/* Game name */}
-          <div className="flex items-center justify-between">
+          <div className="relative z-10 flex items-center justify-between">
             <span className="px-2.5 py-1 bg-black/40 backdrop-blur-md rounded-md text-xs font-medium text-zinc-200">
               {gameName}
             </span>
@@ -45,7 +57,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           </div>
           
           {/* Price */}
-          <div className="self-start">
+          <div className="relative z-10 self-start">
             <span className="text-xs text-zinc-400">من </span>
             <span className="text-xl font-bold text-white">${service.price}</span>
           </div>

@@ -3,10 +3,11 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
-import { Service, GameCategory, GAME_NAMES } from "@/types";
+import { Service, GameCategory, GAME_NAMES, GAME_IMAGES } from "@/types";
 import { API_URL } from "@/lib/config";
 
 const SORT_OPTIONS = [
@@ -138,18 +139,34 @@ function ServicesContent() {
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
                   اللعبة
                 </label>
-                <select
-                  value={selectedGame}
-                  onChange={(e) => setSelectedGame(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
-                >
-                  <option value="" className="bg-zinc-800">كل الألعاب</option>
-                  {Object.entries(GAME_NAMES).map(([key, name]) => (
-                    <option key={key} value={key} className="bg-zinc-800">
-                      {name}
-                    </option>
+                <div className="space-y-1.5 max-h-[320px] overflow-y-auto custom-scrollbar">
+                  <button
+                    onClick={() => setSelectedGame("")}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${!selectedGame ? 'bg-violet-500/20 border border-violet-500/30 text-violet-300' : 'hover:bg-white/[0.05] text-zinc-400 border border-transparent'}`}
+                  >
+                    <Gamepad2 className="w-5 h-5 flex-shrink-0" />
+                    <span>كل الألعاب</span>
+                  </button>
+                  {Object.entries(GAME_NAMES).filter(([key]) => key !== 'OTHER').map(([key, name]) => (
+                    <button
+                      key={key}
+                      onClick={() => setSelectedGame(key)}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${selectedGame === key ? 'bg-violet-500/20 border border-violet-500/30 text-violet-300' : 'hover:bg-white/[0.05] text-zinc-400 border border-transparent'}`}
+                    >
+                      {GAME_IMAGES[key as GameCategory] && (
+                        <div className="relative w-7 h-7 rounded-md overflow-hidden flex-shrink-0 border border-white/10">
+                          <Image
+                            src={GAME_IMAGES[key as GameCategory]}
+                            alt={name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <span className="truncate">{name}</span>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
 
               {/* Sort By */}

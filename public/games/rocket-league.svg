@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="rl-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B3E"/>
+      <stop offset="100%" style="stop-color:#0A1128"/>
+    </linearGradient>
+    <linearGradient id="rl-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#26C6F5"/>
+      <stop offset="100%" style="stop-color:#0078FF"/>
+    </linearGradient>
+    <radialGradient id="rl-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#26C6F5;stop-opacity:0.18"/>
+      <stop offset="100%" style="stop-color:#0D1B3E;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#rl-bg)"/>
+  <circle cx="200" cy="150" r="130" fill="url(#rl-glow)"/>
+  <!-- Rocket car silhouette -->
+  <g transform="translate(200,140)" opacity="0.8">
+    <!-- Ball -->
+    <circle r="30" fill="none" stroke="url(#rl-blue)" stroke-width="2.5"/>
+    <circle r="20" fill="none" stroke="#26C6F5" stroke-width="1" opacity="0.3"/>
+    <!-- Pentagon pattern on ball -->
+    <polygon points="0,-12 11,-4 7,10 -7,10 -11,-4" fill="none" stroke="#26C6F5" stroke-width="1" opacity="0.5"/>
+    <!-- Boost trail -->
+    <path d="M-50,35 Q-30,20 -15,30 Q0,40 20,25 Q35,15 50,30" fill="none" stroke="#26C6F5" stroke-width="2" opacity="0.4"/>
+  </g>
+  <!-- Field lines -->
+  <g opacity="0.06" stroke="#26C6F5" stroke-width="1">
+    <line x1="0" y1="250" x2="400" y2="250"/>
+    <ellipse cx="200" cy="250" rx="80" ry="20" fill="none"/>
+    <line x1="200" y1="250" x2="200" y2="230"/>
+  </g>
+  <!-- Speed lines -->
+  <g stroke="#26C6F5" stroke-width="1" opacity="0.1">
+    <line x1="30" y1="100" x2="80" y2="100"/>
+    <line x1="50" y1="120" x2="90" y2="120"/>
+    <line x1="310" y1="180" x2="370" y2="180"/>
+    <line x1="320" y1="200" x2="360" y2="200"/>
+  </g>
+</svg>

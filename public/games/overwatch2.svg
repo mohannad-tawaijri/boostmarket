@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="ow-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2A2C2E"/>
+      <stop offset="50%" style="stop-color:#1E2022"/>
+      <stop offset="100%" style="stop-color:#2A2C2E"/>
+    </linearGradient>
+    <linearGradient id="ow-orange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FA9C1E"/>
+      <stop offset="100%" style="stop-color:#E08A10"/>
+    </linearGradient>
+    <radialGradient id="ow-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FA9C1E;stop-opacity:0.18"/>
+      <stop offset="100%" style="stop-color:#2A2C2E;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#ow-bg)"/>
+  <circle cx="200" cy="150" r="130" fill="url(#ow-glow)"/>
+  <!-- OW Circle emblem -->
+  <g transform="translate(200,145)" opacity="0.85">
+    <circle r="42" fill="none" stroke="url(#ow-orange)" stroke-width="4"/>
+    <circle r="32" fill="none" stroke="#FA9C1E" stroke-width="1.5" opacity="0.4"/>
+    <!-- Inner OW design -->
+    <path d="M-20,-8 Q-10,-25 0,-8 Q10,-25 20,-8 Q10,15 0,25 Q-10,15 -20,-8 Z" fill="url(#ow-orange)" opacity="0.8"/>
+    <!-- Horizontal bars -->
+    <line x1="-55" y1="0" x2="-45" y2="0" stroke="#FA9C1E" stroke-width="3" stroke-linecap="round"/>
+    <line x1="45" y1="0" x2="55" y2="0" stroke="#FA9C1E" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- Hex pattern background -->
+  <g opacity="0.04" stroke="#FA9C1E" stroke-width="1" fill="none">
+    <polygon points="50,50 80,35 110,50 110,80 80,95 50,80"/>
+    <polygon points="290,50 320,35 350,50 350,80 320,95 290,80"/>
+    <polygon points="50,200 80,185 110,200 110,230 80,245 50,230"/>
+    <polygon points="290,200 320,185 350,200 350,230 320,245 290,230"/>
+  </g>
+  <!-- Tech lines -->
+  <g stroke="#FA9C1E" stroke-width="0.5" opacity="0.15">
+    <line x1="0" y1="148" x2="100" y2="148"/>
+    <line x1="300" y1="148" x2="400" y2="148"/>
+    <line x1="200" y1="0" x2="200" y2="60"/>
+    <line x1="200" y1="240" x2="200" y2="300"/>
+  </g>
+</svg>

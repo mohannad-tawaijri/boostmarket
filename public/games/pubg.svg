@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="pubg-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2A2415"/>
+      <stop offset="100%" style="stop-color:#1A1810"/>
+    </linearGradient>
+    <linearGradient id="pubg-yellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5A623"/>
+      <stop offset="100%" style="stop-color:#D4891A"/>
+    </linearGradient>
+    <radialGradient id="pubg-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#2A2415;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#pubg-bg)"/>
+  <circle cx="200" cy="150" r="130" fill="url(#pubg-glow)"/>
+  <!-- Helmet silhouette -->
+  <g transform="translate(200,135)" opacity="0.8">
+    <path d="M-30,-30 Q-35,-15 -35,5 Q-35,25 -20,35 Q-5,45 0,45 Q5,45 20,35 Q35,25 35,5 Q35,-15 30,-30 Q15,-45 0,-45 Q-15,-45 -30,-30 Z" fill="none" stroke="url(#pubg-yellow)" stroke-width="2.5"/>
+    <!-- Visor -->
+    <path d="M-25,0 Q-20,-8 0,-10 Q20,-8 25,0 Q20,8 0,10 Q-20,8 -25,0 Z" fill="#F5A623" opacity="0.3"/>
+    <line x1="-28" y1="0" x2="28" y2="0" stroke="#F5A623" stroke-width="1.5" opacity="0.5"/>
+  </g>
+  <!-- Pan icon (PUBG signature) -->
+  <g transform="translate(310,220)" opacity="0.15" fill="#F5A623">
+    <circle r="12"/>
+    <rect x="-2" y="10" width="4" height="15" rx="1"/>
+  </g>
+  <!-- Crate drops -->
+  <g opacity="0.06" stroke="#F5A623" stroke-width="1" fill="none">
+    <rect x="60" y="50" width="25" height="25" rx="2"/>
+    <rect x="315" y="60" width="25" height="25" rx="2"/>
+    <rect x="80" y="220" width="25" height="25" rx="2"/>
+  </g>
+  <!-- Zone circle -->
+  <circle cx="200" cy="150" r="100" fill="none" stroke="#F5A623" stroke-width="0.5" opacity="0.1" stroke-dasharray="4,4"/>
+</svg>

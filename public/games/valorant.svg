@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="val-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1923"/>
+      <stop offset="100%" style="stop-color:#1a1f2e"/>
+    </linearGradient>
+    <linearGradient id="val-red" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4655"/>
+      <stop offset="100%" style="stop-color:#BD3944"/>
+    </linearGradient>
+    <radialGradient id="val-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FF4655;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#0F1923;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#val-bg)"/>
+  <circle cx="200" cy="150" r="130" fill="url(#val-glow)"/>
+  <!-- Grid pattern -->
+  <g opacity="0.05" stroke="#FF4655" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="300" y1="0" x2="300" y2="300"/>
+    <line x1="0" y1="75" x2="400" y2="75"/>
+    <line x1="0" y1="150" x2="400" y2="150"/>
+    <line x1="0" y1="225" x2="400" y2="225"/>
+  </g>
+  <!-- V Logo -->
+  <g transform="translate(200,145)" opacity="0.9">
+    <polygon points="-40,-50 -10,-50 20,30 -10,30" fill="url(#val-red)"/>
+    <polygon points="10,-50 40,-50 40,30 20,30" fill="url(#val-red)" opacity="0.7"/>
+  </g>
+  <!-- Crosshair accents -->
+  <g stroke="#FF4655" stroke-width="2" opacity="0.3">
+    <line x1="200" y1="40" x2="200" y2="70"/>
+    <line x1="200" y1="230" x2="200" y2="260"/>
+    <line x1="70" y1="150" x2="100" y2="150"/>
+    <line x1="300" y1="150" x2="330" y2="150"/>
+  </g>
+  <!-- Corner triangles -->
+  <polygon points="0,0 60,0 0,40" fill="#FF4655" opacity="0.1"/>
+  <polygon points="400,300 340,300 400,260" fill="#FF4655" opacity="0.1"/>
+</svg>
