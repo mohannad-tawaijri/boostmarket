@@ -126,7 +126,7 @@ export default function ServiceDetailPage() {
   const gameGradients: Record<string, string> = {
     LEAGUE_OF_LEGENDS: "from-yellow-600 via-yellow-700 to-yellow-900",
     VALORANT: "from-red-500 via-pink-600 to-red-800",
-    CSGO: "from-orange-500 via-amber-600 to-orange-800",
+    CS2: "from-orange-500 via-amber-600 to-orange-800",
     DOTA2: "from-red-700 via-red-800 to-red-950",
     OVERWATCH: "from-orange-400 via-orange-500 to-orange-700",
     APEX_LEGENDS: "from-red-500 via-red-600 to-red-800",
@@ -134,6 +134,7 @@ export default function ServiceDetailPage() {
     ROCKET_LEAGUE: "from-blue-500 via-cyan-500 to-blue-700",
     RAINBOW_SIX: "from-zinc-700 via-zinc-800 to-zinc-900",
     COD_WARZONE: "from-green-700 via-green-800 to-green-950",
+    PUBG: "from-yellow-600 via-amber-700 to-yellow-900",
     OTHER: "from-indigo-600 via-purple-600 to-indigo-800",
   };
 

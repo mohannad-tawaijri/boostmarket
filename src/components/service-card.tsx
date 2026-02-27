@@ -8,7 +8,7 @@ export default function ServiceCard({ service }: { service: Service }) {
   const gameBgs: Record<string, string> = {
     LEAGUE_OF_LEGENDS: "from-amber-600/20 to-amber-950/40",
     VALORANT: "from-red-500/20 to-red-950/40",
-    CSGO: "from-orange-500/20 to-orange-950/40",
+    CS2: "from-orange-500/20 to-orange-950/40",
     DOTA2: "from-rose-500/20 to-rose-950/40",
     OVERWATCH: "from-orange-400/15 to-orange-950/40",
     APEX_LEGENDS: "from-red-500/15 to-red-950/40",
@@ -16,6 +16,7 @@ export default function ServiceCard({ service }: { service: Service }) {
     ROCKET_LEAGUE: "from-cyan-500/15 to-cyan-950/40",
     RAINBOW_SIX: "from-zinc-500/15 to-zinc-900/40",
     COD_WARZONE: "from-green-500/15 to-green-950/40",
+    PUBG: "from-yellow-600/15 to-yellow-950/40",
     OTHER: "from-violet-500/15 to-violet-950/40",
   };
 

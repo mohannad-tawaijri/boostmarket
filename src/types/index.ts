@@ -137,7 +137,7 @@ export interface Conversation {
 export enum GameCategory {
   LEAGUE_OF_LEGENDS = 'LEAGUE_OF_LEGENDS',
   VALORANT = 'VALORANT',
-  CSGO = 'CSGO',
+  CS2 = 'CS2',
   DOTA2 = 'DOTA2',
   OVERWATCH = 'OVERWATCH',
   APEX_LEGENDS = 'APEX_LEGENDS',
@@ -145,13 +145,14 @@ export enum GameCategory {
   ROCKET_LEAGUE = 'ROCKET_LEAGUE',
   RAINBOW_SIX = 'RAINBOW_SIX',
   COD_WARZONE = 'COD_WARZONE',
+  PUBG = 'PUBG',
   OTHER = 'OTHER',
 }
 
 export const GAME_NAMES: Record<GameCategory, string> = {
   [GameCategory.LEAGUE_OF_LEGENDS]: 'League of Legends',
   [GameCategory.VALORANT]: 'Valorant',
-  [GameCategory.CSGO]: 'CS2',
+  [GameCategory.CS2]: 'CS2',
   [GameCategory.DOTA2]: 'Dota 2',
   [GameCategory.OVERWATCH]: 'Overwatch 2',
   [GameCategory.APEX_LEGENDS]: 'Apex Legends',
@@ -159,13 +160,14 @@ export const GAME_NAMES: Record<GameCategory, string> = {
   [GameCategory.ROCKET_LEAGUE]: 'Rocket League',
   [GameCategory.RAINBOW_SIX]: 'Rainbow Six Siege',
   [GameCategory.COD_WARZONE]: 'Call of Duty: Warzone',
+  [GameCategory.PUBG]: 'PUBG',
   [GameCategory.OTHER]: 'أخرى',
 };
 
 export const GAME_IMAGES: Record<GameCategory, string> = {
   [GameCategory.LEAGUE_OF_LEGENDS]: '/games/league-of-legends.svg',
   [GameCategory.VALORANT]: '/games/valorant.svg',
-  [GameCategory.CSGO]: '/games/cs2.svg',
+  [GameCategory.CS2]: '/games/cs2.svg',
   [GameCategory.DOTA2]: '/games/dota2.svg',
   [GameCategory.OVERWATCH]: '/games/overwatch2.svg',
   [GameCategory.APEX_LEGENDS]: '/games/apex-legends.svg',
@@ -173,6 +175,7 @@ export const GAME_IMAGES: Record<GameCategory, string> = {
   [GameCategory.ROCKET_LEAGUE]: '/games/rocket-league.svg',
   [GameCategory.RAINBOW_SIX]: '/games/rainbow-six.svg',
   [GameCategory.COD_WARZONE]: '/games/warzone.svg',
+  [GameCategory.PUBG]: '/games/pubg.svg',
   [GameCategory.OTHER]: '',
 };
 
