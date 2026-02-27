@@ -95,7 +95,7 @@ export default function CreateOfferPage() {
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden">
+        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.12] shadow-2xl overflow-hidden">
           <div className="bg-violet-600 px-8 py-6">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -122,7 +122,7 @@ export default function CreateOfferPage() {
                 onChange={handleChange}
                 required
                 placeholder="مثال: تعزيز رتبة League of Legends من Silver إلى Gold"
-                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
@@ -139,7 +139,7 @@ export default function CreateOfferPage() {
                   value={formData.game}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zinc-800">اختر لعبة</option>
                   {Object.entries(GAME_NAMES).map(([key, name]) => (
@@ -161,7 +161,7 @@ export default function CreateOfferPage() {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zinc-800">اختر فئة</option>
                   {Object.entries(CATEGORY_NAMES).map(([key, name]) => (
@@ -185,7 +185,7 @@ export default function CreateOfferPage() {
                 value={formData.gameDetails}
                 onChange={handleChange}
                 placeholder="مثال: سيرفر EUW، أي دور، خبرة دايموند+"
-                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
               />
             </div>
 
@@ -202,7 +202,7 @@ export default function CreateOfferPage() {
                 required
                 rows={5}
                 placeholder="صف خدمتك بالتفصيل. ما الذي يتضمنه؟ ما هي المتطلبات؟ ما الذي يميز خدمتك؟"
-                className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
+                className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
               />
             </div>
 
@@ -224,7 +224,7 @@ export default function CreateOfferPage() {
                     min="1"
                     step="0.01"
                     placeholder="29.99"
-                    className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl ps-8 pe-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl ps-8 pe-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                 </div>
               </div>
@@ -241,13 +241,13 @@ export default function CreateOfferPage() {
                   onChange={handleChange}
                   required
                   placeholder="مثال: 2-3 أيام"
-                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                  className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                 />
               </div>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex gap-4 pt-6 border-t border-white/[0.08]">
+            <div className="flex gap-4 pt-6 border-t border-white/[0.12]">
               <Button
                 type="submit"
                 disabled={loading}
@@ -271,7 +271,7 @@ export default function CreateOfferPage() {
                 variant="outline"
                 onClick={() => router.back()}
                 disabled={loading}
-                className="px-8 border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
+                className="px-8 border-white/[0.12] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
                 size="lg"
               >
                 إلغاء
@@ -297,7 +297,7 @@ export default function CreateOfferPage() {
               { icon: "📋", text: "وضّح المتطلبات من العميل" },
               { icon: "🏆", text: "أبرز خبرتك ونسبة نجاحك" },
             ].map((tip, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl border border-white/[0.08]">
+              <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.04] rounded-xl border border-white/[0.12]">
                 <span className="text-xl">{tip.icon}</span>
                 <span className="text-zinc-300 text-sm">{tip.text}</span>
               </div>

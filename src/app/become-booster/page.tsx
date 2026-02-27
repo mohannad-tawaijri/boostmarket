@@ -96,7 +96,7 @@ export default function BecomeBoosterPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-white/[0.06]">
+          <div className="mt-12 pt-8 border-t border-white/10">
             <Link href={user ? "/create-offer" : "/register"}>
               <Button size="lg">
                 {user ? "أنشئ إعلانك الأول" : "أنشئ حساباً"}

@@ -32,7 +32,7 @@ export default function ServiceCard({ service }: { service: Service }) {
 
   return (
     <Link href={`/services/${service.id}`} className="block group">
-      <div className="bg-white/[0.03] rounded-xl border border-white/[0.07] overflow-hidden hover:border-violet-500/25 transition-all card-hover cursor-pointer hover:shadow-lg hover:shadow-violet-600/5">
+      <div className="bg-white/[0.06] rounded-xl border border-white/[0.12] overflow-hidden hover:border-violet-500/40 transition-all card-hover cursor-pointer hover:shadow-lg hover:shadow-violet-600/10">
         {/* Header area */}
         <div className={`relative h-40 bg-gradient-to-br ${gameBg} flex flex-col justify-between p-4 overflow-hidden`}>
           {/* صورة اللعبة كخلفية */}
@@ -71,7 +71,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           <p className="text-sm text-zinc-500 mb-3 line-clamp-2">{service.description}</p>
           
           {/* Booster */}
-          <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-white/[0.06]">
+          <div className="flex items-center gap-2.5 mb-3 pb-3 border-b border-white/10">
             <div className="w-8 h-8 bg-violet-500/15 border border-violet-500/20 rounded-full flex items-center justify-center text-violet-400 font-medium text-xs">
               {service.booster?.name?.charAt(0) || "B"}
             </div>

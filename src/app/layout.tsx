@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" className="dark">
-        <body className={`${arabic.className} bg-[#0d0d12] text-gray-100 antialiased`}>
+        <body className={`${arabic.className} bg-[#13141d] text-gray-100 antialiased`}>
         <AuthProvider>
           <SocketProvider>
             <div className="flex flex-col min-h-screen">

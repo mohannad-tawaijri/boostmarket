@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
 
-        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] p-8">
+        <div className="bg-white/[0.04] rounded-2xl border border-white/[0.12] p-8">
           {submitted ? (
             <div className="text-center">
               <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pr-10 pl-4 py-3 bg-slate-700/50 border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    className="w-full pr-10 pl-4 py-3 bg-slate-700/50 border border-white/[0.12] rounded-xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                     placeholder="أدخل بريدك الإلكتروني"
                   />
                 </div>

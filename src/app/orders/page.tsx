@@ -177,7 +177,7 @@ export default function OrdersPage() {
         {/* Orders List */}
         <div className="space-y-4">
           {filteredOrders.length === 0 ? (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
+            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-12 text-center">
               <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">ما فيه طلبات</h3>
               <p className="text-zinc-400 mb-6">
@@ -197,7 +197,7 @@ export default function OrdersPage() {
               return (
                 <div
                   key={order.id}
-                  className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden hover:border-white/[0.08] transition-all"
+                  className="bg-white/[0.06] border border-white/10 rounded-xl overflow-hidden hover:border-white/[0.12] transition-all"
                 >
                   {/* Order Header */}
                   <div
@@ -241,7 +241,7 @@ export default function OrdersPage() {
 
                   {/* Expanded Details */}
                   {isExpanded && (
-                    <div className="px-6 pb-6 border-t border-white/[0.06] pt-6">
+                    <div className="px-6 pb-6 border-t border-white/10 pt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                           <p className="text-zinc-500 text-sm mb-1">البوستر</p>
@@ -303,7 +303,7 @@ export default function OrdersPage() {
       {/* Review Modal */}
       {reviewModalOrder && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#141418] border border-white/[0.06] rounded-2xl max-w-md w-full p-6">
+          <div className="bg-[#141418] border border-white/10 rounded-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">تقييمك</h2>
               <button
@@ -365,7 +365,7 @@ export default function OrdersPage() {
                 onChange={(e) => setReviewComment(e.target.value)}
                 placeholder="كيف كانت تجربتك..."
                 rows={4}
-                className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 bg-white/[0.06] border border-white/[0.12] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
               />
             </div>
 

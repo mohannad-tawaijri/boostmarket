@@ -104,7 +104,7 @@ function ServicesContent() {
                 placeholder="ابحث عن لعبة أو خدمة..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full ps-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.08] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                className="w-full ps-12 pr-4 py-4 bg-white/[0.04] border border-white/[0.12] rounded-2xl text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
               />
             </div>
           </div>
@@ -115,7 +115,7 @@ function ServicesContent() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <aside className="lg:w-72 flex-shrink-0">
-            <div className="bg-white/[0.04] rounded-2xl border border-white/[0.08] p-6 sticky top-24">
+            <div className="bg-white/[0.04] rounded-2xl border border-white/[0.12] p-6 sticky top-24">
               <h3 className="font-semibold text-lg text-white mb-6 flex items-center gap-2">
                 <SlidersHorizontal className="w-5 h-5 text-violet-400" />
                 فلتر
@@ -166,7 +166,7 @@ function ServicesContent() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full bg-slate-700/50 border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
+                  className="w-full bg-slate-700/50 border border-white/[0.12] rounded-xl px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 appearance-none cursor-pointer"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value} className="bg-zinc-800">
@@ -176,9 +176,9 @@ function ServicesContent() {
                 </select>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.08]">
+              <div className="pt-4 border-t border-white/[0.12]">
                 <Link href="/favorites">
-                  <Button variant="outline" className="w-full border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
+                  <Button variant="outline" className="w-full border-white/[0.12] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
                     <Heart className="w-4 h-4 me-2 text-pink-400" />
                     المفضلة
                   </Button>
@@ -201,7 +201,7 @@ function ServicesContent() {
                 <p className="mt-6 text-zinc-400">جاري التحميل...</p>
               </div>
             ) : filteredServices.length === 0 ? (
-              <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-white/[0.08]">
+              <div className="text-center py-20 bg-white/[0.04] rounded-2xl border border-white/[0.12]">
                 <div className="w-20 h-20 mx-auto mb-6 bg-slate-700/50 rounded-full flex items-center justify-center">
                   <Search className="w-10 h-10 text-zinc-500" />
                 </div>

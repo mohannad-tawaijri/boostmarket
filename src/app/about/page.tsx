@@ -59,7 +59,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row gap-4">
+          <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row gap-4">
             <Link href="/services">
               <Button>تصفح الخدمات</Button>
             </Link>

@@ -100,9 +100,9 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
   };
 
   return (
-    <div className="fixed bottom-4 start-4 w-96 bg-[#141418] rounded-xl shadow-2xl shadow-black/40 z-50 flex flex-col max-h-[600px] border border-white/[0.06]">
+    <div className="fixed bottom-4 start-4 w-96 bg-[#141418] rounded-xl shadow-2xl shadow-black/40 z-50 flex flex-col max-h-[600px] border border-white/10">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-white/[0.06] rounded-t-xl">
+      <div className="flex items-center justify-between p-4 border-b border-white/10 rounded-t-xl">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-violet-600/20 rounded-full flex items-center justify-center text-violet-400 font-medium text-sm">
             {otherUser.name?.charAt(0) || "U"}
@@ -163,7 +163,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
       </div>
 
       {/* Input */}
-      <div className="p-3 border-t border-white/[0.06] rounded-b-xl">
+      <div className="p-3 border-t border-white/10 rounded-b-xl">
         <div className="flex gap-2">
           <input
             type="text"
@@ -171,7 +171,7 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="اكتب رسالة..."
-            className="flex-1 bg-white/[0.06] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+            className="flex-1 bg-white/[0.06] border border-white/[0.12] rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
           />
           <Button onClick={sendMessage} disabled={!newMessage.trim()} size="icon">
             <Send className="w-4 h-4" />

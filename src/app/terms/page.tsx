@@ -85,7 +85,7 @@ export default function TermsPage() {
             </p>
           </div>
 
-          <div className="pt-4 border-t border-white/[0.06]">
+          <div className="pt-4 border-t border-white/10">
             <p className="text-zinc-500 text-sm">
               أسئلة؟ <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">support@boostmarket.com</a>
             </p>

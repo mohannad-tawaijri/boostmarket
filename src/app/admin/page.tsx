@@ -86,7 +86,7 @@ export default function AdminDashboard() {
           {adminStats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 hover:border-white/[0.08] transition-all"
+              className="bg-white/[0.06] border border-white/10 rounded-xl p-6 hover:border-white/[0.12] transition-all"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6 border-b border-white/[0.06] pb-4">
+        <div className="flex flex-wrap gap-2 mb-6 border-b border-white/10 pb-4">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Activity */}
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">النشاط الأخير</h2>
               {recentActivity.length === 0 ? (
                 <div className="text-center py-8">
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="space-y-4">
                   {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-white/[0.02] rounded-lg">
+                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-white/[0.04] rounded-lg">
                       <div className={`p-2 rounded-lg ${
                         activity.status === 'success' ? 'bg-green-500/20' : 
                         activity.status === 'warning' ? 'bg-yellow-500/20' : 'bg-red-500/20'
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">إجراءات سريعة</h2>
               <div className="grid grid-cols-2 gap-4">
                 <button
@@ -196,14 +196,14 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'users' && (
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+          <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">جميع المستخدمين</h2>
               <div className="flex gap-2">
                 <input
                   type="text"
                   placeholder="بحث عن مستخدمين..."
-                  className="bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="bg-white/[0.04] border border-white/[0.12] rounded-lg px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
               </div>
             </div>
@@ -216,10 +216,10 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'orders' && (
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+          <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">جميع الطلبات</h2>
-              <select className="bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
+              <select className="bg-white/[0.04] border border-white/[0.12] rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-violet-500">
                 <option value="all">جميع الحالات</option>
                 <option value="pending">قيد الانتظار</option>
                 <option value="in_progress">قيد التنفيذ</option>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'chats' && (
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+          <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">جميع المحادثات</h2>
               <p className="text-zinc-400 text-sm">مراقبة جميع محادثات المستخدمين للسلامة</p>
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'disputes' && (
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
+          <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">النزاعات والبلاغات</h2>
               <p className="text-zinc-400 text-sm">التعامل مع شكاوى المستخدمين ونزاعات الطلبات</p>

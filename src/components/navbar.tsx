@@ -27,7 +27,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#0d0d12]/90 backdrop-blur-xl border-b border-white/[0.06] sticky top-0 z-50">
+    <nav className="bg-[#13141d]/90 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -58,7 +58,7 @@ export default function Navbar() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="ابحث عن الخدمات..."
                     autoFocus
-                    className="w-64 bg-white/[0.05] border border-white/[0.08] rounded-lg pe-10 ps-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
+                    className="w-64 bg-white/[0.05] border border-white/[0.12] rounded-lg pe-10 ps-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
                   />
                   <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>
@@ -150,7 +150,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-white/[0.06]">
+          <div className="md:hidden py-4 border-t border-white/10">
             <div className="flex flex-col space-y-1">
               {/* Mobile Search */}
               <form onSubmit={(e) => { handleSearch(e); setIsMenuOpen(false); }} className="px-3 pb-3">
@@ -160,7 +160,7 @@ export default function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="ابحث عن لعبة أو خدمة..."
-                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+                    className="w-full bg-white/[0.05] border border-white/[0.12] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
                   />
                   <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>

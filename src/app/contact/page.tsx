@@ -46,7 +46,7 @@ export default function ContactPage() {
         </div>
 
         {submitted ? (
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-8 text-center">
+          <div className="bg-white/[0.06] border border-white/10 rounded-xl p-8 text-center">
             <h2 className="text-xl font-semibold text-white mb-2">تم إرسال الرسالة</h2>
             <p className="text-zinc-400 text-sm">سنرد عليك في أقرب وقت ممكن.</p>
           </div>
@@ -60,7 +60,7 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.12] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                   placeholder="اسمك"
                 />
               </div>
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                  className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.12] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                   placeholder="you@email.com"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                 required
                 value={formData.subject}
                 onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
+                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.12] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors"
                 placeholder="ما الموضوع؟"
               />
             </div>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({...formData, message: e.target.value})}
-                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.08] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors resize-none"
+                className="w-full px-4 py-2.5 bg-white/[0.05] border border-white/[0.12] rounded-lg text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-600 transition-colors resize-none"
                 placeholder="أعطنا التفاصيل..."
               />
             </div>

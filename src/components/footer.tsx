@@ -3,7 +3,7 @@ import Logo from "./logo";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-[#0c0c10] to-[#08080b] border-t border-white/[0.05]">
+    <footer className="bg-gradient-to-b from-[#111119] to-[#0d0e16] border-t border-white/10">
       <div className="container mx-auto px-4 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* معلومات الشركة */}
@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-10 pt-6 text-xs text-center text-zinc-600">
+        <div className="border-t border-white/10 mt-10 pt-6 text-xs text-center text-zinc-600">
           <p>&copy; {new Date().getFullYear()} BoostMarket. جميع الحقوق محفوظة.</p>
         </div>
       </div>
