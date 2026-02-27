@@ -30,7 +30,6 @@ export interface Service {
   game: string;
   price: number;
   deliveryTime: string;
-  tags?: string[];
   boosterId: string;
   booster?: User;
   active: boolean;

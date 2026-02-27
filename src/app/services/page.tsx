@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2, Tag } from "lucide-react";
+import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
 import { Service, GameCategory, GAME_NAMES, GAME_IMAGES } from "@/types";
@@ -23,20 +23,8 @@ function ServicesContent() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Collect all unique tags from services
-  const allTags = Array.from(
-    new Set(services.flatMap((s) => s.tags || []))
-  ).sort();
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
 
   // Get search query and game filter from URL params
   useEffect(() => {
@@ -80,12 +68,7 @@ function ServicesContent() {
         (service.booster?.name && service.booster.name.toLowerCase().includes(searchQuery.toLowerCase()))
       : true;
 
-    // Tag filter
-    const matchesTags =
-      selectedTags.length === 0 ||
-      selectedTags.every((tag) => service.tags?.includes(tag));
-
-    return matchesSearch && matchesTags;
+    return matchesSearch;
   });
 
   return (
@@ -193,39 +176,6 @@ function ServicesContent() {
                 </select>
               </div>
 
-              {/* Tags Filter */}
-              {allTags.length > 0 && (
-                <div className="mb-6">
-                  <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
-                    <Tag className="w-4 h-4 text-green-400" />
-                    التاقز
-                  </label>
-                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
-                    {allTags.map((tag) => (
-                      <button
-                        key={tag}
-                        onClick={() => toggleTag(tag)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                          selectedTags.includes(tag)
-                            ? "bg-indigo-500 text-white border border-indigo-400"
-                            : "bg-slate-700/50 text-zinc-400 border border-white/[0.08] hover:border-white/[0.08] hover:text-zinc-300"
-                        }`}
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                  {selectedTags.length > 0 && (
-                    <button
-                      onClick={() => setSelectedTags([])}
-                      className="mt-2 text-xs text-violet-400 hover:text-violet-300"
-                    >
-                      مسح الكل
-                    </button>
-                  )}
-                </div>
-              )}
-
               <div className="pt-4 border-t border-white/[0.08]">
                 <Link href="/favorites">
                   <Button variant="outline" className="w-full border-white/[0.08] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl py-5">
@@ -260,7 +210,7 @@ function ServicesContent() {
                   جرب تغيير الفلتر أو البحث
                 </p>
                 <Button 
-                  onClick={() => { setSelectedGame(""); setSearchQuery(""); setSelectedTags([]); }}
+                  onClick={() => { setSelectedGame(""); setSearchQuery(""); }}
                   className="bg-violet-600 hover:bg-indigo-500"
                 >
                   مسح الكل

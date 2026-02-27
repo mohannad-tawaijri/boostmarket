@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, Star, Tag } from "lucide-react";
+import { Clock, Star } from "lucide-react";
 import { Service, GAME_NAMES, GAME_IMAGES, GameCategory } from "@/types";
 
 export default function ServiceCard({ service }: { service: Service }) {
@@ -88,26 +88,6 @@ export default function ServiceCard({ service }: { service: Service }) {
               )}
             </div>
           </div>
-
-          {/* Tags */}
-          {service.tags && service.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {service.tags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-white/[0.05] text-zinc-400 rounded text-xs"
-                >
-                  <Tag className="w-2.5 h-2.5" />
-                  {tag}
-                </span>
-              ))}
-              {service.tags.length > 3 && (
-                <span className="px-2 py-0.5 text-zinc-600 text-xs">
-                  +{service.tags.length - 3}
-                </span>
-              )}
-            </div>
-          )}
 
           <div className="flex items-center justify-between">
             <div className="flex items-center text-sm text-zinc-500">
