@@ -31,7 +31,7 @@ export default function FavoritesPage() {
         },
       });
       const data = await response.json();
-      setFavorites(data);
+      setFavorites(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching favorites:", error);
     } finally {

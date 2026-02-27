@@ -38,11 +38,15 @@ function ServicesContent() {
     );
   };
 
-  // Get search query from URL params
+  // Get search query and game filter from URL params
   useEffect(() => {
     const urlSearch = searchParams.get("search");
+    const urlGame = searchParams.get("game");
     if (urlSearch) {
       setSearchQuery(urlSearch);
+    }
+    if (urlGame) {
+      setSelectedGame(urlGame);
     }
   }, [searchParams]);
 
@@ -59,9 +63,10 @@ function ServicesContent() {
 
       const response = await fetch(`${API_URL}/services?${params}`);
       const data = await response.json();
-      setServices(data);
+      setServices(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching services:", error);
+      setServices([]);
     } finally {
       setLoading(false);
     }

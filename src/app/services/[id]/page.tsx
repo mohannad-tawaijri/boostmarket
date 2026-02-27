@@ -46,7 +46,7 @@ export default function ServiceDetailPage() {
       const response = await fetch(`${API_URL}/reviews/service/${params.id}`);
       if (response.ok) {
         const data = await response.json();
-        setReviews(data);
+        setReviews(Array.isArray(data) ? data : []);
       }
     } catch (error) {
       console.error("Error fetching reviews:", error);

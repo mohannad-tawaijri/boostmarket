@@ -59,7 +59,7 @@ export default function OrdersPage() {
       });
       if (response.ok) {
         const data = await response.json();
-        setOrders(data);
+        setOrders(Array.isArray(data) ? data : []);
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
