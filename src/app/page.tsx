@@ -112,7 +112,7 @@ export default function Home() {
               { name: "PUBG", key: "PUBG", img: "/games/pubg.svg" },
             ].map((game, index) => (
               <Link href={`/services?game=${game.key}`} key={index}>
-                <div className="relative rounded-xl overflow-hidden aspect-[4/3] border border-white/10 hover:border-white/[0.15] transition-all cursor-pointer group hover:scale-[1.03] hover:shadow-lg hover:shadow-violet-500/10">
+                <div className="relative rounded-xl overflow-hidden aspect-[4/3] border border-white/[0.15] hover:border-white/[0.15] transition-all cursor-pointer group hover:scale-[1.03] hover:shadow-lg hover:shadow-violet-500/10">
                   {/* صورة اللعبة */}
                   <Image
                     src={game.img}

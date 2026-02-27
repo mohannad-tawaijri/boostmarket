@@ -74,7 +74,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <div className="pt-4 border-t border-white/10">
+          <div className="pt-4 border-t border-white/[0.15]">
             <p className="text-zinc-500 text-sm">
               أسئلة؟ تواصل معنا على <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a>
             </p>

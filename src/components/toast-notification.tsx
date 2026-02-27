@@ -69,7 +69,7 @@ export function ToastContainer() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="bg-white/[0.05] border border-white/[0.12] rounded-xl shadow-xl p-4 animate-slide-in"
+          className="bg-white/[0.08] border border-white/[0.18] rounded-xl shadow-xl p-4 animate-slide-in"
         >
           <div className="flex items-start gap-3">
             {/* Avatar or Icon */}

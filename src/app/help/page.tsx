@@ -44,7 +44,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-white/10">
+    <div className="border-b border-white/[0.15]">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full py-5 flex items-start justify-between text-left group"
@@ -81,7 +81,7 @@ export default function HelpPage() {
           ))}
         </div>
 
-        <div className="pt-6 border-t border-white/10">
+        <div className="pt-6 border-t border-white/[0.15]">
           <p className="text-zinc-400 text-[15px] mb-1">
             ما لقيت جوابك؟
           </p>

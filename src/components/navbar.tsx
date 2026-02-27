@@ -27,7 +27,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-[#13141d]/90 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+    <nav className="bg-[#1a1d2e]/95 backdrop-blur-xl border-b border-white/[0.15] sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -58,14 +58,14 @@ export default function Navbar() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="ابحث عن الخدمات..."
                     autoFocus
-                    className="w-64 bg-white/[0.05] border border-white/[0.12] rounded-lg pe-10 ps-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
+                    className="w-64 bg-white/[0.08] border border-white/[0.18] rounded-lg pe-10 ps-4 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500/40"
                   />
                   <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>
                 <button
                   type="button"
                   onClick={() => { setShowSearch(false); setSearchQuery(""); }}
-                  className="me-2 p-2 hover:bg-white/[0.06] rounded-full transition-colors"
+                  className="me-2 p-2 hover:bg-white/[0.09] rounded-full transition-colors"
                 >
                   <X className="w-4 h-4 text-zinc-400" />
                 </button>
@@ -73,7 +73,7 @@ export default function Navbar() {
             ) : (
               <button 
                 onClick={() => setShowSearch(true)}
-                className="p-2 hover:bg-white/[0.06] rounded-full transition-colors"
+                className="p-2 hover:bg-white/[0.09] rounded-full transition-colors"
               >
                 <Search className="w-5 h-5 text-zinc-400" />
               </button>
@@ -87,7 +87,7 @@ export default function Navbar() {
                   </Button>
                 </Link>
                 <Link href="/messages">
-                  <button className="p-2 hover:bg-white/[0.06] rounded-full relative transition-colors" title="الرسائل">
+                  <button className="p-2 hover:bg-white/[0.09] rounded-full relative transition-colors" title="الرسائل">
                     <MessageSquare className="w-5 h-5 text-zinc-400" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-1 -start-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
@@ -97,7 +97,7 @@ export default function Navbar() {
                   </button>
                 </Link>
                 <Link href="/orders">
-                  <button className="p-2 hover:bg-white/[0.06] rounded-full relative transition-colors">
+                  <button className="p-2 hover:bg-white/[0.09] rounded-full relative transition-colors">
                     <ShoppingCart className="w-5 h-5 text-zinc-400" />
                   </button>
                 </Link>
@@ -110,7 +110,7 @@ export default function Navbar() {
                     </Link>
                   )}
                   <Link href="/profile">
-                    <button className="p-2 hover:bg-white/[0.06] rounded-full transition-colors">
+                    <button className="p-2 hover:bg-white/[0.09] rounded-full transition-colors">
                       <User className="w-5 h-5 text-zinc-400" />
                     </button>
                   </Link>
@@ -150,7 +150,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-white/10">
+          <div className="md:hidden py-4 border-t border-white/[0.15]">
             <div className="flex flex-col space-y-1">
               {/* Mobile Search */}
               <form onSubmit={(e) => { handleSearch(e); setIsMenuOpen(false); }} className="px-3 pb-3">
@@ -160,7 +160,7 @@ export default function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="ابحث عن لعبة أو خدمة..."
-                    className="w-full bg-white/[0.05] border border-white/[0.12] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
+                    className="w-full bg-white/[0.08] border border-white/[0.18] rounded-lg pe-10 ps-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/40"
                   />
                   <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 </div>
@@ -168,28 +168,28 @@ export default function Navbar() {
               
               <Link
                 href="/services"
-                className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 استعراض الخدمات
               </Link>
               <Link
                 href="/create-offer"
-                className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 أضف خدمتك
               </Link>
               <Link
                 href="/how-it-works"
-                className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 طريقة العمل
               </Link>
               <Link
                 href="/about"
-                className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 من نحن
@@ -208,14 +208,14 @@ export default function Navbar() {
                   )}
                   <Link
                     href="/dashboard"
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     حسابي
                   </Link>
                   <Link
                     href="/messages"
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors flex items-center justify-between"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors flex items-center justify-between"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <span>الرسائل</span>
@@ -227,7 +227,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/orders"
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     الطلبات
@@ -237,7 +237,7 @@ export default function Navbar() {
                       logout();
                       setIsMenuOpen(false);
                     }}
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors text-right"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors text-right"
                   >
                     تسجيل خروج
                   </button>
@@ -246,7 +246,7 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/login"
-                    className="text-zinc-300 hover:text-white hover:bg-white/[0.04] px-3 py-2 rounded-lg transition-colors"
+                    className="text-zinc-300 hover:text-white hover:bg-white/[0.07] px-3 py-2 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     تسجيل دخول

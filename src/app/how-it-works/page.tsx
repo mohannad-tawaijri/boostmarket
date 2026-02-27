@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
             </div>
 
             {/* أسئلة شائعة */}
-            <div className="pt-6 border-t border-white/10 space-y-6">
+            <div className="pt-6 border-t border-white/[0.15] space-y-6">
               <h2 className="text-lg font-semibold text-white">أسئلة شائعة</h2>
 
               <div>
@@ -109,7 +109,7 @@ export default function HowItWorksPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="mt-12 pt-8 border-t border-white/[0.15]">
             <Link href="/services">
               <Button>تصفح الخدمات</Button>
             </Link>

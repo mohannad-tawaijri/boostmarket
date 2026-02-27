@@ -144,7 +144,7 @@ export default function DashboardPage() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white/[0.06] border border-white/10 rounded-xl p-6 hover:border-white/[0.12] transition-all"
+              className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 hover:border-white/[0.18] transition-all"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -160,7 +160,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-white/10 pb-4 overflow-x-auto">
+        <div className="flex gap-2 mb-6 border-b border-white/[0.15] pb-4 overflow-x-auto">
           {[
             { id: 'overview', label: 'الرئيسية', icon: TrendingUp },
             { id: 'orders', label: 'طلباتي', icon: ShoppingBag },
@@ -186,7 +186,7 @@ export default function DashboardPage() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Orders */}
-            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
                 <Link href="/orders" className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
@@ -208,7 +208,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="space-y-4">
                   {[...myOrders, ...customerOrders].slice(0, 3).map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.04] rounded-lg">
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.07] rounded-lg">
                       <div>
                         <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
                         <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
@@ -224,25 +224,25 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
               <h2 className="text-xl font-semibold text-white mb-4">اختصارات</h2>
               <div className="grid grid-cols-2 gap-4">
-                <Link href="/services" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
+                <Link href="/services" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
                   <ShoppingBag className="w-8 h-8 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">استعرض الخدمات</p>
                   <p className="text-zinc-500 text-sm">شوف خدمات البوست</p>
                 </Link>
-                <Link href="/create-offer" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
+                <Link href="/create-offer" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
                   <Plus className="w-8 h-8 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">أضف خدمة</p>
                   <p className="text-zinc-500 text-sm">ابدأ تبيع</p>
                 </Link>
-                <Link href="/orders" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
+                <Link href="/orders" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
                   <Clock className="w-8 h-8 text-yellow-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">طلباتي</p>
                   <p className="text-zinc-500 text-sm">تابع طلباتك</p>
                 </Link>
-                <Link href="/profile" className="p-4 bg-white/[0.04] rounded-lg hover:bg-white/[0.06] transition-all group">
+                <Link href="/profile" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
                   <MessageSquare className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
                   <p className="text-white font-medium">الرسائل</p>
                   <p className="text-zinc-500 text-sm">ردّ على رسائلك</p>
@@ -253,8 +253,8 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'orders' && (
-          <div className="bg-white/[0.06] border border-white/10 rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-white/10">
+          <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-white/[0.15]">
               <h2 className="text-lg font-semibold text-white">طلباتي</h2>
               <p className="text-zinc-400 text-sm">خدمات طلبتها من بوسترز</p>
             </div>
@@ -273,7 +273,7 @@ export default function DashboardPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-white/[0.04]">
+                  <thead className="bg-white/[0.07]">
                     <tr>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">الخدمة</th>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">البوستر</th>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-800">
                     {myOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-white/[0.04] transition-colors">
+                      <tr key={order.id} className="hover:bg-white/[0.07] transition-colors">
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.booster?.name || 'Booster'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
@@ -300,8 +300,8 @@ export default function DashboardPage() {
         )}
 
         {activeTab === 'customer-orders' && (
-          <div className="bg-white/[0.06] border border-white/10 rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-white/10">
+          <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-white/[0.15]">
               <h2 className="text-lg font-semibold text-white">طلبات العملاء</h2>
               <p className="text-zinc-400 text-sm">الطلبات اللي جتك من العملاء</p>
             </div>
@@ -321,7 +321,7 @@ export default function DashboardPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-white/[0.04]">
+                  <thead className="bg-white/[0.07]">
                     <tr>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">الخدمة</th>
                       <th className="text-left text-zinc-400 font-medium px-6 py-4">العميل</th>
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-800">
                     {customerOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-white/[0.04] transition-colors">
+                      <tr key={order.id} className="hover:bg-white/[0.07] transition-colors">
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.buyer?.name || 'Customer'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
@@ -358,7 +358,7 @@ export default function DashboardPage() {
                 <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
               </div>
             ) : offers.length === 0 ? (
-              <div className="bg-white/[0.06] border border-white/10 rounded-xl p-12 text-center">
+              <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-12 text-center">
                 <Gamepad2 className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">ما عندك خدمات بعد</h3>
                 <p className="text-zinc-400 mb-6">ابدأ تبيع خدماتك اليوم!</p>
@@ -372,7 +372,7 @@ export default function DashboardPage() {
             ) : (
               <>
                 {offers.map((offer) => (
-                  <div key={offer.id} className="bg-white/[0.06] border border-white/10 rounded-xl p-6 flex items-center justify-between">
+                  <div key={offer.id} className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 flex items-center justify-between">
                     <div>
                       <h3 className="text-white font-semibold text-lg">{offer.title}</h3>
                       <p className="text-zinc-400">{offer.game}</p>
@@ -389,7 +389,7 @@ export default function DashboardPage() {
                   </div>
                 ))}
                 <Link href="/create-offer" className="mt-4 block">
-                  <div className="bg-zinc-900/30 border-2 border-dashed border-white/[0.12] rounded-xl p-8 flex flex-col items-center justify-center hover:border-white/[0.12] transition-colors cursor-pointer">
+                  <div className="bg-zinc-900/30 border-2 border-dashed border-white/[0.18] rounded-xl p-8 flex flex-col items-center justify-center hover:border-white/[0.18] transition-colors cursor-pointer">
                     <Plus className="w-12 h-12 text-zinc-500 mb-2" />
                     <p className="text-zinc-400">أضف خدمة جديدة</p>
                   </div>

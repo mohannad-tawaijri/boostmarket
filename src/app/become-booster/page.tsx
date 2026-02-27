@@ -26,14 +26,14 @@ export default function BecomeBoosterPage() {
               <h2 className="text-lg font-semibold text-white mb-3">كيف يعمل للبائعين</h2>
               <div className="space-y-4">
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.09] text-zinc-300 flex items-center justify-center text-xs font-bold">1</span>
                   <div>
                     <span className="text-white font-medium">أنشئ حساباً مجانياً.</span>{" "}
                     يستغرق أقل من دقيقة. لا عملية موافقة ولا رسوم مقدمة.
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.09] text-zinc-300 flex items-center justify-center text-xs font-bold">2</span>
                   <div>
                     <span className="text-white font-medium">أدرج خدماتك.</span>{" "}
                     اختر لعبة، واصف ما تقدمه (تعزيز رتبة، تدريب، إنجازات)،
@@ -41,7 +41,7 @@ export default function BecomeBoosterPage() {
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.06] text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/[0.09] text-zinc-300 flex items-center justify-center text-xs font-bold">3</span>
                   <div>
                     <span className="text-white font-medium">اقبل الطلبات وسلّم.</span>{" "}
                     عندما يشتري شخص ما خدمتك، تحصل على إشعار. تحدث مع المشتري،
@@ -96,7 +96,7 @@ export default function BecomeBoosterPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="mt-12 pt-8 border-t border-white/[0.15]">
             <Link href={user ? "/create-offer" : "/register"}>
               <Button size="lg">
                 {user ? "أنشئ إعلانك الأول" : "أنشئ حساباً"}

@@ -57,7 +57,7 @@ export default function ProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-4">
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-4">
               <nav className="space-y-1">
                 {sections.map((section) => (
                   <button
@@ -66,7 +66,7 @@ export default function ProfilePage() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                       activeSection === section.id
                         ? 'bg-violet-600/10 text-violet-400 border border-violet-500/20'
-                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.07]'
                     }`}
                   >
                     <section.icon className="w-5 h-5" />
@@ -79,17 +79,17 @@ export default function ProfilePage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-white/[0.06] border border-white/10 rounded-xl p-6">
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
               {activeSection === 'profile' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="flex items-center gap-6 pb-6 border-b border-white/10">
+                  <div className="flex items-center gap-6 pb-6 border-b border-white/[0.15]">
                     <div className="relative">
                       <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
                         <Gamepad2 className="w-12 h-12 text-white" />
                       </div>
                       <button
                         type="button"
-                        className="absolute bottom-0 right-0 p-2 bg-white/[0.06] rounded-full border border-white/[0.12] hover:bg-zinc-700 transition-colors"
+                        className="absolute bottom-0 right-0 p-2 bg-white/[0.09] rounded-full border border-white/[0.18] hover:bg-zinc-700 transition-colors"
                       >
                         <Camera className="w-4 h-4 text-white" />
                       </button>
@@ -115,7 +115,7 @@ export default function ProfilePage() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       rows={4}
                       placeholder="اكتب نبذة عنك..."
-                      className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
+                      className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                     />
                   </div>
 
@@ -158,7 +158,7 @@ export default function ProfilePage() {
 
               {activeSection === 'security' && (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="pb-6 border-b border-white/10">
+                  <div className="pb-6 border-b border-white/[0.15]">
                     <h2 className="text-xl font-semibold text-white mb-2">تغيير كلمة المرور</h2>
                     <p className="text-zinc-400">حدّث كلمة مرورك للحفاظ على أمان حسابك</p>
                   </div>
@@ -173,7 +173,7 @@ export default function ProfilePage() {
                           name="currentPassword"
                           value={formData.currentPassword}
                           onChange={handleChange}
-                          className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                           name="newPassword"
                           value={formData.newPassword}
                           onChange={handleChange}
-                          className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
                           name="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleChange}
-                          className="w-full bg-white/[0.04] border border-white/[0.12] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -218,7 +218,7 @@ export default function ProfilePage() {
 
               {activeSection === 'notifications' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-white/10">
+                  <div className="pb-6 border-b border-white/[0.15]">
                     <h2 className="text-xl font-semibold text-white mb-2">تفضيلات الإشعارات</h2>
                     <p className="text-zinc-400">أدر كيفية تلقي الإشعارات</p>
                   </div>
@@ -230,7 +230,7 @@ export default function ProfilePage() {
                       { label: 'رسائل جديدة', description: 'تلقي تنبيهات للرسائل الجديدة' },
                       { label: 'رسائل تسويقية', description: 'تلقي العروض الترويجية والأخبار' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.04] rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
@@ -247,12 +247,12 @@ export default function ProfilePage() {
 
               {activeSection === 'payment' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-white/10">
+                  <div className="pb-6 border-b border-white/[0.15]">
                     <h2 className="text-xl font-semibold text-white mb-2">طرق الدفع</h2>
                     <p className="text-zinc-400">أدر معلومات الدفع الخاصة بك</p>
                   </div>
 
-                  <div className="p-6 bg-white/[0.04] rounded-lg border border-dashed border-white/[0.12] text-center">
+                  <div className="p-6 bg-white/[0.07] rounded-lg border border-dashed border-white/[0.18] text-center">
                     <CreditCard className="w-12 h-12 text-zinc-500 mx-auto mb-4" />
                     <p className="text-zinc-400 mb-4">لم تتم إضافة طرق دفع بعد</p>
                     <Button variant="outline">إضافة طريقة دفع</Button>
@@ -262,7 +262,7 @@ export default function ProfilePage() {
 
               {activeSection === 'privacy' && (
                 <div className="space-y-6">
-                  <div className="pb-6 border-b border-white/10">
+                  <div className="pb-6 border-b border-white/[0.15]">
                     <h2 className="text-xl font-semibold text-white mb-2">إعدادات الخصوصية</h2>
                     <p className="text-zinc-400">تحكم بتفضيلات خصوصيتك</p>
                   </div>
@@ -273,7 +273,7 @@ export default function ProfilePage() {
                       { label: 'إظهار حالة الاتصال', description: 'السماح للآخرين برؤية حالة اتصالك' },
                       { label: 'السماح بالرسائل من الجميع', description: 'تلقي رسائل من غير جهات الاتصال' },
                     ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.04] rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
@@ -286,7 +286,7 @@ export default function ProfilePage() {
                     ))}
                   </div>
 
-                  <div className="pt-6 border-t border-white/10">
+                  <div className="pt-6 border-t border-white/[0.15]">
                     <h3 className="text-lg font-semibold text-red-400 mb-4">منطقة الخطر</h3>
                     <Button variant="destructive">حذف الحساب</Button>
                   </div>

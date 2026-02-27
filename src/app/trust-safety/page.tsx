@@ -104,7 +104,7 @@ export default function TrustSafetyPage() {
             </p>
           </div>
 
-          <div className="pt-4 border-t border-white/10">
+          <div className="pt-4 border-t border-white/[0.15]">
             <p className="text-zinc-500 text-sm">
               لسنا مثاليين، ولا يمكن لأي منصة منع كل شخص سيء. لكننا ننتبه
               ونحسن الأمور باستمرار.
