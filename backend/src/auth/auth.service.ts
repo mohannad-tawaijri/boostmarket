@@ -1,7 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { UsersService } from '../users/users.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto, LoginDto } from './dto';
 
 @Injectable()
@@ -9,6 +12,8 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private configService: ConfigService,
+    private prisma: PrismaService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -24,8 +29,9 @@ export class AuthService {
       name,
     });
 
-    // Generate token
-    const token = this.generateToken(user.id, user.email);
+    // Generate tokens
+    const accessToken = this.generateAccessToken(user.id, user.email);
+    const refreshToken = await this.generateRefreshToken(user.id);
 
     return {
       user: {
@@ -34,7 +40,8 @@ export class AuthService {
         name: user.name,
         isAdmin: user.role === 'ADMIN',
       },
-      token,
+      token: accessToken,
+      refreshToken,
     };
   }
 
@@ -53,8 +60,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // Generate token
-    const token = this.generateToken(user.id, user.email);
+    // Generate tokens
+    const accessToken = this.generateAccessToken(user.id, user.email);
+    const refreshToken = await this.generateRefreshToken(user.id);
 
     return {
       user: {
@@ -63,15 +71,103 @@ export class AuthService {
         name: user.name,
         isAdmin: user.role === 'ADMIN',
       },
-      token,
+      token: accessToken,
+      refreshToken,
     };
+  }
+
+  async refreshTokens(refreshToken: string) {
+    // Find the refresh token in the database
+    const storedToken = await this.prisma.refreshToken.findUnique({
+      where: { token: refreshToken },
+      include: { user: true },
+    });
+
+    if (!storedToken || storedToken.revoked || storedToken.expiresAt < new Date()) {
+      if (storedToken) {
+        // Revoke the token if it was found but expired
+        await this.prisma.refreshToken.update({
+          where: { id: storedToken.id },
+          data: { revoked: true },
+        });
+      }
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    // Revoke the old refresh token (rotation)
+    await this.prisma.refreshToken.update({
+      where: { id: storedToken.id },
+      data: { revoked: true },
+    });
+
+    const user = storedToken.user;
+
+    // Generate new tokens
+    const newAccessToken = this.generateAccessToken(user.id, user.email);
+    const newRefreshToken = await this.generateRefreshToken(user.id);
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        isAdmin: user.role === 'ADMIN',
+      },
+      token: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
+  }
+
+  async logout(refreshToken: string) {
+    if (refreshToken) {
+      // Revoke the refresh token
+      await this.prisma.refreshToken.updateMany({
+        where: { token: refreshToken },
+        data: { revoked: true },
+      });
+    }
+  }
+
+  async revokeAllUserTokens(userId: string) {
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, revoked: false },
+      data: { revoked: true },
+    });
   }
 
   async validateUser(userId: string) {
     return this.usersService.findOne(userId);
   }
 
-  private generateToken(userId: string, email: string): string {
+  private generateAccessToken(userId: string, email: string): string {
     return this.jwtService.sign({ sub: userId, email });
+  }
+
+  private async generateRefreshToken(userId: string): Promise<string> {
+    const token = crypto.randomBytes(64).toString('hex');
+    const expiresIn = this.configService.get('REFRESH_TOKEN_EXPIRES_IN', '30'); // days
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + parseInt(expiresIn, 10));
+
+    await this.prisma.refreshToken.create({
+      data: {
+        token,
+        userId,
+        expiresAt,
+      },
+    });
+
+    // Clean up expired tokens for this user
+    await this.prisma.refreshToken.deleteMany({
+      where: {
+        userId,
+        OR: [
+          { expiresAt: { lt: new Date() } },
+          { revoked: true, createdAt: { lt: new Date(Date.now() - 24 * 60 * 60 * 1000) } },
+        ],
+      },
+    });
+
+    return token;
   }
 }

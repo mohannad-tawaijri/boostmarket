@@ -37,7 +37,7 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.token, data.user);
+        login(data.token, data.refreshToken, data.user);
         router.push("/");
       } else {
         setError(data.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة");
