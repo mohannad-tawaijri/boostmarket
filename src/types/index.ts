@@ -6,6 +6,7 @@ export interface User {
   avatar?: string;
   bio?: string;
   verified: boolean;
+  boosterProfile?: BoosterProfile;
   createdAt: Date;
 }
 

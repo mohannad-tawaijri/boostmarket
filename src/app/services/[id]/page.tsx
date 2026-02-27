@@ -403,9 +403,29 @@ export default function ServiceDetailPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-white text-lg">{service.booster.name}</p>
-                    <p className="text-violet-400 text-sm">بوستر موثق</p>
+                    {service.booster.boosterProfile?.verified ? (
+                      <p className="text-green-400 text-sm flex items-center gap-1">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        بوستر موثق
+                      </p>
+                    ) : (
+                      <p className="text-zinc-500 text-sm">بوستر</p>
+                    )}
                   </div>
                 </div>
+                {service.booster.boosterProfile && (
+                  <div className="flex items-center gap-4 text-sm text-zinc-400 mb-4">
+                    {service.booster.boosterProfile.completedOrders > 0 && (
+                      <span>{service.booster.boosterProfile.completedOrders} طلب مكتمل</span>
+                    )}
+                    {service.booster.boosterProfile.rating > 0 && (
+                      <span className="flex items-center gap-1">
+                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                        {service.booster.boosterProfile.rating.toFixed(1)}
+                      </span>
+                    )}
+                  </div>
+                )}
                 {service.booster.bio && (
                   <p className="text-zinc-400 text-sm">{service.booster.bio}</p>
                 )}
