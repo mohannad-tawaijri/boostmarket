@@ -26,13 +26,15 @@ export class ServicesController {
     @Query('skip') skip?: string,
     @Query('take') take?: string,
   ) {
+    const parsedSkip = skip ? Math.max(0, parseInt(skip)) : undefined;
+    const parsedTake = take ? Math.min(100, Math.max(1, parseInt(take))) : undefined;
     return this.servicesService.findAll({
       game,
       category,
       featured: featured === 'true',
       sortBy,
-      skip: skip ? parseInt(skip) : undefined,
-      take: take ? parseInt(take) : undefined,
+      skip: parsedSkip,
+      take: parsedTake,
     });
   }
 

@@ -27,6 +27,30 @@ export class CustomOffersService {
       throw new ForbiddenException('Only boosters can send custom offers');
     }
 
+    // Verify receiver exists
+    const receiver = await this.prisma.user.findUnique({
+      where: { id: data.receiverId },
+    });
+    if (!receiver) {
+      throw new BadRequestException('Recipient not found');
+    }
+
+    // Verify both users are participants in the conversation
+    const participantCount = await this.prisma.conversationParticipant.count({
+      where: {
+        conversationId: data.conversationId,
+        userId: { in: [senderId, data.receiverId] },
+      },
+    });
+    if (participantCount !== 2) {
+      throw new ForbiddenException('Both users must be participants in this conversation');
+    }
+
+    // Validate price
+    if (data.price <= 0) {
+      throw new BadRequestException('Price must be greater than 0');
+    }
+
     // Create the custom offer and message in a transaction
     const result = await this.prisma.$transaction(async (tx) => {
       // Create the custom offer

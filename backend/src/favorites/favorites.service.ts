@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -6,58 +6,66 @@ export class FavoritesService {
   constructor(private prisma: PrismaService) {}
 
   async addFavorite(userId: string, serviceId: string) {
-    const favorite = await this.prisma.favorite.create({
-      data: {
-        userId,
-        serviceId,
-      },
-      include: {
-        service: {
-          include: {
-            booster: {
-              select: {
-                id: true,
-                name: true,
-                avatar: true,
+    // Verify service exists
+    const service = await this.prisma.service.findUnique({ where: { id: serviceId } });
+    if (!service) {
+      throw new NotFoundException('Service not found');
+    }
+
+    // Use transaction for atomicity
+    const [favorite] = await this.prisma.$transaction([
+      this.prisma.favorite.create({
+        data: {
+          userId,
+          serviceId,
+        },
+        include: {
+          service: {
+            include: {
+              booster: {
+                select: {
+                  id: true,
+                  name: true,
+                  avatar: true,
+                },
               },
             },
           },
         },
-      },
-    });
-
-    // Increment service like count
-    await this.prisma.service.update({
-      where: { id: serviceId },
-      data: {
-        likeCount: {
-          increment: 1,
+      }),
+      this.prisma.service.update({
+        where: { id: serviceId },
+        data: {
+          likeCount: {
+            increment: 1,
+          },
         },
-      },
-    });
+      }),
+    ]);
 
     return favorite;
   }
 
   async removeFavorite(userId: string, serviceId: string) {
-    await this.prisma.favorite.delete({
-      where: {
-        userId_serviceId: {
-          userId,
-          serviceId,
+    // Use transaction for atomicity
+    await this.prisma.$transaction([
+      this.prisma.favorite.delete({
+        where: {
+          userId_serviceId: {
+            userId,
+            serviceId,
+          },
         },
-      },
-    });
-
-    // Decrement service like count
-    await this.prisma.service.update({
-      where: { id: serviceId },
-      data: {
-        likeCount: {
-          decrement: 1,
+      }),
+      this.prisma.service.update({
+        where: { id: serviceId },
+        data: {
+          likeCount: {
+            decrement: 1,
+          },
         },
-      },
-    });
+      }),
+    ]);
 
     return { success: true };
   }

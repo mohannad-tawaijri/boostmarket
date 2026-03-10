@@ -7,6 +7,7 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
@@ -19,6 +20,14 @@ export class UsersController {
   @Patch('profile')
   @UseGuards(JwtAuthGuard)
   updateProfile(@Request() req, @Body() updateData: any) {
-    return this.usersService.update(req.user.id, updateData);
+    // Whitelist allowed fields to prevent mass assignment
+    const allowed: Record<string, any> = {};
+    const safeFields = ['name', 'bio', 'avatar'];
+    for (const key of safeFields) {
+      if (updateData[key] !== undefined) {
+        allowed[key] = updateData[key];
+      }
+    }
+    return this.usersService.update(req.user.id, allowed);
   }
 }

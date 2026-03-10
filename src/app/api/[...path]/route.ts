@@ -2,11 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://boost-api-16ta.onrender.com';
 
+// Whitelist of allowed API path prefixes
+const ALLOWED_PATHS = [
+  'auth',
+  'users',
+  'services',
+  'orders',
+  'payment',
+  'reviews',
+  'upload',
+  'chat',
+  'favorites',
+  'custom-offers',
+];
+
+function isAllowedPath(pathSegments: string[]): boolean {
+  if (pathSegments.length === 0) return false;
+  return ALLOWED_PATHS.includes(pathSegments[0]);
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
+  if (!isAllowedPath(path)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   const url = `${API_URL}/${path.join('/')}${request.nextUrl.search}`;
   
   const headers: HeadersInit = {
@@ -34,6 +56,9 @@ export async function POST(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
+  if (!isAllowedPath(path)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   const url = `${API_URL}/${path.join('/')}`;
   
   const authHeader = request.headers.get('Authorization');
@@ -97,6 +122,9 @@ export async function PATCH(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
+  if (!isAllowedPath(path)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   const url = `${API_URL}/${path.join('/')}`;
   
   const headers: HeadersInit = {
@@ -129,6 +157,9 @@ export async function DELETE(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
+  if (!isAllowedPath(path)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   const url = `${API_URL}/${path.join('/')}`;
   
   const headers: HeadersInit = {

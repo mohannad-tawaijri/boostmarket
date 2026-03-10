@@ -13,7 +13,10 @@ import { ChatService } from './chat.service';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'https://boost-rosy-rho.vercel.app'],
+    origin: [
+      process.env.FRONTEND_URL || 'http://localhost:3000',
+      'https://boost-rosy-rho.vercel.app',
+    ],
     credentials: true,
   },
 })
