@@ -54,7 +54,7 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.access_token, data.user);
+        login(data.access_token, data.refresh_token, data.user);
         router.push("/");
       } else {
         setError(data.message || "فشل التسجيل. يرجى المحاولة مرة أخرى.");
