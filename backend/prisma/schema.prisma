@@ -158,8 +158,8 @@ model Service {
 model Order {
   id                String        @id @default(cuid())
   
-  serviceId         String
-  service           Service       @relation(fields: [serviceId], references: [id])
+  serviceId         String?
+  service           Service?      @relation(fields: [serviceId], references: [id])
   
   buyerId           String
   buyer             User          @relation("BuyerOrders", fields: [buyerId], references: [id])
@@ -208,8 +208,8 @@ model Payment {
 model Review {
   id                String    @id @default(cuid())
   
-  serviceId         String
-  service           Service   @relation(fields: [serviceId], references: [id])
+  serviceId         String?
+  service           Service?  @relation(fields: [serviceId], references: [id])
   
   orderId           String    @unique
   order             Order     @relation(fields: [orderId], references: [id])

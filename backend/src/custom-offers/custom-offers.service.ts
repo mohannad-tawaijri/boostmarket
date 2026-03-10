@@ -124,7 +124,7 @@ export class CustomOffersService {
       // Create the order
       const order = await tx.order.create({
         data: {
-          serviceId: offer.serviceId || '', // Will need handling if no service
+          serviceId: offer.serviceId || undefined,
           buyerId: offer.receiverId,
           boosterId: offer.senderId,
           price: offer.price,

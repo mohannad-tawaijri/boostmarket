@@ -16,7 +16,7 @@ export class OrdersService {
 
     return this.prisma.order.create({
       data: {
-        serviceId: data.serviceId,
+        serviceId: data.serviceId || undefined,
         buyerId,
         boosterId: service.boosterId,
         price: service.price,

@@ -38,17 +38,17 @@ export class ReviewsService {
 
     const review = await this.prisma.review.create({
       data: {
-        serviceId: data.serviceId,
+        serviceId: data.serviceId || undefined,
         orderId: data.orderId,
         reviewerId,
-        boosterId: order.service.boosterId,
+        boosterId: order.service?.boosterId || order.boosterId,
         rating: data.rating,
         comment: data.comment,
       },
     });
 
     // Update booster profile rating
-    await this.updateBoosterRating(order.service.boosterId);
+    await this.updateBoosterRating(order.service?.boosterId || order.boosterId);
 
     return review;
   }

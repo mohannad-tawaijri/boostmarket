@@ -83,7 +83,7 @@ export default function OrdersPage() {
         },
         body: JSON.stringify({
           orderId: reviewModalOrder.id,
-          serviceId: reviewModalOrder.service.id,
+          serviceId: reviewModalOrder.service?.id,
           boosterId: reviewModalOrder.booster.id,
           rating: reviewRating,
           comment: reviewComment || undefined,
@@ -284,12 +284,14 @@ export default function OrdersPage() {
                             </span>
                           </div>
                         )}
-                        <Link href={`/services/${order.service?.id}`}>
+                        {order.service?.id && (
+                        <Link href={`/services/${order.service.id}`}>
                           <Button variant="ghost" className="gap-2">
                             شوف الخدمة
                             <ArrowRight className="w-4 h-4" />
                           </Button>
                         </Link>
+                        )}
                       </div>
                     </div>
                   )}
@@ -320,7 +322,7 @@ export default function OrdersPage() {
 
             <div className="mb-4">
               <p className="text-zinc-400 text-sm mb-1">الخدمة</p>
-              <p className="text-white font-medium">{reviewModalOrder.service.title}</p>
+              <p className="text-white font-medium">{reviewModalOrder.service?.title || 'عرض مخصص'}</p>
             </div>
 
             <div className="mb-4">
