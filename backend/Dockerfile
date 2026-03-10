@@ -24,5 +24,5 @@ RUN npm prune --production
 # Expose port
 EXPOSE 10000
 
-# Start command - using node directly for proper signal handling
-CMD ["node", "dist/main.js"]
+# Run migrations then start
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
