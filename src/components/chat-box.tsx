@@ -5,6 +5,7 @@ import { X, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { User, Message, Conversation } from "@/types";
 import { API_URL } from "@/lib/config";
+import { useSocket } from "@/contexts/socket-context";
 
 interface ChatBoxProps {
   otherUser: User;
@@ -18,6 +19,8 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { onlineUsers } = useSocket();
+  const isOtherOnline = onlineUsers.has(otherUser.id);
 
   useEffect(() => {
     initializeChat();
@@ -109,7 +112,9 @@ export default function ChatBox({ otherUser, serviceId, onClose }: ChatBoxProps)
           </div>
           <div>
             <p className="font-medium text-white text-sm">{otherUser.name}</p>
-            <p className="text-xs text-zinc-500">متصل</p>
+            <p className={`text-xs ${isOtherOnline ? 'text-green-400' : 'text-zinc-500'}`}>
+              {isOtherOnline ? 'متصل' : 'غير متصل'}
+            </p>
           </div>
         </div>
         <button onClick={onClose} className="hover:bg-white/[0.09] p-1.5 rounded-md transition-colors">

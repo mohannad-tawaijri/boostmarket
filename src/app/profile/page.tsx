@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
+import { API_URL } from '@/lib/config';
 import { 
   User, 
   Mail, 
@@ -12,29 +13,273 @@ import {
   CreditCard,
   Save,
   Camera,
-  Gamepad2
+  Gamepad2,
+  Loader2,
+  CheckCircle,
+  AlertCircle
 } from 'lucide-react';
+
+interface ToastState {
+  message: string;
+  type: 'success' | 'error';
+}
+
+interface UserPreferences {
+  notifyEmail: boolean;
+  notifyOrders: boolean;
+  notifyMessages: boolean;
+  notifyMarketing: boolean;
+  showProfile: boolean;
+  showOnlineStatus: boolean;
+  allowMessages: boolean;
+  showReadReceipts: boolean;
+}
 
 export default function ProfilePage() {
   const { user } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeSection, setActiveSection] = useState('profile');
+  const [saving, setSaving] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [toast, setToast] = useState<ToastState | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
+    name: '',
+    email: '',
     bio: '',
+  });
+
+  const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
 
+  const [preferences, setPreferences] = useState<UserPreferences>({
+    notifyEmail: true,
+    notifyOrders: true,
+    notifyMessages: true,
+    notifyMarketing: false,
+    showProfile: true,
+    showOnlineStatus: true,
+    allowMessages: true,
+    showReadReceipts: true,
+  });
+
+  // Load user data on mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token || !user) return;
+
+      try {
+        const res = await fetch(`${API_URL}/users/${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setFormData({
+            name: data.name || '',
+            email: data.email || '',
+            bio: data.bio || '',
+          });
+          setAvatarUrl(data.avatar || null);
+          setPreferences({
+            notifyEmail: data.notifyEmail ?? true,
+            notifyOrders: data.notifyOrders ?? true,
+            notifyMessages: data.notifyMessages ?? true,
+            notifyMarketing: data.notifyMarketing ?? false,
+            showProfile: data.showProfile ?? true,
+            showOnlineStatus: data.showOnlineStatus ?? true,
+            allowMessages: data.allowMessages ?? true,
+            showReadReceipts: data.showReadReceipts ?? true,
+          });
+        }
+      } catch {
+        // Fallback to context data
+        setFormData({
+          name: user.name || '',
+          email: user.email || '',
+          bio: '',
+        });
+      }
+    };
+    loadUserData();
+  }, [user]);
+
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+  };
+
+  // --- Profile save ---
+  const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    setSaving(true);
+    try {
+      const res = await fetch(`${API_URL}/users/profile`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: formData.name, bio: formData.bio }),
+      });
+
+      if (res.ok) {
+        showToast('تم حفظ التغييرات بنجاح', 'success');
+      } else {
+        const data = await res.json();
+        showToast(data.message || 'فشل في حفظ التغييرات', 'error');
+      }
+    } catch {
+      showToast('حدث خطأ في الاتصال', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // --- Avatar upload ---
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    setUploadingAvatar(true);
+    try {
+      // Upload image
+      const uploadForm = new FormData();
+      uploadForm.append('file', file);
+
+      const uploadRes = await fetch(`${API_URL}/upload/image`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: uploadForm,
+      });
+
+      if (!uploadRes.ok) {
+        const data = await uploadRes.json();
+        showToast(data.message || 'فشل في رفع الصورة', 'error');
+        return;
+      }
+
+      const { url } = await uploadRes.json();
+
+      // Update user profile with new avatar
+      const profileRes = await fetch(`${API_URL}/users/profile`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ avatar: url }),
+      });
+
+      if (profileRes.ok) {
+        setAvatarUrl(url);
+        showToast('تم تحديث الصورة الشخصية', 'success');
+      } else {
+        showToast('فشل في تحديث الصورة', 'error');
+      }
+    } catch {
+      showToast('حدث خطأ في رفع الصورة', 'error');
+    } finally {
+      setUploadingAvatar(false);
+      // Reset input so re-selecting the same file triggers onChange
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  // --- Change password ---
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      showToast('كلمة المرور الجديدة غير متطابقة', 'error');
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+      return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    setSaving(true);
+    try {
+      const res = await fetch(`${API_URL}/auth/change-password`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+
+      if (res.ok) {
+        showToast('تم تغيير كلمة المرور بنجاح', 'success');
+        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      } else {
+        const data = await res.json();
+        showToast(data.message || 'فشل في تغيير كلمة المرور', 'error');
+      }
+    } catch {
+      showToast('حدث خطأ في الاتصال', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // --- Notification / Privacy toggle ---
+  const handlePreferenceToggle = async (key: keyof UserPreferences) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    const newValue = !preferences[key];
+    setPreferences((prev) => ({ ...prev, [key]: newValue }));
+
+    try {
+      const res = await fetch(`${API_URL}/users/profile`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ [key]: newValue }),
+      });
+
+      if (!res.ok) {
+        // Revert on failure
+        setPreferences((prev) => ({ ...prev, [key]: !newValue }));
+        showToast('فشل في حفظ التفضيل', 'error');
+      }
+    } catch {
+      setPreferences((prev) => ({ ...prev, [key]: !newValue }));
+      showToast('حدث خطأ في الاتصال', 'error');
+    }
   };
 
   const sections = [
@@ -47,6 +292,18 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-transparent py-8">
+      {/* Toast notification */}
+      {toast && (
+        <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-5 py-3 rounded-xl shadow-lg border ${
+          toast.type === 'success'
+            ? 'bg-green-900/80 border-green-500/30 text-green-200'
+            : 'bg-red-900/80 border-red-500/30 text-red-200'
+        }`}>
+          {toast.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+          {toast.message}
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -81,22 +338,44 @@ export default function ProfilePage() {
           <div className="lg:col-span-3">
             <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
               {activeSection === 'profile' && (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleProfileSubmit} className="space-y-6">
                   <div className="flex items-center gap-6 pb-6 border-b border-white/[0.15]">
                     <div className="relative">
-                      <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
-                        <Gamepad2 className="w-12 h-12 text-white" />
-                      </div>
+                      {avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={formData.name}
+                          className="w-24 h-24 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
+                          <Gamepad2 className="w-12 h-12 text-white" />
+                        </div>
+                      )}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        className="hidden"
+                        onChange={handleAvatarChange}
+                      />
                       <button
                         type="button"
-                        className="absolute bottom-0 right-0 p-2 bg-white/[0.09] rounded-full border border-white/[0.18] hover:bg-zinc-700 transition-colors"
+                        onClick={handleAvatarClick}
+                        disabled={uploadingAvatar}
+                        className="absolute bottom-0 right-0 p-2 bg-white/[0.09] rounded-full border border-white/[0.18] hover:bg-zinc-700 transition-colors disabled:opacity-50"
+                        aria-label="تغيير الصورة الشخصية"
                       >
-                        <Camera className="w-4 h-4 text-white" />
+                        {uploadingAvatar ? (
+                          <Loader2 className="w-4 h-4 text-white animate-spin" />
+                        ) : (
+                          <Camera className="w-4 h-4 text-white" />
+                        )}
                       </button>
                     </div>
                     <div>
-                      <h2 className="text-xl font-semibold text-white">{user?.name || 'اسمك'}</h2>
-                      <p className="text-zinc-400">{user?.email || 'بريدك@email.com'}</p>
+                      <h2 className="text-xl font-semibold text-white">{formData.name || 'اسمك'}</h2>
+                      <p className="text-zinc-400">{formData.email || 'بريدك@email.com'}</p>
                       {user?.isAdmin && (
                         <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-red-500/20 text-red-400">
                           مدير
@@ -107,10 +386,11 @@ export default function ProfilePage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">اسم العرض</label>
+                      <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-2">اسم العرض</label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
                         <input
+                          id="name"
                           type="text"
                           name="name"
                           value={formData.name}
@@ -121,23 +401,25 @@ export default function ProfilePage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">البريد الإلكتروني</label>
+                      <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">البريد الإلكتروني</label>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
                         <input
+                          id="email"
                           type="email"
                           name="email"
                           value={formData.email}
-                          onChange={handleChange}
-                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          disabled
+                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-zinc-400 placeholder-zinc-500 focus:outline-none cursor-not-allowed opacity-60"
                         />
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-2">نبذة عنك</label>
+                    <label htmlFor="bio" className="block text-sm font-medium text-zinc-300 mb-2">نبذة عنك</label>
                     <textarea
+                      id="bio"
                       name="bio"
                       value={formData.bio}
                       onChange={handleChange}
@@ -148,8 +430,8 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="flex justify-end">
-                    <Button type="submit" className="gap-2">
-                      <Save className="w-4 h-4" />
+                    <Button type="submit" disabled={saving} className="gap-2">
+                      {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                       حفظ التغييرات
                     </Button>
                   </div>
@@ -157,7 +439,7 @@ export default function ProfilePage() {
               )}
 
               {activeSection === 'security' && (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handlePasswordSubmit} className="space-y-6">
                   <div className="pb-6 border-b border-white/[0.15]">
                     <h2 className="text-xl font-semibold text-white mb-2">تغيير كلمة المرور</h2>
                     <p className="text-zinc-400">حدّث كلمة مرورك للحفاظ على أمان حسابك</p>
@@ -165,42 +447,50 @@ export default function ProfilePage() {
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الحالية</label>
+                      <label htmlFor="currentPassword" className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الحالية</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
                         <input
+                          id="currentPassword"
                           type="password"
                           name="currentPassword"
-                          value={formData.currentPassword}
-                          onChange={handleChange}
+                          value={passwordData.currentPassword}
+                          onChange={handlePasswordChange}
+                          required
                           className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الجديدة</label>
+                      <label htmlFor="newPassword" className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الجديدة</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
                         <input
+                          id="newPassword"
                           type="password"
                           name="newPassword"
-                          value={formData.newPassword}
-                          onChange={handleChange}
+                          value={passwordData.newPassword}
+                          onChange={handlePasswordChange}
+                          required
+                          minLength={6}
                           className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">تأكيد كلمة المرور الجديدة</label>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-300 mb-2">تأكيد كلمة المرور الجديدة</label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
                         <input
+                          id="confirmPassword"
                           type="password"
                           name="confirmPassword"
-                          value={formData.confirmPassword}
-                          onChange={handleChange}
+                          value={passwordData.confirmPassword}
+                          onChange={handlePasswordChange}
+                          required
+                          minLength={6}
                           className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                         />
                       </div>
@@ -208,8 +498,8 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="flex justify-end">
-                    <Button type="submit" className="gap-2">
-                      <Save className="w-4 h-4" />
+                    <Button type="submit" disabled={saving} className="gap-2">
+                      {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                       تحديث كلمة المرور
                     </Button>
                   </div>
@@ -224,19 +514,24 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-4">
-                    {[
-                      { label: 'إشعارات البريد الإلكتروني', description: 'تلقي التحديثات عبر البريد' },
-                      { label: 'تحديثات الطلبات', description: 'احصل على إشعارات بتغييرات حالة الطلب' },
-                      { label: 'رسائل جديدة', description: 'تلقي تنبيهات للرسائل الجديدة' },
-                      { label: 'رسائل تسويقية', description: 'تلقي العروض الترويجية والأخبار' },
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
+                    {([
+                      { key: 'notifyEmail' as const, label: 'إشعارات البريد الإلكتروني', description: 'تلقي التحديثات عبر البريد' },
+                      { key: 'notifyOrders' as const, label: 'تحديثات الطلبات', description: 'احصل على إشعارات بتغييرات حالة الطلب' },
+                      { key: 'notifyMessages' as const, label: 'رسائل جديدة', description: 'تلقي تنبيهات للرسائل الجديدة' },
+                      { key: 'notifyMarketing' as const, label: 'رسائل تسويقية', description: 'تلقي العروض الترويجية والأخبار' },
+                    ]).map((item) => (
+                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
-                          <input type="checkbox" className="sr-only peer" defaultChecked={index < 3} />
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={preferences[item.key]}
+                            onChange={() => handlePreferenceToggle(item.key)}
+                          />
                           <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
                         </label>
                       </div>
@@ -268,18 +563,24 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-4">
-                    {[
-                      { label: 'إظهار الملف الشخصي للعامة', description: 'السماح للآخرين بعرض ملفك الشخصي' },
-                      { label: 'إظهار حالة الاتصال', description: 'السماح للآخرين برؤية حالة اتصالك' },
-                      { label: 'السماح بالرسائل من الجميع', description: 'تلقي رسائل من غير جهات الاتصال' },
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
+                    {([
+                      { key: 'showProfile' as const, label: 'إظهار الملف الشخصي للعامة', description: 'السماح للآخرين بعرض ملفك الشخصي' },
+                      { key: 'showOnlineStatus' as const, label: 'إظهار حالة الاتصال', description: 'السماح للآخرين برؤية حالة اتصالك' },
+                      { key: 'allowMessages' as const, label: 'السماح بالرسائل من الجميع', description: 'تلقي رسائل من غير جهات الاتصال' },
+                      { key: 'showReadReceipts' as const, label: 'إظهار إيصالات القراءة', description: 'السماح للآخرين بمعرفة أنك قرأت رسائلهم' },
+                    ]).map((item) => (
+                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
                         <div>
                           <p className="text-white font-medium">{item.label}</p>
                           <p className="text-zinc-500 text-sm">{item.description}</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
-                          <input type="checkbox" className="sr-only peer" defaultChecked />
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={preferences[item.key]}
+                            onChange={() => handlePreferenceToggle(item.key)}
+                          />
                           <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
                         </label>
                       </div>

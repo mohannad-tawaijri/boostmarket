@@ -187,7 +187,7 @@ export class ChatService {
           where: {
             conversationId: conv.id,
             receiverId: userId,
-            read: false,
+            status: { not: 'READ' },
           },
         });
         return {
@@ -237,10 +237,11 @@ export class ChatService {
       where: {
         conversationId,
         receiverId: userId,
-        read: false,
+        status: { not: 'READ' },
       },
       data: {
-        read: true,
+        status: 'READ',
+        readAt: new Date(),
       },
     });
 
@@ -251,7 +252,7 @@ export class ChatService {
     return this.prisma.message.count({
       where: {
         receiverId: userId,
-        read: false,
+        status: { not: 'READ' },
       },
     });
   }
@@ -295,16 +296,54 @@ export class ChatService {
   }
 
   async markMessagesAsRead(conversationId: string, userId: string) {
-    await this.prisma.message.updateMany({
+    const result = await this.prisma.message.updateMany({
       where: {
         conversationId,
         receiverId: userId,
-        read: false,
+        status: { not: 'READ' },
       },
       data: {
-        read: true,
+        status: 'READ',
+        readAt: new Date(),
       },
     });
+    return result;
+  }
+
+  async getUnreadMessageIds(conversationId: string, userId: string): Promise<string[]> {
+    const messages = await this.prisma.message.findMany({
+      where: {
+        conversationId,
+        receiverId: userId,
+        status: { not: 'READ' },
+      },
+      select: { id: true },
+    });
+    return messages.map(m => m.id);
+  }
+
+  async markMessagesAsDelivered(userId: string) {
+    await this.prisma.message.updateMany({
+      where: {
+        receiverId: userId,
+        status: 'SENT',
+      },
+      data: {
+        status: 'DELIVERED',
+        deliveredAt: new Date(),
+      },
+    });
+  }
+
+  async getUserPrivacy(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        showOnlineStatus: true,
+        showReadReceipts: true,
+      },
+    });
+    return user;
   }
 
   // WebSocket gateway sendMessage (conversationId first)

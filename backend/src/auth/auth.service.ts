@@ -135,6 +135,29 @@ export class AuthService {
     });
   }
 
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user || !user.password) {
+      throw new UnauthorizedException('Unable to change password');
+    }
+
+    const isCurrentValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isCurrentValid) {
+      throw new UnauthorizedException('كلمة المرور الحالية غير صحيحة');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    // Revoke all refresh tokens for security
+    await this.revokeAllUserTokens(userId);
+
+    return { message: 'تم تغيير كلمة المرور بنجاح' };
+  }
+
   async validateUser(userId: string) {
     return this.usersService.findOne(userId);
   }

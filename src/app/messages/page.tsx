@@ -20,6 +20,7 @@ import {
   DollarSign,
   Clock,
   Check,
+  CheckCheck,
   XCircle,
   FileText
 } from 'lucide-react';
@@ -52,6 +53,7 @@ interface Message {
   imageUrl?: string;
   senderId: string;
   createdAt: string;
+  status?: 'SENT' | 'DELIVERED' | 'READ';
   sender?: User;
   customOffer?: CustomOffer;
 }
@@ -69,7 +71,7 @@ interface Conversation {
 function MessagesContent() {
   const { user } = useAuth();
   const router = useRouter();
-  const { isConnected, joinConversation, leaveConversation, onNewMessage, onMessageNotification, markAsRead, refreshUnreadCount } = useSocket();
+  const { isConnected, joinConversation, leaveConversation, onNewMessage, onMessageNotification, onMessageStatusUpdate, markAsRead, refreshUnreadCount, onlineUsers, checkOnlineUsers } = useSocket();
   const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
@@ -158,6 +160,34 @@ function MessagesContent() {
 
     return () => unsubscribe();
   }, [activeConversation?.id, onMessageNotification]);
+
+  // Listen for message status updates (delivered/read checkmarks)
+  useEffect(() => {
+    const unsubscribe = onMessageStatusUpdate((update) => {
+      if (activeConversation && update.conversationId === activeConversation.id) {
+        setMessages(prev => prev.map(msg => {
+          if (update.messageIds && update.messageIds.includes(msg.id)) {
+            return { ...msg, status: update.status };
+          }
+          return msg;
+        }));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [activeConversation?.id, onMessageStatusUpdate]);
+
+  // Check online status for all conversation participants
+  useEffect(() => {
+    if (conversations.length > 0 && user) {
+      const participantIds = conversations
+        .map(c => c.participants.find(p => p.user.id !== user.id)?.user.id)
+        .filter((id): id is string => !!id);
+      if (participantIds.length > 0) {
+        checkOnlineUsers(participantIds);
+      }
+    }
+  }, [conversations.length, checkOnlineUsers, user]);
 
   // Join/leave conversation room when active conversation changes
   useEffect(() => {
@@ -574,8 +604,13 @@ function MessagesContent() {
                         isActive ? 'bg-zinc-800/70' : ''
                       }`}
                     >
-                      <div className="w-12 h-12 rounded-full bg-violet-600 flex items-center justify-center flex-shrink-0">
-                        <UserIcon className="w-6 h-6 text-white" />
+                      <div className="relative w-12 h-12 flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-violet-600 flex items-center justify-center">
+                          <UserIcon className="w-6 h-6 text-white" />
+                        </div>
+                        {other && onlineUsers.has(other.id) && (
+                          <span className="absolute bottom-0 end-0 w-3.5 h-3.5 bg-green-500 border-2 border-zinc-900 rounded-full" />
+                        )}
                       </div>
                       <div className="flex-1 text-right overflow-hidden">
                         <p className="text-white font-medium truncate">{other?.name || 'مستخدم'}</p>
@@ -615,17 +650,26 @@ function MessagesContent() {
                   >
                     <ArrowRight className="w-5 h-5" />
                   </button>
-                  <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center">
-                    <UserIcon className="w-5 h-5 text-white" />
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center">
+                      <UserIcon className="w-5 h-5 text-white" />
+                    </div>
+                    {getOtherParticipant(activeConversation) && onlineUsers.has(getOtherParticipant(activeConversation)!.id) && (
+                      <span className="absolute bottom-0 end-0 w-3 h-3 bg-green-500 border-2 border-zinc-900 rounded-full" />
+                    )}
                   </div>
                   <div>
                     <p className="text-white font-medium">
                       {getOtherParticipant(activeConversation)?.name || 'مستخدم'}
                     </p>
-                    {activeConversation.service && (
+                    {getOtherParticipant(activeConversation) && onlineUsers.has(getOtherParticipant(activeConversation)!.id) ? (
+                      <p className="text-green-400 text-xs">متصل</p>
+                    ) : activeConversation.service ? (
                       <Link href={`/services/${activeConversation.service.id}`} className="text-violet-400 text-sm hover:underline">
                         {activeConversation.service.title}
                       </Link>
+                    ) : (
+                      <p className="text-zinc-500 text-xs">غير متصل</p>
                     )}
                   </div>
                 </div>
@@ -761,9 +805,20 @@ function MessagesContent() {
                             {message.content && (
                               <p className={`px-4 py-2 ${message.imageUrl ? 'pt-1' : ''}`}>{message.content}</p>
                             )}
-                            <p className={`text-xs px-4 pb-2 ${isOwn ? 'text-white/60' : 'text-zinc-500'}`}>
-                              {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </p>
+                            <div className={`flex items-center gap-1 px-4 pb-2 ${isOwn ? 'justify-end' : ''}`}>
+                              <span className={`text-xs ${isOwn ? 'text-white/60' : 'text-zinc-500'}`}>
+                                {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                              {isOwn && (
+                                message.status === 'READ' ? (
+                                  <CheckCheck className="w-4 h-4 text-sky-300" />
+                                ) : message.status === 'DELIVERED' ? (
+                                  <CheckCheck className="w-4 h-4 text-white/60" />
+                                ) : (
+                                  <Check className="w-4 h-4 text-white/60" />
+                                )
+                              )}
+                            </div>
                           </div>
                         </div>
                       );

@@ -29,6 +29,12 @@ enum OfferStatus {
   CANCELLED
 }
 
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}
+
 enum ServiceCategory {
   RANK_BOOST
   COACHING
@@ -64,6 +70,19 @@ model User {
   avatar            String?
   bio               String?
   verified          Boolean   @default(false)
+  
+  // Notification preferences
+  notifyEmail       Boolean   @default(true)
+  notifyOrders      Boolean   @default(true)
+  notifyMessages    Boolean   @default(true)
+  notifyMarketing   Boolean   @default(false)
+  
+  // Privacy preferences
+  showProfile       Boolean   @default(true)
+  showOnlineStatus  Boolean   @default(true)
+  allowMessages     Boolean   @default(true)
+  showReadReceipts  Boolean   @default(true)
+  
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   
@@ -294,7 +313,9 @@ model Message {
   
   content           String?
   imageUrl          String?
-  read              Boolean       @default(false)
+  status            MessageStatus @default(SENT)
+  readAt            DateTime?
+  deliveredAt       DateTime?
   
   // Custom offer attached to this message
   customOfferId     String?       @unique

@@ -22,7 +22,7 @@ export class UsersController {
   updateProfile(@Request() req, @Body() updateData: any) {
     // Whitelist allowed fields to prevent mass assignment
     const allowed: Record<string, any> = {};
-    const safeFields = ['name', 'bio', 'avatar'];
+    const safeFields = ['name', 'bio', 'avatar', 'notifyEmail', 'notifyOrders', 'notifyMessages', 'notifyMarketing', 'showProfile', 'showOnlineStatus', 'allowMessages', 'showReadReceipts'];
     for (const key of safeFields) {
       if (updateData[key] !== undefined) {
         allowed[key] = updateData[key];

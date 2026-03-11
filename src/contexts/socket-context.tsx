@@ -27,17 +27,27 @@ interface MessageNotification {
   };
 }
 
+interface MessageStatusUpdate {
+  conversationId: string;
+  messageIds?: string[];
+  status: 'DELIVERED' | 'READ';
+  readBy?: string;
+}
+
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
   unreadCount: number;
+  onlineUsers: Set<string>;
   joinConversation: (conversationId: string) => void;
   leaveConversation: (conversationId: string) => void;
   sendMessage: (conversationId: string, content: string) => void;
   markAsRead: (conversationId: string) => void;
   onNewMessage: (callback: (message: Message) => void) => () => void;
   onMessageNotification: (callback: (notification: MessageNotification) => void) => () => void;
+  onMessageStatusUpdate: (callback: (update: MessageStatusUpdate) => void) => () => void;
   refreshUnreadCount: () => void;
+  checkOnlineUsers: (userIds: string[]) => void;
 }
 
 const SocketContext = createContext<SocketContextType | null>(null);
@@ -55,9 +65,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   // Use ref to avoid stale closure issues with socket event handlers
   const messageCallbacksRef = useRef<((message: Message) => void)[]>([]);
   const notificationCallbacksRef = useRef<((notification: MessageNotification) => void)[]>([]);
+  const statusCallbacksRef = useRef<((update: MessageStatusUpdate) => void)[]>([]);
 
   // Fetch unread count from API
   const fetchUnreadCount = useCallback(async () => {
@@ -160,6 +172,29 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       }
     });
 
+    // Online/offline presence tracking
+    newSocket.on('userOnline', ({ userId }: { userId: string }) => {
+      setOnlineUsers(prev => new Set(prev).add(userId));
+    });
+
+    newSocket.on('userOffline', ({ userId }: { userId: string }) => {
+      setOnlineUsers(prev => {
+        const next = new Set(prev);
+        next.delete(userId);
+        return next;
+      });
+    });
+
+    // Message status updates (delivered/read)
+    newSocket.on('messageStatusUpdate', (update: MessageStatusUpdate) => {
+      statusCallbacksRef.current.forEach(callback => callback(update));
+    });
+
+    // Response for getOnlineUsers request
+    newSocket.on('onlineUsersList', (userIds: string[]) => {
+      setOnlineUsers(new Set(userIds));
+    });
+
     setSocket(newSocket);
 
     return () => {
@@ -206,18 +241,32 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const onMessageStatusUpdate = useCallback((callback: (update: MessageStatusUpdate) => void) => {
+    statusCallbacksRef.current = [...statusCallbacksRef.current, callback];
+    return () => {
+      statusCallbacksRef.current = statusCallbacksRef.current.filter(cb => cb !== callback);
+    };
+  }, []);
+
+  const checkOnlineUsers = useCallback((userIds: string[]) => {
+    socket?.emit('getOnlineUsers', userIds);
+  }, [socket]);
+
   return (
     <SocketContext.Provider value={{
       socket,
       isConnected,
       unreadCount,
+      onlineUsers,
       joinConversation,
       leaveConversation,
       sendMessage,
       markAsRead,
       onNewMessage,
       onMessageNotification,
+      onMessageStatusUpdate,
       refreshUnreadCount: fetchUnreadCount,
+      checkOnlineUsers,
     }}>
       {children}
     </SocketContext.Provider>

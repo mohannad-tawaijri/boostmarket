@@ -46,12 +46,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // Store socket connection
       client.data.userId = userId;
       
+      const wasOffline = !this.userSockets.has(userId);
       const userSocketIds = this.userSockets.get(userId) || [];
       userSocketIds.push(client.id);
       this.userSockets.set(userId, userSocketIds);
 
       // Join user's personal room
       client.join(`user:${userId}`);
+
+      // Broadcast online status (only on first connection, respect privacy)
+      if (wasOffline) {
+        const privacy = await this.chatService.getUserPrivacy(userId);
+        if (privacy?.showOnlineStatus) {
+          this.server.emit('userOnline', { userId });
+        }
+        // Mark pending messages as delivered
+        await this.chatService.markMessagesAsDelivered(userId);
+      }
       
       console.log(`User ${userId} connected with socket ${client.id}`);
     } catch (error) {
@@ -60,7 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     const userId = client.data.userId;
     if (userId) {
       const userSocketIds = this.userSockets.get(userId) || [];
@@ -70,6 +81,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.userSockets.set(userId, filteredIds);
       } else {
         this.userSockets.delete(userId);
+        // Broadcast offline status (respect privacy)
+        const privacy = await this.chatService.getUserPrivacy(userId);
+        if (privacy?.showOnlineStatus) {
+          this.server.emit('userOffline', { userId, lastSeen: new Date() });
+        }
       }
       
       console.log(`User ${userId} disconnected socket ${client.id}`);
@@ -117,11 +133,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // Notify other participants who aren't in the conversation room
       conversation.participants.forEach((participant: any) => {
         if (participant.userId !== userId) {
-          this.server.to(`user:${participant.userId}`).emit('messageNotification', {
+          const receiverId = participant.userId;
+
+          this.server.to(`user:${receiverId}`).emit('messageNotification', {
             conversationId: data.conversationId,
             message,
             from: message.sender,
           });
+
+          // Auto-mark as DELIVERED if recipient is online
+          if (this.isUserOnline(receiverId)) {
+            this.chatService.markMessagesAsDelivered(receiverId).then(() => {
+              // Notify sender of delivery
+              this.server.to(`user:${userId}`).emit('messageStatusUpdate', {
+                conversationId: data.conversationId,
+                messageIds: [message.id],
+                status: 'DELIVERED',
+              });
+            });
+          }
         }
       });
 
@@ -140,7 +170,46 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const userId = client.data.userId;
     if (!userId) return;
 
-    await this.chatService.markMessagesAsRead(conversationId, userId);
+    // Find IDs of messages that will be marked as read
+    const unreadMessages = await this.chatService.getUnreadMessageIds(conversationId, userId);
+    const result = await this.chatService.markMessagesAsRead(conversationId, userId);
+
+    if (result.count > 0 && unreadMessages.length > 0) {
+      // Check if this user allows read receipts
+      const privacy = await this.chatService.getUserPrivacy(userId);
+      if (privacy?.showReadReceipts) {
+        // Notify the other participants that messages were read
+        const conversation = await this.chatService.getConversation(conversationId, userId);
+        conversation.participants.forEach((participant: any) => {
+          if (participant.userId !== userId) {
+            this.server.to(`user:${participant.userId}`).emit('messageStatusUpdate', {
+              conversationId,
+              messageIds: unreadMessages,
+              status: 'READ',
+              readBy: userId,
+            });
+          }
+        });
+      }
+    }
+  }
+
+  @SubscribeMessage('getOnlineUsers')
+  async handleGetOnlineUsers(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() userIds: string[],
+  ) {
+    if (!Array.isArray(userIds)) return;
+    const onlineUsers: string[] = [];
+    for (const id of userIds) {
+      if (this.isUserOnline(id)) {
+        const privacy = await this.chatService.getUserPrivacy(id);
+        if (privacy?.showOnlineStatus) {
+          onlineUsers.push(id);
+        }
+      }
+    }
+    client.emit('onlineUsersList', onlineUsers);
   }
 
   // Method to emit events from outside the gateway
