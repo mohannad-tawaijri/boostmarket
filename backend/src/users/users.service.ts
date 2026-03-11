@@ -44,7 +44,6 @@ export class UsersService {
         notifyMarketing: true,
         showProfile: true,
         showOnlineStatus: true,
-        allowMessages: true,
         showReadReceipts: true,
         createdAt: true,
         boosterProfile: true,
@@ -53,6 +52,75 @@ export class UsersService {
 
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async findPublicProfile(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        bio: true,
+        role: true,
+        verified: true,
+        showProfile: true,
+        showOnlineStatus: true,
+        createdAt: true,
+        boosterProfile: {
+          select: {
+            rating: true,
+            completedOrders: true,
+            verified: true,
+            availableForHire: true,
+            games: true,
+          },
+        },
+        services: {
+          where: { active: true },
+          select: {
+            id: true,
+            title: true,
+            game: true,
+            category: true,
+            price: true,
+            images: true,
+            deliveryTime: true,
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 6,
+        },
+        receivedReviews: {
+          select: {
+            id: true,
+            rating: true,
+            comment: true,
+            createdAt: true,
+            reviewer: {
+              select: { id: true, name: true, avatar: true },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 10,
+        },
+        _count: {
+          select: {
+            services: { where: { active: true } },
+            receivedReviews: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!user.showProfile) {
+      return { id: user.id, name: user.name, avatar: user.avatar, profileHidden: true };
     }
 
     return user;
@@ -101,7 +169,6 @@ export class UsersService {
         notifyMarketing: true,
         showProfile: true,
         showOnlineStatus: true,
-        allowMessages: true,
         showReadReceipts: true,
       },
     });

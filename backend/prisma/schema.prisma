@@ -80,7 +80,6 @@ model User {
   // Privacy preferences
   showProfile       Boolean   @default(true)
   showOnlineStatus  Boolean   @default(true)
-  allowMessages     Boolean   @default(true)
   showReadReceipts  Boolean   @default(true)
   
   createdAt         DateTime  @default(now())

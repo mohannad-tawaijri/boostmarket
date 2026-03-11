@@ -377,12 +377,12 @@ export default function ServiceDetailPage() {
             {service.booster && (
               <div className="bg-white/[0.09] rounded-2xl border border-white/[0.18] p-6">
                 <h3 className="font-semibold text-white mb-4">عن البوستر</h3>
-                <div className="flex items-center gap-4 mb-4">
+                <Link href={`/profile/${service.boosterId || service.booster.id}`} className="flex items-center gap-4 mb-4 group">
                   <div className="w-16 h-16 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     {service.booster.name?.charAt(0) || "B"}
                   </div>
                   <div>
-                    <p className="font-semibold text-white text-lg">{service.booster.name}</p>
+                    <p className="font-semibold text-white text-lg group-hover:text-violet-400 transition-colors">{service.booster.name}</p>
                     {service.booster.boosterProfile?.verified ? (
                       <p className="text-green-400 text-sm flex items-center gap-1">
                         <CheckCircle className="w-3.5 h-3.5" />
@@ -392,7 +392,7 @@ export default function ServiceDetailPage() {
                       <p className="text-zinc-500 text-sm">بوستر</p>
                     )}
                   </div>
-                </div>
+                </Link>
                 {service.booster.boosterProfile && (
                   <div className="flex items-center gap-4 text-sm text-zinc-400 mb-4">
                     {service.booster.boosterProfile.completedOrders > 0 && (

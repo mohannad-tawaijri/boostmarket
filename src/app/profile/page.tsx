@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { API_URL } from '@/lib/config';
+import AvatarInspect from '@/components/avatar-inspect';
 import { 
   User, 
   Mail, 
@@ -31,7 +32,6 @@ interface UserPreferences {
   notifyMarketing: boolean;
   showProfile: boolean;
   showOnlineStatus: boolean;
-  allowMessages: boolean;
   showReadReceipts: boolean;
 }
 
@@ -63,7 +63,6 @@ export default function ProfilePage() {
     notifyMarketing: false,
     showProfile: true,
     showOnlineStatus: true,
-    allowMessages: true,
     showReadReceipts: true,
   });
 
@@ -92,7 +91,6 @@ export default function ProfilePage() {
             notifyMarketing: data.notifyMarketing ?? false,
             showProfile: data.showProfile ?? true,
             showOnlineStatus: data.showOnlineStatus ?? true,
-            allowMessages: data.allowMessages ?? true,
             showReadReceipts: data.showReadReceipts ?? true,
           });
         }
@@ -342,11 +340,13 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-6 pb-6 border-b border-white/[0.15]">
                     <div className="relative">
                       {avatarUrl ? (
-                        <img
-                          src={avatarUrl}
-                          alt={formData.name}
-                          className="w-24 h-24 rounded-full object-cover"
-                        />
+                        <AvatarInspect src={avatarUrl} alt={formData.name}>
+                          <img
+                            src={avatarUrl}
+                            alt={formData.name}
+                            className="w-24 h-24 rounded-full object-cover hover:opacity-80 transition-opacity"
+                          />
+                        </AvatarInspect>
                       ) : (
                         <div className="w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center">
                           <Gamepad2 className="w-12 h-12 text-white" />
@@ -566,7 +566,6 @@ export default function ProfilePage() {
                     {([
                       { key: 'showProfile' as const, label: 'إظهار الملف الشخصي للعامة', description: 'السماح للآخرين بعرض ملفك الشخصي' },
                       { key: 'showOnlineStatus' as const, label: 'إظهار حالة الاتصال', description: 'السماح للآخرين برؤية حالة اتصالك' },
-                      { key: 'allowMessages' as const, label: 'السماح بالرسائل من الجميع', description: 'تلقي رسائل من غير جهات الاتصال' },
                       { key: 'showReadReceipts' as const, label: 'إظهار إيصالات القراءة', description: 'السماح للآخرين بمعرفة أنك قرأت رسائلهم' },
                     ]).map((item) => (
                       <div key={item.key} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">

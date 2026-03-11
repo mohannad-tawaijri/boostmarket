@@ -12,6 +12,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get(':id/public')
+  findPublicProfile(@Param('id') id: string) {
+    return this.usersService.findPublicProfile(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -22,7 +27,7 @@ export class UsersController {
   updateProfile(@Request() req, @Body() updateData: any) {
     // Whitelist allowed fields to prevent mass assignment
     const allowed: Record<string, any> = {};
-    const safeFields = ['name', 'bio', 'avatar', 'notifyEmail', 'notifyOrders', 'notifyMessages', 'notifyMarketing', 'showProfile', 'showOnlineStatus', 'allowMessages', 'showReadReceipts'];
+    const safeFields = ['name', 'bio', 'avatar', 'notifyEmail', 'notifyOrders', 'notifyMessages', 'notifyMarketing', 'showProfile', 'showOnlineStatus', 'showReadReceipts'];
     for (const key of safeFields) {
       if (updateData[key] !== undefined) {
         allowed[key] = updateData[key];

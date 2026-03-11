@@ -659,9 +659,9 @@ function MessagesContent() {
                     )}
                   </div>
                   <div>
-                    <p className="text-white font-medium">
+                    <Link href={`/profile/${getOtherParticipant(activeConversation)?.id}`} className="text-white font-medium hover:text-violet-400 transition-colors">
                       {getOtherParticipant(activeConversation)?.name || 'مستخدم'}
-                    </p>
+                    </Link>
                     {getOtherParticipant(activeConversation) && onlineUsers.has(getOtherParticipant(activeConversation)!.id) ? (
                       <p className="text-green-400 text-xs">متصل</p>
                     ) : activeConversation.service ? (
