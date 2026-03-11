@@ -33,6 +33,13 @@ export class UsersController {
         allowed[key] = updateData[key];
       }
     }
+    // Enforce string length limits
+    if (typeof allowed.bio === 'string') {
+      allowed.bio = allowed.bio.slice(0, 500);
+    }
+    if (typeof allowed.name === 'string') {
+      allowed.name = allowed.name.slice(0, 50);
+    }
     return this.usersService.update(req.user.id, allowed);
   }
 }

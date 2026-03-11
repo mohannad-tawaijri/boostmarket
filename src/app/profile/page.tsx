@@ -14,6 +14,7 @@ import {
   CreditCard,
   Save,
   Camera,
+  Trash2,
   Gamepad2,
   Loader2,
   CheckCircle,
@@ -206,6 +207,35 @@ export default function ProfilePage() {
     }
   };
 
+  // --- Delete avatar ---
+  const handleAvatarDelete = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token || !avatarUrl) return;
+
+    setUploadingAvatar(true);
+    try {
+      const res = await fetch(`${API_URL}/users/profile`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ avatar: null }),
+      });
+
+      if (res.ok) {
+        setAvatarUrl(null);
+        showToast('تم حذف الصورة الشخصية', 'success');
+      } else {
+        showToast('فشل في حذف الصورة', 'error');
+      }
+    } catch {
+      showToast('حدث خطأ في حذف الصورة', 'error');
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
+
   // --- Change password ---
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -372,6 +402,17 @@ export default function ProfilePage() {
                           <Camera className="w-4 h-4 text-white" />
                         )}
                       </button>
+                      {avatarUrl && (
+                        <button
+                          type="button"
+                          onClick={handleAvatarDelete}
+                          disabled={uploadingAvatar}
+                          className="absolute top-0 right-0 p-1.5 bg-red-500/80 rounded-full border border-red-400/30 hover:bg-red-500 transition-colors disabled:opacity-50"
+                          aria-label="حذف الصورة الشخصية"
+                        >
+                          <Trash2 className="w-3 h-3 text-white" />
+                        </button>
+                      )}
                     </div>
                     <div>
                       <h2 className="text-xl font-semibold text-white">{formData.name || 'اسمك'}</h2>
@@ -424,9 +465,11 @@ export default function ProfilePage() {
                       value={formData.bio}
                       onChange={handleChange}
                       rows={4}
+                      maxLength={500}
                       placeholder="اكتب نبذة عنك..."
                       className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none"
                     />
+                    <p className="text-xs text-zinc-500 mt-1 text-left">{formData.bio.length}/500</p>
                   </div>
 
                   <div className="flex justify-end">
@@ -513,29 +556,10 @@ export default function ProfilePage() {
                     <p className="text-zinc-400">أدر كيفية تلقي الإشعارات</p>
                   </div>
 
-                  <div className="space-y-4">
-                    {([
-                      { key: 'notifyEmail' as const, label: 'إشعارات البريد الإلكتروني', description: 'تلقي التحديثات عبر البريد' },
-                      { key: 'notifyOrders' as const, label: 'تحديثات الطلبات', description: 'احصل على إشعارات بتغييرات حالة الطلب' },
-                      { key: 'notifyMessages' as const, label: 'رسائل جديدة', description: 'تلقي تنبيهات للرسائل الجديدة' },
-                      { key: 'notifyMarketing' as const, label: 'رسائل تسويقية', description: 'تلقي العروض الترويجية والأخبار' },
-                    ]).map((item) => (
-                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
-                        <div>
-                          <p className="text-white font-medium">{item.label}</p>
-                          <p className="text-zinc-500 text-sm">{item.description}</p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={preferences[item.key]}
-                            onChange={() => handlePreferenceToggle(item.key)}
-                          />
-                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
-                        </label>
-                      </div>
-                    ))}
+                  <div className="p-8 text-center">
+                    <Bell className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-white mb-2">قريباً</h3>
+                    <p className="text-zinc-400 text-sm max-w-sm mx-auto">نعمل على إضافة إشعارات البريد الإلكتروني وتنبيهات الطلبات. سيتم تفعيل هذه الخيارات قريباً.</p>
                   </div>
                 </div>
               )}
