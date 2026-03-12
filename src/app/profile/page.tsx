@@ -13,7 +13,8 @@ import {
   Shield, 
   CreditCard,
   Save,
-  Camera,
+  Pencil,
+  ImagePlus,
   Trash2,
   Gamepad2,
   Loader2,
@@ -44,6 +45,8 @@ export default function ProfilePage() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+  const avatarMenuRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -153,7 +156,21 @@ export default function ProfilePage() {
   // --- Avatar upload ---
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
+    setShowAvatarMenu(false);
   };
+
+  // Close avatar menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (avatarMenuRef.current && !avatarMenuRef.current.contains(e.target as Node)) {
+        setShowAvatarMenu(false);
+      }
+    };
+    if (showAvatarMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showAvatarMenu]);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -389,30 +406,43 @@ export default function ProfilePage() {
                         className="hidden"
                         onChange={handleAvatarChange}
                       />
-                      <button
-                        type="button"
-                        onClick={handleAvatarClick}
-                        disabled={uploadingAvatar}
-                        className="absolute bottom-0 right-0 p-2 bg-white/[0.09] rounded-full border border-white/[0.18] hover:bg-zinc-700 transition-colors disabled:opacity-50"
-                        aria-label="تغيير الصورة الشخصية"
-                      >
-                        {uploadingAvatar ? (
-                          <Loader2 className="w-4 h-4 text-white animate-spin" />
-                        ) : (
-                          <Camera className="w-4 h-4 text-white" />
-                        )}
-                      </button>
-                      {avatarUrl && (
+                      <div ref={avatarMenuRef} className="absolute bottom-0 right-0">
                         <button
                           type="button"
-                          onClick={handleAvatarDelete}
+                          onClick={() => setShowAvatarMenu(!showAvatarMenu)}
                           disabled={uploadingAvatar}
-                          className="absolute top-0 right-0 p-1.5 bg-red-500/80 rounded-full border border-red-400/30 hover:bg-red-500 transition-colors disabled:opacity-50"
-                          aria-label="حذف الصورة الشخصية"
+                          className="p-2 bg-white/[0.09] rounded-full border border-white/[0.18] hover:bg-zinc-700 transition-colors disabled:opacity-50"
+                          aria-label="تعديل الصورة الشخصية"
                         >
-                          <Trash2 className="w-3 h-3 text-white" />
+                          {uploadingAvatar ? (
+                            <Loader2 className="w-4 h-4 text-white animate-spin" />
+                          ) : (
+                            <Pencil className="w-4 h-4 text-white" />
+                          )}
                         </button>
-                      )}
+                        {showAvatarMenu && (
+                          <div className="absolute bottom-full mb-2 right-0 w-40 bg-zinc-800 border border-white/10 rounded-lg shadow-xl overflow-hidden z-50">
+                            <button
+                              type="button"
+                              onClick={handleAvatarClick}
+                              className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-zinc-200 hover:bg-zinc-700 transition-colors"
+                            >
+                              <ImagePlus className="w-4 h-4" />
+                              رفع صورة
+                            </button>
+                            {avatarUrl && (
+                              <button
+                                type="button"
+                                onClick={() => { handleAvatarDelete(); setShowAvatarMenu(false); }}
+                                className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-400 hover:bg-zinc-700 transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                حذف الصورة
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <h2 className="text-xl font-semibold text-white">{formData.name || 'اسمك'}</h2>
