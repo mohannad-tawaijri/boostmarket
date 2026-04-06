@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, XCircle, Clock, ArrowRight, Loader2 } from 'lucide-react';
@@ -18,7 +18,7 @@ interface PaymentInfo {
   message?: string;
 }
 
-export default function PaymentCallbackPage() {
+function PaymentCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
@@ -157,5 +157,17 @@ export default function PaymentCallbackPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
+      </div>
+    }>
+      <PaymentCallbackContent />
+    </Suspense>
   );
 }

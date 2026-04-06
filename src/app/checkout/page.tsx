@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ declare global {
   }
 }
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const searchParams = useSearchParams();
   const [moyasarReady, setMoyasarReady] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
@@ -183,5 +183,17 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }
