@@ -22,7 +22,7 @@ interface Order {
   id: string;
   service: { title: string };
   status: string;
-  totalPrice: number;
+  price: number;
   createdAt: string;
   buyerId: string;
   boosterId: string;
@@ -93,7 +93,7 @@ export default function DashboardPage() {
 
   const totalEarnings = customerOrders
     .filter(o => o.status === 'COMPLETED')
-    .reduce((sum, o) => sum + o.totalPrice, 0);
+    .reduce((sum, o) => sum + o.price, 0);
 
   const inProgressOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'IN_PROGRESS').length;
   const completedOrders = [...myOrders, ...customerOrders].filter(o => o.status === 'COMPLETED').length;
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="text-right">
                         {getStatusBadge(order.status)}
-                        <p className="text-zinc-400 text-sm mt-1">${order.totalPrice}</p>
+                        <p className="text-zinc-400 text-sm mt-1">{order.price} ر.س</p>
                       </div>
                     </div>
                   ))}
@@ -288,7 +288,7 @@ export default function DashboardPage() {
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.booster?.name || 'Booster'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                        <td className="px-6 py-4 text-zinc-300">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-zinc-300">{order.price} ر.س</td>
                         <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                       </tr>
                     ))}
@@ -337,10 +337,12 @@ export default function DashboardPage() {
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.buyer?.name || 'Customer'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
-                        <td className="px-6 py-4 text-green-400">${order.totalPrice}</td>
+                        <td className="px-6 py-4 text-green-400">{order.price} ر.س</td>
                         <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                         <td className="px-6 py-4">
-                          <Button variant="outline" size="sm">إدارة</Button>
+                          <Link href={`/orders`}>
+                            <Button variant="outline" size="sm">إدارة</Button>
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -379,7 +381,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex items-center gap-8">
                       <div className="text-center">
-                        <p className="text-2xl font-bold text-white">${offer.price}</p>
+                        <p className="text-2xl font-bold text-white">{offer.price} ر.س</p>
                         <p className="text-zinc-500 text-sm">السعر</p>
                       </div>
                       <Link href={`/services/${offer.id}`}>
