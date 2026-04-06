@@ -1,46 +1,100 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { 
-  CreditCard, 
-  Lock, 
-  Shield, 
-  Check, 
+import {
+  Lock,
+  Shield,
   ArrowRight,
-  Gamepad2
+  Gamepad2,
+  Check,
 } from 'lucide-react';
 
-export default function CheckoutPage() {
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [isProcessing, setIsProcessing] = useState(false);
+// Extend window to include Moyasar
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Moyasar: any;
+  }
+}
 
-  // Mock order data - in real app this would come from cart/context
+export default function CheckoutPage() {
+  const searchParams = useSearchParams();
+  const [moyasarReady, setMoyasarReady] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+  const initialized = useRef(false);
+
+  // In a real app, pull these from cart context / route params
+  const orderId = searchParams.get('orderId') || 'demo-order';
   const orderData = {
     service: 'Diamond Rank Boost',
     game: 'League of Legends',
     booster: 'ProBooster123',
-    price: 89.99,
+    price: 89.99,           // in SAR
     deliveryTime: '2-3 days',
     options: ['VPN Protection', 'Offline Mode'],
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsProcessing(true);
-    // Simulate payment processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      // Redirect to success page
-    }, 2000);
-  };
+  // Amount in halalas (SAR × 100)
+  const amountInHalalas = Math.round(orderData.price * 100);
+
+  // Load Moyasar CSS + JS from CDN
+  useEffect(() => {
+    // CSS
+    if (!document.getElementById('moyasar-css')) {
+      const link = document.createElement('link');
+      link.id = 'moyasar-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.moyasar.com/mpf/1.7.3/moyasar.css';
+      document.head.appendChild(link);
+    }
+
+    // JS
+    if (!document.getElementById('moyasar-js')) {
+      const script = document.createElement('script');
+      script.id = 'moyasar-js';
+      script.src = 'https://cdn.moyasar.com/mpf/1.7.3/moyasar.js';
+      script.async = true;
+      script.onload = () => setMoyasarReady(true);
+      document.head.appendChild(script);
+    } else if (window.Moyasar) {
+      setMoyasarReady(true);
+    }
+  }, []);
+
+  // Init Moyasar form once SDK is ready and div is mounted
+  useEffect(() => {
+    if (!moyasarReady || !formRef.current || initialized.current) return;
+    initialized.current = true;
+
+    const callbackBase =
+      typeof window !== 'undefined' ? window.location.origin : 'https://boostmarket.app';
+
+    window.Moyasar.init({
+      element: '.mysr-form',
+      amount: amountInHalalas,
+      currency: 'SAR',
+      description: `${orderData.service} - ${orderData.game}`,
+      publishable_api_key: process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY || 'pk_test_YOUR_KEY_HERE',
+      callback_url: `${callbackBase}/payment/callback?orderId=${orderId}`,
+      methods: ['creditcard'],
+      supported_networks: ['mada', 'visa', 'mastercard', 'amex'],
+      on_completed: function (payment: { id: string; status: string }) {
+        console.log('Payment completed', payment);
+      },
+    });
+  }, [moyasarReady, amountInHalalas, orderId, orderData.service, orderData.game]);
 
   return (
     <div className="min-h-screen bg-transparent py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
-        <Link href="/services" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors">
+        <Link
+          href="/services"
+          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors"
+        >
           <ArrowRight className="w-4 h-4" />
           العودة للخدمات
         </Link>
@@ -49,109 +103,26 @@ export default function CheckoutPage() {
           {/* Payment Form */}
           <div className="lg:col-span-2">
             <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
-              <h1 className="text-2xl font-bold text-white mb-6">أكمل طلبك</h1>
+              <h1 className="text-2xl font-bold text-white mb-2">أكمل طلبك</h1>
+              <p className="text-zinc-400 text-sm mb-6">
+                الدفع آمن ومشفر عبر Moyasar
+              </p>
 
-              {/* Payment Method Selection */}
-              <div className="mb-8">
-                <h2 className="text-lg font-semibold text-white mb-4">طريقة الدفع</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('card')}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      paymentMethod === 'card'
-                        ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-white/[0.18] bg-white/[0.07] hover:border-zinc-700'
-                    }`}
-                  >
-                    <CreditCard className={`w-6 h-6 mb-2 ${paymentMethod === 'card' ? 'text-violet-400' : 'text-zinc-400'}`} />
-                    <p className={`font-medium ${paymentMethod === 'card' ? 'text-white' : 'text-zinc-400'}`}>بطاقة ائتمان</p>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('paypal')}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      paymentMethod === 'paypal'
-                        ? 'border-indigo-500 bg-indigo-500/10'
-                        : 'border-white/[0.18] bg-white/[0.07] hover:border-zinc-700'
-                    }`}
-                  >
-                    <div className={`w-6 h-6 mb-2 font-bold ${paymentMethod === 'paypal' ? 'text-violet-400' : 'text-zinc-400'}`}>PP</div>
-                    <p className={`font-medium ${paymentMethod === 'paypal' ? 'text-white' : 'text-zinc-400'}`}>باي بال</p>
-                  </button>
-                </div>
+              {/* Security badge */}
+              <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg border border-green-500/30 mb-6">
+                <Shield className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <p className="text-green-400 text-sm">
+                  دفعتك مؤمنة بتشفير SSL 256 بت — مدعومة من Moyasar
+                </p>
               </div>
 
-              {/* Card Details Form */}
-              {paymentMethod === 'card' && (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-2">رقم البطاقة</label>
-                    <div className="relative">
-                      <CreditCard className="absolute start-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
-                      <input
-                        type="text"
-                        placeholder="1234 5678 9012 3456"
-                        className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg ps-10 pe-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
+              {/* Moyasar form container */}
+              <div ref={formRef} className="mysr-form" />
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">تاريخ الانتهاء</label>
-                      <input
-                        type="text"
-                        placeholder="شهر/سنة"
-                        className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-zinc-300 mb-2">رمز الأمان</label>
-                      <input
-                        type="text"
-                        placeholder="123"
-                        className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-2">الاسم على البطاقة</label>
-                    <input
-                      type="text"
-                      placeholder="محمد أحمد"
-                      className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-3 p-4 bg-green-500/10 rounded-lg border border-green-500/30">
-                    <Shield className="w-5 h-5 text-green-400" />
-                    <p className="text-green-400 text-sm">دفعتك مؤمنة بتشفير SSL 256 بت</p>
-                  </div>
-
-                  <Button type="submit" className="w-full py-4 text-lg" disabled={isProcessing}>
-                    {isProcessing ? (
-                      <span className="flex items-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        جاري المعالجة...
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-2">
-                        <Lock className="w-5 h-5" />
-                        ادفع ${orderData.price.toFixed(2)}
-                      </span>
-                    )}
-                  </Button>
-                </form>
-              )}
-
-              {paymentMethod === 'paypal' && (
-                <div className="text-center py-8">
-                  <p className="text-zinc-400 mb-6">سيتم تحويلك إلى باي بال لإتمام الدفع</p>
-                  <Button className="w-full py-4 text-lg">
-                    المتابعة مع باي بال
-                  </Button>
+              {!moyasarReady && (
+                <div className="flex items-center justify-center py-12 gap-3">
+                  <div className="w-5 h-5 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
+                  <span className="text-zinc-400">جاري تحميل نموذج الدفع...</span>
                 </div>
               )}
             </div>
@@ -189,24 +160,22 @@ export default function CheckoutPage() {
               <div className="pt-6 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">المجموع الفرعي</span>
-                  <span className="text-white">${orderData.price.toFixed(2)}</span>
+                  <span className="text-white">{orderData.price.toFixed(2)} ر.س</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">رسوم الخدمة</span>
-                  <span className="text-white">$0.00</span>
+                  <span className="text-white">0.00 ر.س</span>
                 </div>
                 <div className="flex justify-between text-lg font-semibold pt-3 border-t border-white/[0.15]">
                   <span className="text-white">الإجمالي</span>
-                  <span className="text-violet-400">
-                    ${orderData.price.toFixed(2)}
-                  </span>
+                  <span className="text-violet-400">{orderData.price.toFixed(2)} ر.س</span>
                 </div>
               </div>
 
               <div className="mt-6 p-4 bg-white/[0.07] rounded-lg">
                 <div className="flex items-center gap-2 text-sm text-zinc-400">
                   <Lock className="w-4 h-4" />
-                  <span>دفع آمن مدعوم من Stripe</span>
+                  <span>دفع آمن مدعوم من Moyasar</span>
                 </div>
               </div>
             </div>
