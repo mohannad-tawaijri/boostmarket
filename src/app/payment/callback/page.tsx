@@ -38,7 +38,7 @@ function PaymentCallbackContent() {
     // Notify our backend to verify and update payment status
     const verifyPayment = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('authToken');
         const res = await fetch(`${API_URL}/payment/verify`, {
           method: 'POST',
           headers: {
