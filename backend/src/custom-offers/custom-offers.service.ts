@@ -18,13 +18,25 @@ export class CustomOffersService {
       serviceId?: string;
     },
   ) {
-    // Verify sender is a booster
+    // Verify sender is a booster (by role OR by having services listed)
     const sender = await this.prisma.user.findUnique({
       where: { id: senderId },
+      include: { _count: { select: { services: true } } },
     });
 
-    if (!sender || sender.role !== 'BOOSTER') {
+    const isBooster =
+      sender?.role === 'BOOSTER' || (sender?._count?.services ?? 0) > 0;
+
+    if (!sender || !isBooster) {
       throw new ForbiddenException('Only boosters can send custom offers');
+    }
+
+    // Ensure role is synced to BOOSTER if they have services
+    if (sender.role !== 'BOOSTER' && (sender._count?.services ?? 0) > 0) {
+      await this.prisma.user.update({
+        where: { id: senderId },
+        data: { role: 'BOOSTER' },
+      });
     }
 
     // Verify receiver exists

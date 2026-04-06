@@ -47,6 +47,9 @@ export class UsersService {
         showReadReceipts: true,
         createdAt: true,
         boosterProfile: true,
+        _count: {
+          select: { services: true },
+        },
       },
     });
 

@@ -97,8 +97,11 @@ function MessagesContent() {
   const [sendingOffer, setSendingOffer] = useState(false);
   const [processingOffer, setProcessingOffer] = useState<string | null>(null);
 
-  // Check if current user is a booster
-  const isBooster = (user as any)?.role === 'BOOSTER';
+  // Check if current user is a booster (by role OR by having services listed)
+  const isBooster =
+    (user as any)?.role === 'BOOSTER' ||
+    ((user as any)?._count?.services ?? 0) > 0 ||
+    (user as any)?.boosterProfile !== null;
 
   // Check for userId param to start new conversation
   const targetUserId = searchParams.get('userId');

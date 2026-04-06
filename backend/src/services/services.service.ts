@@ -6,6 +6,12 @@ export class ServicesService {
   constructor(private prisma: PrismaService) {}
 
   async create(boosterId: string, data: any) {
+    // Upgrade user role to BOOSTER when they create their first service
+    await this.prisma.user.update({
+      where: { id: boosterId },
+      data: { role: 'BOOSTER' },
+    });
+
     return this.prisma.service.create({
       data: {
         ...data,
