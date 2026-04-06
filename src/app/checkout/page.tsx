@@ -2,15 +2,9 @@
 
 import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import {
-  Lock,
-  Shield,
-  ArrowRight,
-  Gamepad2,
-  Check,
-} from 'lucide-react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Lock, Shield, ArrowRight, Gamepad2, Check, Loader2 } from 'lucide-react';
+import { API_URL } from '@/lib/config';
 
 // Extend window to include Moyasar
 declare global {
@@ -20,29 +14,72 @@ declare global {
   }
 }
 
+interface OrderData {
+  id: string;
+  price: number;
+  service: {
+    title: string;
+    game: string;
+    deliveryTime: string;
+  };
+  booster: {
+    name: string;
+  };
+}
+
 function CheckoutContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const orderId = searchParams.get('orderId');
+
+  const [order, setOrder] = useState<OrderData | null>(null);
+  const [orderError, setOrderError] = useState<string | null>(null);
   const [moyasarReady, setMoyasarReady] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
 
-  // In a real app, pull these from cart context / route params
-  const orderId = searchParams.get('orderId') || 'demo-order';
-  const orderData = {
-    service: 'Diamond Rank Boost',
-    game: 'League of Legends',
-    booster: 'ProBooster123',
-    price: 89.99,           // in SAR
-    deliveryTime: '2-3 days',
-    options: ['VPN Protection', 'Offline Mode'],
-  };
-
-  // Amount in halalas (SAR × 100)
-  const amountInHalalas = Math.round(orderData.price * 100);
-
-  // Load Moyasar CSS + JS from CDN
+  // Redirect if no orderId
   useEffect(() => {
-    // CSS
+    if (!orderId) {
+      router.replace('/services');
+    }
+  }, [orderId, router]);
+
+  // Fetch real order data from API
+  useEffect(() => {
+    if (!orderId) return;
+
+    const fetchOrder = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const res = await fetch(`${API_URL}/orders/${orderId}`, {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.replace('/login');
+            return;
+          }
+          throw new Error('Failed to load order');
+        }
+
+        const data = await res.json();
+        setOrder(data);
+      } catch {
+        setOrderError('تعذّر تحميل بيانات الطلب. حاول مرة أخرى.');
+      }
+    };
+
+    fetchOrder();
+  }, [orderId, router]);
+
+  // Load Moyasar CSS + JS from CDN once order is ready
+  useEffect(() => {
+    if (!order) return;
+
     if (!document.getElementById('moyasar-css')) {
       const link = document.createElement('link');
       link.id = 'moyasar-css';
@@ -51,7 +88,6 @@ function CheckoutContent() {
       document.head.appendChild(link);
     }
 
-    // JS
     if (!document.getElementById('moyasar-js')) {
       const script = document.createElement('script');
       script.id = 'moyasar-js';
@@ -62,13 +98,14 @@ function CheckoutContent() {
     } else if (window.Moyasar) {
       setMoyasarReady(true);
     }
-  }, []);
+  }, [order]);
 
-  // Init Moyasar form once SDK is ready and div is mounted
+  // Init Moyasar form once SDK + order are both ready
   useEffect(() => {
-    if (!moyasarReady || !formRef.current || initialized.current) return;
+    if (!moyasarReady || !order || !formRef.current || initialized.current) return;
     initialized.current = true;
 
+    const amountInHalalas = Math.round(order.price * 100);
     const callbackBase =
       typeof window !== 'undefined' ? window.location.origin : 'https://boostmarket.app';
 
@@ -76,16 +113,41 @@ function CheckoutContent() {
       element: '.mysr-form',
       amount: amountInHalalas,
       currency: 'SAR',
-      description: `${orderData.service} - ${orderData.game}`,
-      publishable_api_key: process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY || 'pk_test_YOUR_KEY_HERE',
+      description: `${order.service.title} - ${order.service.game}`,
+      publishable_api_key:
+        process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY || '',
       callback_url: `${callbackBase}/payment/callback?orderId=${orderId}`,
       methods: ['creditcard'],
       supported_networks: ['mada', 'visa', 'mastercard', 'amex'],
+      metadata: { order_id: orderId },
       on_completed: function (payment: { id: string; status: string }) {
         console.log('Payment completed', payment);
       },
     });
-  }, [moyasarReady, amountInHalalas, orderId, orderData.service, orderData.game]);
+  }, [moyasarReady, order, orderId]);
+
+  // ── Loading state ──────────────────────────────────────────────
+  if (!order && !orderError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
+      </div>
+    );
+  }
+
+  // ── Error state ────────────────────────────────────────────────
+  if (orderError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="text-red-400 mb-4">{orderError}</p>
+          <Link href="/services" className="text-violet-400 hover:text-violet-300 underline">
+            العودة للخدمات
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-transparent py-8">
@@ -138,29 +200,31 @@ function CheckoutContent() {
                   <Gamepad2 className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-white font-medium">{orderData.service}</h3>
-                  <p className="text-zinc-400 text-sm">{orderData.game}</p>
-                  <p className="text-zinc-500 text-sm">بواسطة {orderData.booster}</p>
+                  <h3 className="text-white font-medium">{order!.service.title}</h3>
+                  <p className="text-zinc-400 text-sm">{order!.service.game}</p>
+                  <p className="text-zinc-500 text-sm">بواسطة {order!.booster.name}</p>
                 </div>
               </div>
 
               <div className="py-6 border-b border-white/[0.15] space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">وقت التسليم</span>
-                  <span className="text-white">{orderData.deliveryTime}</span>
+                  <span className="text-white">{order!.service.deliveryTime}</span>
                 </div>
-                {orderData.options.map((option, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm">
-                    <Check className="w-4 h-4 text-green-400" />
-                    <span className="text-zinc-300">{option}</span>
-                  </div>
-                ))}
+                <div className="flex items-center gap-2 text-sm">
+                  <Check className="w-4 h-4 text-green-400" />
+                  <span className="text-zinc-300">حماية المشتري</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Check className="w-4 h-4 text-green-400" />
+                  <span className="text-zinc-300">ضمان استرداد المبلغ</span>
+                </div>
               </div>
 
               <div className="pt-6 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">المجموع الفرعي</span>
-                  <span className="text-white">{orderData.price.toFixed(2)} ر.س</span>
+                  <span className="text-white">{order!.price.toFixed(2)} ر.س</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">رسوم الخدمة</span>
@@ -168,7 +232,7 @@ function CheckoutContent() {
                 </div>
                 <div className="flex justify-between text-lg font-semibold pt-3 border-t border-white/[0.15]">
                   <span className="text-white">الإجمالي</span>
-                  <span className="text-violet-400">{orderData.price.toFixed(2)} ر.س</span>
+                  <span className="text-violet-400">{order!.price.toFixed(2)} ر.س</span>
                 </div>
               </div>
 
