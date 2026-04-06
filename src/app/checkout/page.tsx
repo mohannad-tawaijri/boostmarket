@@ -51,7 +51,7 @@ function CheckoutContent() {
 
     const fetchOrder = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('authToken');
         const res = await fetch(`${API_URL}/orders/${orderId}`, {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
