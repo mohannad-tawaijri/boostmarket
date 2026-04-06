@@ -13,10 +13,6 @@ export default function Home() {
         
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-violet-400 text-sm font-medium tracking-wide uppercase mb-5">
-              +50,000 لاعب يثقون بنا
-            </p>
-            
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] tracking-tight">
               ارفع مستواك <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">واترك الباقي علينا</span>

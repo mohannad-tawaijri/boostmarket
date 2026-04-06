@@ -34,6 +34,12 @@ interface MessageStatusUpdate {
   readBy?: string;
 }
 
+interface OfferStatusUpdate {
+  offerId: string;
+  status: 'ACCEPTED' | 'DECLINED' | 'CANCELLED';
+  orderId?: string;
+}
+
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
@@ -46,6 +52,7 @@ interface SocketContextType {
   onNewMessage: (callback: (message: Message) => void) => () => void;
   onMessageNotification: (callback: (notification: MessageNotification) => void) => () => void;
   onMessageStatusUpdate: (callback: (update: MessageStatusUpdate) => void) => () => void;
+  onOfferStatusUpdate: (callback: (update: OfferStatusUpdate) => void) => () => void;
   refreshUnreadCount: () => void;
   checkOnlineUsers: (userIds: string[]) => void;
 }
@@ -70,6 +77,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const messageCallbacksRef = useRef<((message: Message) => void)[]>([]);
   const notificationCallbacksRef = useRef<((notification: MessageNotification) => void)[]>([]);
   const statusCallbacksRef = useRef<((update: MessageStatusUpdate) => void)[]>([]);
+  const offerStatusCallbacksRef = useRef<((update: OfferStatusUpdate) => void)[]>([]);
 
   // Fetch unread count from API
   const fetchUnreadCount = useCallback(async () => {
@@ -190,6 +198,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       statusCallbacksRef.current.forEach(callback => callback(update));
     });
 
+    // Offer status updates (accepted/declined/cancelled)
+    newSocket.on('offerStatusUpdate', (update: OfferStatusUpdate) => {
+      offerStatusCallbacksRef.current.forEach(callback => callback(update));
+    });
+
     // Response for getOnlineUsers request
     newSocket.on('onlineUsersList', (userIds: string[]) => {
       setOnlineUsers(new Set(userIds));
@@ -248,6 +261,13 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const onOfferStatusUpdate = useCallback((callback: (update: OfferStatusUpdate) => void) => {
+    offerStatusCallbacksRef.current = [...offerStatusCallbacksRef.current, callback];
+    return () => {
+      offerStatusCallbacksRef.current = offerStatusCallbacksRef.current.filter(cb => cb !== callback);
+    };
+  }, []);
+
   const checkOnlineUsers = useCallback((userIds: string[]) => {
     socket?.emit('getOnlineUsers', userIds);
   }, [socket]);
@@ -265,6 +285,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       onNewMessage,
       onMessageNotification,
       onMessageStatusUpdate,
+      onOfferStatusUpdate,
       refreshUnreadCount: fetchUnreadCount,
       checkOnlineUsers,
     }}>

@@ -71,7 +71,7 @@ interface Conversation {
 function MessagesContent() {
   const { user } = useAuth();
   const router = useRouter();
-  const { isConnected, joinConversation, leaveConversation, onNewMessage, onMessageNotification, onMessageStatusUpdate, markAsRead, refreshUnreadCount, onlineUsers, checkOnlineUsers } = useSocket();
+  const { isConnected, joinConversation, leaveConversation, onNewMessage, onMessageNotification, onMessageStatusUpdate, onOfferStatusUpdate, markAsRead, refreshUnreadCount, onlineUsers, checkOnlineUsers } = useSocket();
   const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
@@ -179,6 +179,27 @@ function MessagesContent() {
 
     return () => unsubscribe();
   }, [activeConversation?.id, onMessageStatusUpdate]);
+
+  // Listen for offer status updates (accepted/declined/cancelled) in real-time
+  useEffect(() => {
+    const unsubscribe = onOfferStatusUpdate((update) => {
+      setMessages(prev => prev.map(msg => {
+        if (msg.customOffer?.id === update.offerId) {
+          return {
+            ...msg,
+            customOffer: {
+              ...msg.customOffer!,
+              status: update.status,
+              ...(update.orderId ? { orderId: update.orderId } : {}),
+            },
+          };
+        }
+        return msg;
+      }));
+    });
+
+    return () => unsubscribe();
+  }, [onOfferStatusUpdate]);
 
   // Check online status for all conversation participants
   useEffect(() => {
@@ -469,8 +490,8 @@ function MessagesContent() {
             ? { ...m, customOffer: { ...m.customOffer!, status: 'ACCEPTED', orderId: data.order.id } }
             : m
         ));
-        // Navigate to orders page
-        router.push('/orders');
+        // Navigate to checkout page to complete payment
+        router.push(`/checkout?orderId=${data.order.id}`);
       }
     } catch (error) {
       console.error('Error accepting offer:', error);
