@@ -98,8 +98,8 @@ export default function TrustSafetyPage() {
             <p>
               إذا صادفت شيئاً مشبوهاً — إعلان احتيالي، سلوك مسيء، أو
               أي شيء لا يبدو صحيحاً — راسلنا على{" "}
-              <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
-                support@boostmarket.com
+              <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">
+                help@boostmarket.app
               </a>. نراجع كل بلاغ يدوياً.
             </p>
           </div>

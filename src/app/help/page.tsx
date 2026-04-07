@@ -87,8 +87,8 @@ export default function HelpPage() {
           </p>
           <p className="text-zinc-500 text-sm">
             راسلنا على{" "}
-            <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
-              support@boostmarket.com
+            <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">
+              help@boostmarket.app
             </a>{" "}
             ونرد عليك خلال 24 ساعة.
           </p>

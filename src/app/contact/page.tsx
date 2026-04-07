@@ -16,6 +16,11 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const subject = encodeURIComponent(`[${formData.subject}] — ${formData.name}`);
+    const body = encodeURIComponent(
+      `الاسم: ${formData.name}\nالبريد: ${formData.email}\n\n${formData.message}`
+    );
+    window.location.href = `mailto:help@boostmarket.app?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
 
@@ -39,8 +44,8 @@ export default function ContactPage() {
         <div className="flex items-center gap-3 mb-8 text-sm text-zinc-400">
           <Mail className="w-4 h-4 text-violet-400" />
           <span>أو راسلنا مباشرة على{" "}
-            <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">
-              support@boostmarket.com
+            <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">
+              help@boostmarket.app
             </a>
           </span>
         </div>

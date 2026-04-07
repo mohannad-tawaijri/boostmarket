@@ -63,7 +63,7 @@ export default function DisclaimerPage() {
 
           <div className="pt-4 border-t border-white/[0.15]">
             <p className="text-zinc-500 text-sm">
-              أسئلة؟ <a href="mailto:support@boostmarket.com" className="text-violet-400 hover:underline">support@boostmarket.com</a>
+              أسئلة؟ <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">help@boostmarket.app</a>
             </p>
           </div>
         </div>
