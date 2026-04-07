@@ -106,13 +106,15 @@ export default function DashboardPage() {
   ];
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
+    switch (status?.toUpperCase()) {
+      case 'COMPLETED':
         return <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">مكتمل</span>;
-      case 'in_progress':
+      case 'IN_PROGRESS':
         return <span className="px-2 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-400">قيد التنفيذ</span>;
-      case 'pending':
+      case 'PENDING':
         return <span className="px-2 py-1 text-xs rounded-full bg-blue-500/20 text-blue-400">قيد الانتظار</span>;
+      case 'CANCELLED':
+        return <span className="px-2 py-1 text-xs rounded-full bg-red-500/20 text-red-400">ملغي</span>;
       default:
         return <span className="px-2 py-1 text-xs rounded-full bg-gray-500/20 text-zinc-400">{status}</span>;
     }

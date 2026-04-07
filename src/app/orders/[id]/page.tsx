@@ -229,16 +229,59 @@ export default function OrderManagePage() {
         </div>
 
         {/* Requirements */}
-        {order.requirements && (
-          <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 mb-6">
-            <h3 className="text-white font-semibold mb-3">متطلبات الطلب</h3>
-            <pre className="text-zinc-300 text-sm whitespace-pre-wrap break-words">
-              {typeof order.requirements === 'string'
-                ? order.requirements
-                : JSON.stringify(order.requirements, null, 2)}
-            </pre>
-          </div>
-        )}
+        {order.requirements && (() => {
+          const req: any = order.requirements;
+          if (typeof req === 'string') {
+            return (
+              <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 mb-6">
+                <h3 className="text-white font-semibold mb-3">متطلبات الطلب</h3>
+                <p className="text-zinc-300 text-sm whitespace-pre-wrap break-words">{req}</p>
+              </div>
+            );
+          }
+
+          const labels: Record<string, string> = {
+            title: 'العنوان',
+            description: 'الوصف',
+            deliveryTime: 'مدة التسليم',
+            offerId: 'رقم العرض',
+            customOffer: 'عرض مخصص',
+            notes: 'ملاحظات',
+            username: 'اسم المستخدم',
+            rank: 'الرتبة',
+            server: 'السيرفر',
+          };
+
+          const renderValue = (key: string, value: any) => {
+            if (value === null || value === undefined || value === '') return '—';
+            if (typeof value === 'boolean') return value ? 'نعم' : 'لا';
+            if (key === 'deliveryTime' && typeof value === 'string') {
+              return value.replace('days', 'يوم').replace('hours', 'ساعة');
+            }
+            if (typeof value === 'object') return JSON.stringify(value);
+            return String(value);
+          };
+
+          const entries = Object.entries(req).filter(
+            ([k, v]) => v !== null && v !== undefined && v !== '' && k !== 'offerId'
+          );
+
+          if (entries.length === 0) return null;
+
+          return (
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 mb-6">
+              <h3 className="text-white font-semibold mb-4">متطلبات الطلب</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {entries.map(([key, value]) => (
+                  <div key={key}>
+                    <p className="text-zinc-500 text-xs mb-1">{labels[key] || key}</p>
+                    <p className="text-white text-sm break-words">{renderValue(key, value)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Actions */}
         <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
