@@ -290,7 +290,7 @@ export default function PublicProfilePage() {
                       </p>
                       <h3 className="text-white font-medium truncate mb-2">{service.title}</h3>
                       <div className="flex items-center justify-between">
-                        <span className="text-green-400 font-bold">${service.price}</span>
+                        <span className="text-green-400 font-bold">{service.price} ر.س</span>
                         <span className="text-zinc-500 text-xs flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {service.deliveryTime}

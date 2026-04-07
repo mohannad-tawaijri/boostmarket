@@ -211,10 +211,10 @@ export default function CreateOfferPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <DollarSign className="w-4 h-4 text-green-400" />
-                  السعر ($) *
+                  السعر (ر.س) *
                 </label>
                 <div className="relative">
-                  <span className="absolute start-4 top-1/2 -translate-y-1/2 text-green-400 font-semibold">$</span>
+                  <span className="absolute end-4 top-1/2 -translate-y-1/2 text-green-400 font-semibold text-sm">ر.س</span>
                   <input
                     type="number"
                     name="price"
@@ -223,8 +223,8 @@ export default function CreateOfferPage() {
                     required
                     min="1"
                     step="0.01"
-                    placeholder="29.99"
-                    className="w-full bg-slate-700/50 border border-white/[0.18] rounded-xl ps-8 pe-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
+                    placeholder="100"
+                    className="w-full bg-slate-700/50 border border-white/[0.18] rounded-xl ps-4 pe-14 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20"
                   />
                 </div>
               </div>

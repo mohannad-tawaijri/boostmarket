@@ -117,18 +117,33 @@ export class OrdersService {
       throw new NotFoundException('Order not found');
     }
 
-    if (order.boosterId !== userId) {
-      throw new ForbiddenException('Only the booster can update order status');
+    const isBooster = order.boosterId === userId;
+    const isBuyer = order.buyerId === userId;
+
+    if (!isBooster && !isBuyer) {
+      throw new ForbiddenException('You can only update your own orders');
+    }
+
+    const paid =
+      order.payment?.status === 'paid' ||
+      order.payment?.status === 'authorized';
+
+    if (isBuyer && !isBooster) {
+      // Buyer can only cancel their own unpaid PENDING order
+      if (status !== 'CANCELLED') {
+        throw new ForbiddenException('Buyer can only cancel an order');
+      }
+      if (order.status !== 'PENDING') {
+        throw new BadRequestException('Only pending orders can be cancelled by the buyer');
+      }
+      if (paid) {
+        throw new BadRequestException('Cannot cancel a paid order');
+      }
     }
 
     // Block starting work on an unpaid order
-    if (status === 'IN_PROGRESS') {
-      const paid =
-        order.payment?.status === 'paid' ||
-        order.payment?.status === 'authorized';
-      if (!paid) {
-        throw new BadRequestException('Cannot start an unpaid order');
-      }
+    if (status === 'IN_PROGRESS' && !paid) {
+      throw new BadRequestException('Cannot start an unpaid order');
     }
 
     return this.prisma.order.update({

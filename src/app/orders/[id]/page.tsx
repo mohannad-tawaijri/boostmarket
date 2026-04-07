@@ -369,12 +369,25 @@ export default function OrderManagePage() {
             )}
 
             {isBuyer && order.status === 'PENDING' && !isPaid && order.id && (
-              <Link href={`/checkout?orderId=${order.id}`}>
-                <Button className="gap-2 bg-violet-600 hover:bg-violet-700">
-                  <DollarSign className="w-4 h-4" />
-                  ادفع الآن
+              <>
+                <Link href={`/checkout?orderId=${order.id}`}>
+                  <Button className="gap-2 bg-violet-600 hover:bg-violet-700">
+                    <DollarSign className="w-4 h-4" />
+                    ادفع الآن
+                  </Button>
+                </Link>
+                <Button
+                  onClick={() => {
+                    if (confirm('متأكد تبي تلغي الطلب؟')) updateStatus('CANCELLED');
+                  }}
+                  disabled={updating}
+                  variant="outline"
+                  className="gap-2 text-red-400 border-red-400/50 hover:bg-red-500/10"
+                >
+                  <XCircle className="w-4 h-4" />
+                  ألغِ الطلب
                 </Button>
-              </Link>
+              </>
             )}
 
             {isBooster && order.status === 'IN_PROGRESS' && (

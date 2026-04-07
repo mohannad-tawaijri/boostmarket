@@ -319,7 +319,7 @@ export default function ServiceDetailPage() {
               <div className="text-center mb-6">
                 <p className="text-zinc-400 text-sm mb-1">من</p>
                 <div className="text-4xl font-bold text-violet-400 mb-2">
-                  ${service.price}
+                  {service.price} ر.س
                 </div>
                 <p className="text-zinc-500 text-xs">السعر النهائي بعد الاتفاق بالمحادثة</p>
               </div>

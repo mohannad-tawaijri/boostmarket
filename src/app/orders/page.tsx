@@ -24,8 +24,7 @@ interface Order {
   service: { id: string; title: string; game: string };
   booster: { id: string; name: string };
   status: string;
-  totalPrice: number;
-  price?: number;
+  price: number;
   createdAt: string;
   requirements?: any;
   review?: { id: string; rating: number; comment?: string };
@@ -43,6 +42,7 @@ export default function OrdersPage() {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -107,6 +107,33 @@ export default function OrdersPage() {
       alert('فشل إرسال التقييم');
     } finally {
       setSubmittingReview(false);
+    }
+  };
+
+  const cancelOrder = async (orderId: string) => {
+    if (!confirm('متأكد تبي تلغي الطلب؟')) return;
+    setCancellingId(orderId);
+    const token = localStorage.getItem('authToken');
+    try {
+      const res = await fetch(`${API_URL}/orders/${orderId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: 'CANCELLED' }),
+      });
+      if (res.ok) {
+        await fetchOrders();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(err.message || 'فشل إلغاء الطلب');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('فشل إلغاء الطلب');
+    } finally {
+      setCancellingId(null);
     }
   };
 
@@ -236,7 +263,7 @@ export default function OrdersPage() {
                           </div>
                         )}
                         <div className="text-right hidden sm:block">
-                          <p className="text-white font-semibold">${order.totalPrice}</p>
+                          <p className="text-white font-semibold">{order.price} ر.س</p>
                           <p className="text-zinc-500 text-sm">{new Date(order.createdAt).toLocaleDateString()}</p>
                         </div>
                         {isExpanded ? (
@@ -270,14 +297,32 @@ export default function OrdersPage() {
                         {order.status === 'PENDING' &&
                           order.payment?.status !== 'paid' &&
                           order.payment?.status !== 'authorized' && (
-                            <Link href={`/checkout?orderId=${order.id}`}>
+                            <>
+                              <Link href={`/checkout?orderId=${order.id}`}>
+                                <Button
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="gap-2 bg-violet-600 hover:bg-violet-700"
+                                >
+                                  ادفع الآن
+                                </Button>
+                              </Link>
                               <Button
-                                onClick={(e) => e.stopPropagation()}
-                                className="gap-2 bg-violet-600 hover:bg-violet-700"
+                                variant="outline"
+                                disabled={cancellingId === order.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  cancelOrder(order.id);
+                                }}
+                                className="gap-2 text-red-400 border-red-400/50 hover:bg-red-500/10"
                               >
-                                ادفع الآن
+                                {cancellingId === order.id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <XCircle className="w-4 h-4" />
+                                )}
+                                ألغِ الطلب
                               </Button>
-                            </Link>
+                            </>
                           )}
                         <Link href={`/messages?userId=${order.booster?.id}&serviceId=${order.service?.id}`}>
                           <Button variant="outline" className="gap-2">

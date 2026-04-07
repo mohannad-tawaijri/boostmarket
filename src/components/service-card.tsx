@@ -60,7 +60,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           {/* Price */}
           <div className="relative z-10 self-start">
             <span className="text-xs text-zinc-400">من </span>
-            <span className="text-xl font-bold text-white">${service.price}</span>
+            <span className="text-xl font-bold text-white">{service.price} ر.س</span>
           </div>
         </div>
         

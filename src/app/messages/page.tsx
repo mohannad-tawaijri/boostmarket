@@ -747,7 +747,7 @@ function MessagesContent() {
                                 <div className="flex items-center gap-4 mb-4">
                                   <div className="flex items-center gap-1.5">
                                     <DollarSign className="w-4 h-4 text-green-400" />
-                                    <span className="text-green-400 font-bold text-lg">${offer.price}</span>
+                                    <span className="text-green-400 font-bold text-lg">{offer.price} ر.س</span>
                                   </div>
                                   <div className="flex items-center gap-1.5">
                                     <Clock className="w-4 h-4 text-violet-400" />
