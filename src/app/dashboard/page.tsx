@@ -275,11 +275,11 @@ export default function DashboardPage() {
                 <table className="w-full">
                   <thead className="bg-white/[0.07]">
                     <tr>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الخدمة</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">البوستر</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الحالة</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">السعر</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">التاريخ</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الخدمة</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">البوستر</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الحالة</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">السعر</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">التاريخ</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
@@ -323,12 +323,12 @@ export default function DashboardPage() {
                 <table className="w-full">
                   <thead className="bg-white/[0.07]">
                     <tr>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الخدمة</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">العميل</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الحالة</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الأرباح</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">التاريخ</th>
-                      <th className="text-left text-zinc-400 font-medium px-6 py-4">الإجراء</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الخدمة</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">العميل</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الحالة</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الأرباح</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">التاريخ</th>
+                      <th className="text-right text-zinc-400 font-medium px-6 py-4">الإجراء</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
@@ -340,7 +340,7 @@ export default function DashboardPage() {
                         <td className="px-6 py-4 text-green-400">{order.price} ر.س</td>
                         <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
                         <td className="px-6 py-4">
-                          <Link href={`/orders`}>
+                          <Link href={`/orders/${order.id}`}>
                             <Button variant="outline" size="sm">إدارة</Button>
                           </Link>
                         </td>
