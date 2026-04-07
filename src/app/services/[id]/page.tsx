@@ -249,19 +249,6 @@ export default function ServiceDetailPage() {
                 </div>
               </div>
 
-              {/* What's Included */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-white mb-4">وش تحصل</h3>
-                <div className="space-y-3">
-                  {["بوست احترافي", "متابعة لحظية", "حسابك بأمان", "دعم 24/7"].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 text-zinc-300">
-                      <CheckCircle className="w-5 h-5 text-green-400" />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               {/* Reviews Section */}
               <div>
                 <div className="flex items-center justify-between mb-4">

@@ -25,9 +25,11 @@ interface Order {
   booster: { id: string; name: string };
   status: string;
   totalPrice: number;
+  price?: number;
   createdAt: string;
   requirements?: any;
   review?: { id: string; rating: number; comment?: string };
+  payment?: { status: string } | null;
 }
 
 export default function OrdersPage() {
@@ -220,6 +222,13 @@ export default function OrdersPage() {
                           <statusConfig.icon className={`w-4 h-4 ${statusConfig.color}`} />
                           <span className={`text-sm font-medium ${statusConfig.color}`}>{statusConfig.label}</span>
                         </div>
+                        {order.status === 'PENDING' &&
+                          order.payment?.status !== 'paid' &&
+                          order.payment?.status !== 'authorized' && (
+                            <div className="hidden sm:flex items-center gap-1 px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-medium">
+                              غير مدفوع
+                            </div>
+                          )}
                         {order.status === 'COMPLETED' && !order.review && (
                           <div className="hidden sm:flex items-center gap-1 text-yellow-400">
                             <Star className="w-4 h-4" />
@@ -258,6 +267,18 @@ export default function OrdersPage() {
                       </div>
 
                       <div className="flex flex-wrap gap-3 mt-6">
+                        {order.status === 'PENDING' &&
+                          order.payment?.status !== 'paid' &&
+                          order.payment?.status !== 'authorized' && (
+                            <Link href={`/checkout?orderId=${order.id}`}>
+                              <Button
+                                onClick={(e) => e.stopPropagation()}
+                                className="gap-2 bg-violet-600 hover:bg-violet-700"
+                              >
+                                ادفع الآن
+                              </Button>
+                            </Link>
+                          )}
                         <Link href={`/messages?userId=${order.booster?.id}&serviceId=${order.service?.id}`}>
                           <Button variant="outline" className="gap-2">
                             <MessageSquare className="w-4 h-4" />

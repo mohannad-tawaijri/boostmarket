@@ -72,6 +72,9 @@ export class OrdersService {
             comment: true,
           },
         },
+        payment: {
+          select: { status: true },
+        },
       },
       orderBy: {
         createdAt: 'desc',
