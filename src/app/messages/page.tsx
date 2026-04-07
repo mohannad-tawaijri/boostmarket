@@ -1004,14 +1004,14 @@ function MessagesContent() {
                   <select
                     value={offerForm.deliveryTime}
                     onChange={(e) => setOfferForm(prev => ({ ...prev, deliveryTime: e.target.value }))}
-                    className="w-full px-4 py-3 bg-white/[0.09] border border-white/[0.18] rounded-xl text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-[#1a1a20] border border-white/[0.18] rounded-xl text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   >
-                    <option value="1 day">يوم واحد</option>
-                    <option value="1-2 days">1-2 أيام</option>
-                    <option value="2-3 days">2-3 أيام</option>
-                    <option value="3-5 days">3-5 أيام</option>
-                    <option value="1 week">أسبوع واحد</option>
-                    <option value="2 weeks">أسبوعين</option>
+                    <option value="1 day" className="bg-[#1a1a20] text-white">يوم واحد</option>
+                    <option value="1-2 days" className="bg-[#1a1a20] text-white">1-2 أيام</option>
+                    <option value="2-3 days" className="bg-[#1a1a20] text-white">2-3 أيام</option>
+                    <option value="3-5 days" className="bg-[#1a1a20] text-white">3-5 أيام</option>
+                    <option value="1 week" className="bg-[#1a1a20] text-white">أسبوع واحد</option>
+                    <option value="2 weeks" className="bg-[#1a1a20] text-white">أسبوعين</option>
                   </select>
                 </div>
               </div>
