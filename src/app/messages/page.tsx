@@ -785,7 +785,7 @@ function MessagesContent() {
                                 )}
 
                                 {offer.status === 'ACCEPTED' && offer.orderId && (
-                                  <Link href="/orders">
+                                  <Link href={isOwn ? '/dashboard?tab=customer-orders' : '/dashboard?tab=orders'}>
                                     <Button className="w-full bg-green-600/20 text-green-400 hover:bg-green-600/30">
                                       <Check className="w-4 h-4 me-1" />
                                       تم إنشاء الطلب - عرض الطلبات

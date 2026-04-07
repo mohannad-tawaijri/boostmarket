@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { API_URL } from '@/lib/config';
@@ -40,7 +41,11 @@ interface Offer {
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'customer-orders' | 'offers'>('overview');
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const validTabs = ['overview', 'orders', 'customer-orders', 'offers'] as const;
+  const initialTab = validTabs.includes(tabParam as typeof validTabs[number]) ? tabParam as typeof validTabs[number] : 'overview';
+  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'customer-orders' | 'offers'>(initialTab);
   const [myOrders, setMyOrders] = useState<Order[]>([]); // Orders I placed (as buyer)
   const [customerOrders, setCustomerOrders] = useState<Order[]>([]); // Orders on my services (as booster)
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -187,29 +192,29 @@ export default function DashboardPage() {
         {/* Content based on active tab */}
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Recent Orders */}
+            {/* My Orders (as buyer) */}
             <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
-                <Link href="/orders" className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
+                <h2 className="text-xl font-semibold text-white">طلباتي</h2>
+                <button onClick={() => setActiveTab('orders')} className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
                   الكل <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
               </div>
               {loading ? (
                 <div className="flex justify-center py-8">
                   <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
                 </div>
-              ) : [...myOrders, ...customerOrders].length === 0 ? (
+              ) : myOrders.length === 0 ? (
                 <div className="text-center py-8">
                   <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">ما عندك طلبات بعد</p>
+                  <p className="text-zinc-400">ما طلبت شي بعد</p>
                   <Link href="/services">
                     <Button variant="outline" size="sm" className="mt-3">استعرض الخدمات</Button>
                   </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {[...myOrders, ...customerOrders].slice(0, 3).map((order) => (
+                  {myOrders.slice(0, 3).map((order) => (
                     <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.07] rounded-lg">
                       <div>
                         <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
@@ -218,6 +223,44 @@ export default function DashboardPage() {
                       <div className="text-right">
                         {getStatusBadge(order.status)}
                         <p className="text-zinc-400 text-sm mt-1">{order.price} ر.س</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Customer Orders (as seller) */}
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-white">طلبات العملاء</h2>
+                <button onClick={() => setActiveTab('customer-orders')} className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
+                  الكل <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+              {loading ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
+                </div>
+              ) : customerOrders.length === 0 ? (
+                <div className="text-center py-8">
+                  <DollarSign className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                  <p className="text-zinc-400">ما جاك أي طلب بعد</p>
+                  <Link href="/create-offer">
+                    <Button variant="outline" size="sm" className="mt-3">أضف خدمة</Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {customerOrders.slice(0, 3).map((order) => (
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.07] rounded-lg">
+                      <div>
+                        <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
+                        <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      <div className="text-right">
+                        {getStatusBadge(order.status)}
+                        <p className="text-green-400 text-sm mt-1">{order.price} ر.س</p>
                       </div>
                     </div>
                   ))}
