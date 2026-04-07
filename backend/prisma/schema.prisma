@@ -42,6 +42,7 @@ enum ServiceCategory {
   WIN_BOOST
   PLACEMENT_MATCHES
   DUOQ
+  ITEMS
   CUSTOM
   OTHER
 }

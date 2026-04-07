@@ -44,9 +44,9 @@ export type ServiceCategory =
   | 'RANK_BOOST'
   | 'COACHING'
   | 'ACCOUNT_LEVELING'
-  | 'WIN_BOOST'
   | 'PLACEMENT_MATCHES'
   | 'DUOQ'
+  | 'ITEMS'
   | 'OTHER';
 
 export interface Order {
@@ -180,11 +180,11 @@ export const GAME_IMAGES: Record<GameCategory, string> = {
 };
 
 export const CATEGORY_NAMES: Record<ServiceCategory, string> = {
-  RANK_BOOST: 'تعزيز الرتبة',
+  RANK_BOOST: 'رفع الرانك',
   COACHING: 'تدريب',
-  ACCOUNT_LEVELING: 'ترقية الحساب',
-  WIN_BOOST: 'تعزيز الانتصارات',
+  ACCOUNT_LEVELING: 'تلفليل الحساب',
   PLACEMENT_MATCHES: 'مباريات التصنيف',
   DUOQ: 'لعب ثنائي',
+  ITEMS: 'بيع أغراض',
   OTHER: 'أخرى',
 };

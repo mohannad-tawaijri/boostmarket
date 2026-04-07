@@ -180,6 +180,27 @@ function CheckoutContent() {
 
               {/* Moyasar form container */}
               <div ref={formRef} className="mysr-form" />
+              <style jsx global>{`
+                .mysr-form label,
+                .mysr-form .form-label,
+                .mysr-form legend {
+                  color: #e4e4e7 !important;
+                }
+                .mysr-form input,
+                .mysr-form .StripeElement,
+                .mysr-form .form-control {
+                  background-color: rgba(255, 255, 255, 0.07) !important;
+                  border-color: rgba(255, 255, 255, 0.18) !important;
+                  color: #ffffff !important;
+                }
+                .mysr-form input::placeholder {
+                  color: #71717a !important;
+                }
+                .mysr-form .help-block,
+                .mysr-form small {
+                  color: #a1a1aa !important;
+                }
+              `}</style>
 
               {!moyasarReady && (
                 <div className="flex items-center justify-center py-12 gap-3">
