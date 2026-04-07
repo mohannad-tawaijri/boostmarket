@@ -243,9 +243,9 @@ export default function ServiceDetailPage() {
                     <div className="p-2 bg-green-500/20 rounded-lg">
                       <Shield className="w-5 h-5 text-green-400" />
                     </div>
-                    <span className="text-sm text-zinc-400">خدمة مضمونة</span>
+                    <span className="text-sm text-zinc-400">ضمان الدفع</span>
                   </div>
-                  <p className="font-semibold text-white text-lg">حماية كاملة</p>
+                  <p className="font-semibold text-white text-lg">استرجاع فلوسك مضمون</p>
                 </div>
               </div>
 
