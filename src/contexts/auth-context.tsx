@@ -241,6 +241,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
     setUser(null);
+
+    // Hard redirect to home — guarantees a clean reset of all client state
+    // (sockets, in-memory caches, protected pages) instead of leaving the
+    // user stranded on an authenticated route.
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
   };
 
   return (
