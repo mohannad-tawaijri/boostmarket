@@ -48,14 +48,30 @@ export class CustomOffersService {
     }
 
     // Verify both users are participants in the conversation
-    const participantCount = await this.prisma.conversationParticipant.count({
-      where: {
-        conversationId: data.conversationId,
-        userId: { in: [senderId, data.receiverId] },
+    const conversation = await this.prisma.conversation.findUnique({
+      where: { id: data.conversationId },
+      include: {
+        participants: { select: { userId: true } },
+        service: { select: { id: true, boosterId: true } },
       },
     });
-    if (participantCount !== 2) {
+    if (!conversation) {
+      throw new ForbiddenException('Conversation not found');
+    }
+    const participantIds = conversation.participants.map((p) => p.userId);
+    if (
+      !participantIds.includes(senderId) ||
+      !participantIds.includes(data.receiverId)
+    ) {
       throw new ForbiddenException('Both users must be participants in this conversation');
+    }
+
+    // Only the service owner (booster of the conversation's service) can send offers
+    if (!conversation.service) {
+      throw new ForbiddenException('Custom offers can only be sent in a service conversation');
+    }
+    if (conversation.service.boosterId !== senderId) {
+      throw new ForbiddenException('Only the service owner can send a custom offer');
     }
 
     // Validate price

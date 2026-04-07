@@ -18,6 +18,7 @@ import {
   User,
   Calendar,
   DollarSign,
+  Star,
 } from 'lucide-react';
 
 interface Order {
@@ -33,6 +34,8 @@ interface Order {
   booster?: { id: string; name: string; email?: string; avatar?: string };
   buyerId: string;
   boosterId: string;
+  payment?: { status: string } | null;
+  review?: { id: string; rating: number; comment?: string } | null;
 }
 
 export default function OrderManagePage() {
@@ -45,6 +48,48 @@ export default function OrderManagePage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Review UI state (buyer)
+  const [showReview, setShowReview] = useState(false);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  const submitReview = async () => {
+    if (!order) return;
+    setSubmittingReview(true);
+    const token = localStorage.getItem('authToken');
+    try {
+      const res = await fetch(`${API_URL}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId: order.id,
+          serviceId: order.service?.id,
+          boosterId: order.boosterId,
+          rating: reviewRating,
+          comment: reviewComment || undefined,
+        }),
+      });
+      if (res.ok) {
+        setShowReview(false);
+        setReviewComment('');
+        setReviewRating(5);
+        await fetchOrder();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(err.message || 'فشل إرسال التقييم');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('فشل إرسال التقييم');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   useEffect(() => {
     if (!orderId) return;
@@ -149,6 +194,7 @@ export default function OrderManagePage() {
   const statusConfig = getStatusConfig(order.status);
   const counterparty = isBooster ? order.buyer : order.booster;
   const counterpartyLabel = isBooster ? 'العميل' : 'البوستر';
+  const isPaid = order.payment?.status === 'paid' || order.payment?.status === 'authorized';
 
   return (
     <div className="min-h-screen bg-transparent py-8">
@@ -296,7 +342,7 @@ export default function OrderManagePage() {
               </Link>
             )}
 
-            {isBooster && order.status === 'PENDING' && (
+            {isBooster && order.status === 'PENDING' && isPaid && (
               <>
                 <Button
                   onClick={() => updateStatus('IN_PROGRESS')}
@@ -316,6 +362,19 @@ export default function OrderManagePage() {
                   ألغِ الطلب
                 </Button>
               </>
+            )}
+
+            {isBooster && order.status === 'PENDING' && !isPaid && (
+              <p className="text-yellow-400 text-sm">في انتظار دفع العميل قبل بدء التنفيذ</p>
+            )}
+
+            {isBuyer && order.status === 'PENDING' && !isPaid && order.id && (
+              <Link href={`/checkout?orderId=${order.id}`}>
+                <Button className="gap-2 bg-violet-600 hover:bg-violet-700">
+                  <DollarSign className="w-4 h-4" />
+                  ادفع الآن
+                </Button>
+              </Link>
             )}
 
             {isBooster && order.status === 'IN_PROGRESS' && (
@@ -347,6 +406,80 @@ export default function OrderManagePage() {
             )}
           </div>
         </div>
+
+        {/* Buyer review */}
+        {isBuyer && order.status === 'COMPLETED' && (
+          <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 mt-6">
+            <h3 className="text-white font-semibold mb-4">تقييم الخدمة</h3>
+            {order.review ? (
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className={`w-5 h-5 ${
+                        s <= order.review!.rating
+                          ? 'text-yellow-400 fill-yellow-400'
+                          : 'text-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-green-400 text-sm">تم التقييم</span>
+                {order.review.comment && (
+                  <p className="text-zinc-300 text-sm w-full mt-2">{order.review.comment}</p>
+                )}
+              </div>
+            ) : !showReview ? (
+              <Button
+                onClick={() => setShowReview(true)}
+                className="gap-2 bg-amber-500 hover:bg-amber-600"
+              >
+                <Star className="w-4 h-4" />
+                قيّم الخدمة
+              </Button>
+            ) : (
+              <div>
+                <div className="flex gap-2 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setReviewRating(star)}
+                      className="p-1 transition-transform hover:scale-110"
+                    >
+                      <Star
+                        className={`w-8 h-8 ${
+                          star <= reviewRating
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-600'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  placeholder="كيف كانت تجربتك... (اختياري)"
+                  rows={3}
+                  className="w-full px-4 py-3 bg-white/[0.09] border border-white/[0.18] rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-500 focus:border-transparent resize-none mb-4"
+                />
+                <div className="flex gap-3">
+                  <Button
+                    onClick={submitReview}
+                    disabled={submittingReview}
+                    className="bg-violet-600"
+                  >
+                    {submittingReview ? <Loader2 className="w-5 h-5 animate-spin" /> : 'أرسل التقييم'}
+                  </Button>
+                  <Button variant="outline" onClick={() => setShowReview(false)}>
+                    إلغاء
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

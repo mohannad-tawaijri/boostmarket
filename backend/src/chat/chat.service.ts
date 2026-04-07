@@ -43,6 +43,7 @@ export class ChatService {
           select: {
             id: true,
             title: true,
+            boosterId: true,
           },
         },
       },
@@ -79,6 +80,7 @@ export class ChatService {
           select: {
             id: true,
             title: true,
+            boosterId: true,
           },
         },
       },
@@ -172,6 +174,7 @@ export class ChatService {
           select: {
             id: true,
             title: true,
+            boosterId: true,
           },
         },
       },
@@ -283,6 +286,7 @@ export class ChatService {
           select: {
             id: true,
             title: true,
+            boosterId: true,
           },
         },
       },

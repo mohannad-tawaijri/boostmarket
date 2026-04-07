@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -87,6 +87,9 @@ export class OrdersService {
         buyer: true,
         booster: true,
         payment: true,
+        review: {
+          select: { id: true, rating: true, comment: true },
+        },
       },
     });
 
@@ -104,6 +107,7 @@ export class OrdersService {
   async updateStatus(id: string, userId: string, status: string) {
     const order = await this.prisma.order.findUnique({
       where: { id },
+      include: { payment: true },
     });
 
     if (!order) {
@@ -112,6 +116,16 @@ export class OrdersService {
 
     if (order.boosterId !== userId) {
       throw new ForbiddenException('Only the booster can update order status');
+    }
+
+    // Block starting work on an unpaid order
+    if (status === 'IN_PROGRESS') {
+      const paid =
+        order.payment?.status === 'paid' ||
+        order.payment?.status === 'authorized';
+      if (!paid) {
+        throw new BadRequestException('Cannot start an unpaid order');
+      }
     }
 
     return this.prisma.order.update({

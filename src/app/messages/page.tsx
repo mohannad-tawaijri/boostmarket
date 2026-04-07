@@ -64,7 +64,7 @@ interface Conversation {
   messages: Message[];
   lastMessage?: Message;
   updatedAt: string;
-  service?: { id: string; title: string };
+  service?: { id: string; title: string; boosterId?: string };
   unreadCount?: number;
 }
 
@@ -853,8 +853,8 @@ function MessagesContent() {
 
                 {/* Message Input */}
                 <div className="p-4 border-t border-white/[0.15]">
-                  {/* Send Custom Offer Button (for boosters only) */}
-                  {isBooster && (
+                  {/* Send Custom Offer Button — only the conversation's service owner */}
+                  {isBooster && activeConversation?.service?.boosterId === user?.id && (
                     <div className="mb-3">
                       <button
                         onClick={() => setShowOfferModal(true)}
