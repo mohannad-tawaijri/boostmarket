@@ -13,6 +13,8 @@ async function bootstrap() {
   const allowedOrigins = [
     process.env.FRONTEND_URL || 'http://localhost:3000',
     'https://boost-rosy-rho.vercel.app',
+    'https://boostmarket.app',
+    'https://www.boostmarket.app',
   ];
   app.enableCors({
     origin: allowedOrigins,
