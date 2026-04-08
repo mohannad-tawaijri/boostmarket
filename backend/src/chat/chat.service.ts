@@ -6,10 +6,14 @@ export class ChatService {
   constructor(private prisma: PrismaService) {}
 
   async createConversation(userId: string, otherUserId: string, serviceId?: string) {
-    // Check if conversation already exists between these two specific users
-    // Each user-to-user pair gets one conversation (not per service)
+    // Each (userA, userB, service) tuple gets its own conversation thread.
+    // A general DM with no service context is matched against serviceId IS NULL.
+    // Without this scoping, a user who already chatted with someone about service A
+    // would be sent back to that thread when contacting them about service B —
+    // and the service-owner gating on custom offers would block them.
     const existingConversation = await this.prisma.conversation.findFirst({
       where: {
+        serviceId: serviceId ?? null,
         AND: [
           {
             participants: {
