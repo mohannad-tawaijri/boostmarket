@@ -15,6 +15,30 @@ function proxyError(error: unknown) {
   );
 }
 
+// Forward upstream response, tolerating non-JSON bodies (e.g. Cloudflare 521 HTML pages)
+function forwardResponse(response: Response, text: string) {
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    try {
+      const data = text ? JSON.parse(text) : {};
+      return NextResponse.json(data, { status: response.status });
+    } catch {
+      // fall through to error
+    }
+  }
+  // Non-JSON upstream — surface a clean error instead of leaking HTML
+  if (response.status >= 500) {
+    return NextResponse.json(
+      { error: 'Upstream API error', status: response.status, detail: text.slice(0, 200) },
+      { status: 502 },
+    );
+  }
+  return NextResponse.json(
+    { error: 'Unexpected upstream response', status: response.status },
+    { status: response.status },
+  );
+}
+
 // Whitelist of allowed API path prefixes
 const ALLOWED_PATHS = [
   'auth',
@@ -56,8 +80,7 @@ export async function GET(
   try {
     const response = await fetch(url, { headers });
     const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
-    return NextResponse.json(data, { status: response.status });
+    return forwardResponse(response, text);
   } catch (error) {
     return proxyError(error);
   }
@@ -121,8 +144,7 @@ export async function POST(
     }
 
     const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
-    return NextResponse.json(data, { status: response.status });
+    return forwardResponse(response, text);
   } catch (error) {
     return proxyError(error);
   }
@@ -155,8 +177,7 @@ export async function PATCH(
       body: JSON.stringify(body),
     });
     const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
-    return NextResponse.json(data, { status: response.status });
+    return forwardResponse(response, text);
   } catch (error) {
     return proxyError(error);
   }
@@ -187,8 +208,7 @@ export async function DELETE(
       headers,
     });
     const text = await response.text();
-    const data = text ? JSON.parse(text) : {};
-    return NextResponse.json(data, { status: response.status });
+    return forwardResponse(response, text);
   } catch (error) {
     return proxyError(error);
   }
