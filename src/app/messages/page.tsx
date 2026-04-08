@@ -682,20 +682,26 @@ function MessagesContent() {
                       <span className="absolute bottom-0 end-0 w-3 h-3 bg-green-500 border-2 border-zinc-900 rounded-full" />
                     )}
                   </div>
-                  <div>
-                    <Link href={`/profile/${getOtherParticipant(activeConversation)?.id}`} className="text-white font-medium hover:text-violet-400 transition-colors">
+                  <div className="min-w-0">
+                    <Link href={`/profile/${getOtherParticipant(activeConversation)?.id}`} className="text-white font-medium hover:text-violet-400 transition-colors block truncate">
                       {getOtherParticipant(activeConversation)?.name || 'مستخدم'}
                     </Link>
                     {getOtherParticipant(activeConversation) && onlineUsers.has(getOtherParticipant(activeConversation)!.id) ? (
                       <p className="text-green-400 text-xs">متصل</p>
-                    ) : activeConversation.service ? (
-                      <Link href={`/services/${activeConversation.service.id}`} className="text-violet-400 text-sm hover:underline">
-                        {activeConversation.service.title}
-                      </Link>
                     ) : (
                       <p className="text-zinc-500 text-xs">غير متصل</p>
                     )}
                   </div>
+                  {activeConversation.service && (
+                    <Link
+                      href={`/services/${activeConversation.service.id}`}
+                      className="ms-auto hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-medium hover:bg-violet-500/25 transition-colors max-w-[220px]"
+                      title={activeConversation.service.title}
+                    >
+                      <FileText className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate">{activeConversation.service.title}</span>
+                    </Link>
+                  )}
                 </div>
 
                 {/* Messages */}
