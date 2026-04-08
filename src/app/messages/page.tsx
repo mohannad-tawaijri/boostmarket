@@ -785,12 +785,23 @@ function MessagesContent() {
                                 )}
 
                                 {offer.status === 'ACCEPTED' && offer.orderId && (
-                                  <Link href={isOwn ? '/dashboard?tab=customer-orders' : '/dashboard?tab=orders'}>
-                                    <Button className="w-full bg-green-600/20 text-green-400 hover:bg-green-600/30">
-                                      <Check className="w-4 h-4 me-1" />
-                                      تم إنشاء الطلب - عرض الطلبات
-                                    </Button>
-                                  </Link>
+                                  offer.receiverId === user?.id ? (
+                                    // Buyer: go to checkout to complete payment
+                                    <Link href={`/checkout?orderId=${offer.orderId}`}>
+                                      <Button className="w-full bg-violet-600/20 text-violet-400 hover:bg-violet-600/30">
+                                        <Check className="w-4 h-4 me-1" />
+                                        أكمل الدفع
+                                      </Button>
+                                    </Link>
+                                  ) : (
+                                    // Booster: go to orders dashboard
+                                    <Link href="/dashboard?tab=orders">
+                                      <Button className="w-full bg-green-600/20 text-green-400 hover:bg-green-600/30">
+                                        <Check className="w-4 h-4 me-1" />
+                                        تم إنشاء الطلب - عرض الطلبات
+                                      </Button>
+                                    </Link>
+                                  )
                                 )}
                               </div>
                               
@@ -986,7 +997,7 @@ function MessagesContent() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-zinc-300 mb-1">
-                    السعر ($) *
+                    السعر (ر.س) *
                   </label>
                   <input
                     type="number"
