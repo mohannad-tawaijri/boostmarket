@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Allow up to 60s so Render's free-tier cold start (often 30-50s) can complete
+// before the serverless function times out.
+export const maxDuration = 60;
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://boost-api-16ta.onrender.com';
+
+function proxyError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error('Proxy error:', message);
+  return NextResponse.json(
+    { error: 'Upstream API unreachable', detail: message },
+    { status: 502 },
+  );
+}
 
 // Whitelist of allowed API path prefixes
 const ALLOWED_PATHS = [
@@ -46,8 +59,7 @@ export async function GET(
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error('Proxy error:', error);
-    return NextResponse.json({ error: 'Proxy error' }, { status: 500 });
+    return proxyError(error);
   }
 }
 
@@ -112,8 +124,7 @@ export async function POST(
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error('Proxy error:', error);
-    return NextResponse.json({ error: 'Proxy error' }, { status: 500 });
+    return proxyError(error);
   }
 }
 
@@ -147,8 +158,7 @@ export async function PATCH(
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error('Proxy error:', error);
-    return NextResponse.json({ error: 'Proxy error' }, { status: 500 });
+    return proxyError(error);
   }
 }
 
@@ -180,7 +190,6 @@ export async function DELETE(
     const data = text ? JSON.parse(text) : {};
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error('Proxy error:', error);
-    return NextResponse.json({ error: 'Proxy error' }, { status: 500 });
+    return proxyError(error);
   }
 }
