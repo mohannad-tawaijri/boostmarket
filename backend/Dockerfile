@@ -25,4 +25,4 @@ RUN npm prune --production
 EXPOSE 10000
 
 # Run migrations then start
-CMD ["sh", "-c", "npx prisma migrate resolve --rolled-back 20260227051129_sync_game_categories 2>/dev/null; npx prisma migrate deploy && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate resolve --rolled-back 20260227051129_sync_game_categories 2>/dev/null; npx prisma migrate deploy; node dist/main.js"]
