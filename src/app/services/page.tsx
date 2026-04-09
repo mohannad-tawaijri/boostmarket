@@ -7,7 +7,8 @@ import Image from "next/image";
 import { Search, Filter, Heart, Sparkles, SlidersHorizontal, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServiceCard from "@/components/service-card";
-import { Service, GameCategory, GAME_NAMES, GAME_IMAGES } from "@/types";
+import { Service, GameCategory, ServiceCategory, GAME_NAMES, GAME_IMAGES, CATEGORY_NAMES } from "@/types";
+import { Tag } from "lucide-react";
 import { API_URL } from "@/lib/config";
 
 const SORT_OPTIONS = [
@@ -23,6 +24,7 @@ function ServicesContent() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [sortBy, setSortBy] = useState("newest");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -40,13 +42,14 @@ function ServicesContent() {
 
   useEffect(() => {
     fetchServices();
-  }, [selectedGame, sortBy]);
+  }, [selectedGame, selectedCategory, sortBy]);
 
   const fetchServices = async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
       if (selectedGame) params.append("game", selectedGame);
+      if (selectedCategory) params.append("category", selectedCategory);
       if (sortBy) params.append("sortBy", sortBy);
 
       const response = await fetch(`${API_URL}/services?${params}`);
@@ -157,6 +160,31 @@ function ServicesContent() {
                 </div>
               </div>
 
+              {/* Category Filter */}
+              <div className="mb-6">
+                <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
+                  <Tag className="w-4 h-4 text-orange-400" />
+                  نوع الخدمة
+                </label>
+                <div className="space-y-1.5">
+                  <button
+                    onClick={() => setSelectedCategory("")}
+                    className={`w-full text-start px-3 py-2.5 rounded-lg text-sm transition-all ${!selectedCategory ? 'bg-violet-500/20 border border-violet-500/30 text-violet-300' : 'hover:bg-white/[0.08] text-zinc-400 border border-transparent'}`}
+                  >
+                    كل الأنواع
+                  </button>
+                  {(Object.entries(CATEGORY_NAMES) as [ServiceCategory, string][]).filter(([key]) => key !== 'OTHER').map(([key, name]) => (
+                    <button
+                      key={key}
+                      onClick={() => setSelectedCategory(key)}
+                      className={`w-full text-start px-3 py-2.5 rounded-lg text-sm transition-all ${selectedCategory === key ? 'bg-violet-500/20 border border-violet-500/30 text-violet-300' : 'hover:bg-white/[0.08] text-zinc-400 border border-transparent'}`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Sort By */}
               <div className="mb-6">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
@@ -210,7 +238,7 @@ function ServicesContent() {
                   جرب تغيير الفلتر أو البحث
                 </p>
                 <Button 
-                  onClick={() => { setSelectedGame(""); setSearchQuery(""); }}
+                  onClick={() => { setSelectedGame(""); setSelectedCategory(""); setSearchQuery(""); }}
                   className="bg-violet-600 hover:bg-indigo-500"
                 >
                   مسح الكل
