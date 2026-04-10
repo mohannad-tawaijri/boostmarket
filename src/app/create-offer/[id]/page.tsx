@@ -185,21 +185,27 @@ export default function EditOfferPage() {
                 </div>
               </div>
               {/* Active/Inactive toggle */}
-              <button
-                type="button"
-                dir="ltr"
-                role="switch"
-                aria-checked={formData.active}
-                onClick={() => setFormData({ ...formData, active: !formData.active })}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all border hover:scale-105 ${
-                  formData.active
-                    ? 'bg-green-500/20 border-green-400/40 text-green-300 hover:bg-green-500/30'
-                    : 'bg-zinc-700/50 border-zinc-500/40 text-zinc-400 hover:bg-zinc-700/70'
-                }`}
-              >
-                <span className={`w-2 h-2 rounded-full ${formData.active ? 'bg-green-400' : 'bg-zinc-500'}`} />
-                <span className="text-sm font-medium">{formData.active ? 'نشط' : 'متوقف'}</span>
-              </button>
+              <div className="flex items-center gap-3">
+                <span className={`text-sm font-medium ${formData.active ? 'text-green-300' : 'text-zinc-400'}`}>
+                  {formData.active ? 'نشط' : 'متوقف'}
+                </span>
+                <button
+                  type="button"
+                  dir="ltr"
+                  role="switch"
+                  aria-checked={formData.active}
+                  onClick={() => setFormData({ ...formData, active: !formData.active })}
+                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 ${
+                    formData.active ? 'bg-green-500' : 'bg-zinc-600'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200 ${
+                      formData.active ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -360,31 +366,31 @@ export default function EditOfferPage() {
             )}
 
             {/* Direct Purchase Toggle */}
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
-              className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all cursor-pointer hover:scale-[1.01] hover:shadow-lg ${
-                formData.allowDirectPurchase
-                  ? 'bg-violet-600/10 border-violet-500/40 hover:border-violet-400/60'
-                  : 'bg-slate-700/30 border-white/[0.18] hover:border-white/30 hover:bg-slate-700/50'
-              }`}
-            >
+            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl border border-white/[0.18]">
               <div className="flex items-center gap-3">
                 <ShoppingCart className="w-5 h-5 text-violet-400" />
-                <div className="text-right">
+                <div>
                   <p className="text-white font-medium text-sm">الشراء المباشر</p>
                   <p className="text-zinc-500 text-xs">السماح للعملاء بالشراء مباشرة بدون محادثة</p>
                 </div>
               </div>
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
-                formData.allowDirectPurchase
-                  ? 'bg-violet-500/20 border-violet-400/40 text-violet-300'
-                  : 'bg-zinc-700/50 border-zinc-500/40 text-zinc-400'
-              }`}>
-                <span className={`w-2 h-2 rounded-full ${formData.allowDirectPurchase ? 'bg-violet-400' : 'bg-zinc-500'}`} />
-                <span className="text-sm font-medium">{formData.allowDirectPurchase ? 'مفعّل' : 'معطّل'}</span>
-              </div>
-            </button>
+              <button
+                type="button"
+                dir="ltr"
+                role="switch"
+                aria-checked={formData.allowDirectPurchase}
+                onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
+                className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50 ${
+                  formData.allowDirectPurchase ? 'bg-violet-600' : 'bg-zinc-600'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200 ${
+                    formData.allowDirectPurchase ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
 
             {/* Submit & Delete Buttons */}
             <div className="flex gap-4 pt-6 border-t border-white/[0.18]">
