@@ -250,7 +250,7 @@ function CheckoutContent() {
 
               <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-xl border border-green-500/20 mb-7">
                 <Shield className="w-4 h-4 text-green-400 flex-shrink-0" />
-                <p className="text-green-400 text-sm">دفعتك مؤمنة بتشفير SSL 256 بت — مدعومة من Moyasar</p>
+                <p className="text-green-400 text-sm">دفعتك آمنة ومشفرة بالكامل</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
