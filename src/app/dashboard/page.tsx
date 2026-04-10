@@ -462,8 +462,13 @@ function DashboardContent() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="text-white font-semibold text-lg truncate">{offer.title}</h3>
-                          {!offer.active && (
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-zinc-600/50 text-zinc-400 flex items-center gap-1">
+                          {offer.active ? (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              نشط
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-red-500/15 text-red-400 border border-red-500/20 flex items-center gap-1">
                               <EyeOff className="w-3 h-3" />
                               متوقف
                             </span>
