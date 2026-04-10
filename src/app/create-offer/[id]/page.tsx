@@ -173,43 +173,37 @@ export default function EditOfferPage() {
 
         {/* Main Form Card */}
         <div className="bg-white/[0.07] rounded-2xl border border-white/[0.18] shadow-2xl overflow-hidden">
-          <div className="bg-violet-600 px-8 py-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-white">تعديل الخدمة</h2>
-                  <p className="text-indigo-200 text-sm">حدّث البيانات</p>
-                </div>
-              </div>
-              {/* Active/Inactive toggle */}
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-medium ${formData.active ? 'text-green-300' : 'text-zinc-400'}`}>
-                  {formData.active ? 'نشط' : 'متوقف'}
-                </span>
-                <button
-                  type="button"
-                  dir="ltr"
-                  role="switch"
-                  aria-checked={formData.active}
-                  onClick={() => setFormData({ ...formData, active: !formData.active })}
-                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 ${
-                    formData.active ? 'bg-green-500' : 'bg-zinc-600'
-                  }`}
-                >
-                  <span
-                    className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200 ${
-                      formData.active ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit} className="p-8 space-y-8">
+            {/* Service Status Toggle */}
+            <div className={`flex items-center justify-between p-4 rounded-xl border transition-colors ${
+              formData.active
+                ? 'bg-emerald-500/10 border-emerald-500/30'
+                : 'bg-red-500/10 border-red-500/30'
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-2.5 h-2.5 rounded-full ${formData.active ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
+                <div>
+                  <p className="text-white font-medium text-sm">حالة الخدمة</p>
+                  <p className="text-zinc-400 text-xs">{formData.active ? 'الخدمة ظاهرة للعملاء' : 'الخدمة مخفية عن العملاء'}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                dir="ltr"
+                role="switch"
+                aria-checked={formData.active}
+                onClick={() => setFormData({ ...formData, active: !formData.active })}
+                className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 ${
+                  formData.active ? 'bg-emerald-500' : 'bg-zinc-600'
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200 ${
+                    formData.active ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
             {/* Title */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
