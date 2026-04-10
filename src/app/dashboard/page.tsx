@@ -307,9 +307,16 @@ function DashboardContent() {
 
         {activeTab === 'orders' && (
           <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-white/[0.15]">
-              <h2 className="text-lg font-semibold text-white">طلباتي</h2>
-              <p className="text-zinc-400 text-sm">خدمات طلبتها من بوسترز</p>
+            <div className="px-6 py-4 border-b border-white/[0.15] flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-white">طلباتي</h2>
+                <p className="text-zinc-400 text-sm">خدمات طلبتها من بوسترز</p>
+              </div>
+              <Link href="/orders">
+                <Button variant="outline" size="sm" className="border-white/[0.18] text-zinc-300 hover:text-white">
+                  عرض كل الطلبات
+                </Button>
+              </Link>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -333,16 +340,22 @@ function DashboardContent() {
                       <th className="text-right text-zinc-400 font-medium px-6 py-4">الحالة</th>
                       <th className="text-right text-zinc-400 font-medium px-6 py-4">السعر</th>
                       <th className="text-right text-zinc-400 font-medium px-6 py-4">التاريخ</th>
+                      <th className="px-6 py-4"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800">
                     {myOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-white/[0.07] transition-colors">
+                      <tr
+                        key={order.id}
+                        onClick={() => window.location.href = `/orders/${order.id}`}
+                        className="hover:bg-white/[0.07] transition-colors cursor-pointer"
+                      >
                         <td className="px-6 py-4 text-white">{order.service?.title || 'Service'}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.booster?.name || 'Booster'}</td>
                         <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
                         <td className="px-6 py-4 text-zinc-300">{order.price} ر.س</td>
                         <td className="px-6 py-4 text-zinc-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-violet-400 text-sm">تفاصيل ←</td>
                       </tr>
                     ))}
                   </tbody>
