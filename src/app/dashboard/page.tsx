@@ -16,7 +16,13 @@ import {
   Gamepad2,
   TrendingUp,
   MessageSquare,
-  Loader2
+  Loader2,
+  Edit3,
+  Trash2,
+  Package,
+  ShoppingCart,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 interface Order {
@@ -35,7 +41,11 @@ interface Offer {
   id: string;
   title: string;
   game: string;
+  category: string;
   price: number;
+  active: boolean;
+  allowDirectPurchase: boolean;
+  stock?: number | null;
   orders?: Order[];
 }
 
@@ -447,19 +457,57 @@ function DashboardContent() {
             ) : (
               <>
                 {offers.map((offer) => (
-                  <div key={offer.id} className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6 flex items-center justify-between">
-                    <div>
-                      <h3 className="text-white font-semibold text-lg">{offer.title}</h3>
-                      <p className="text-zinc-400">{offer.game}</p>
-                    </div>
-                    <div className="flex items-center gap-8">
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-white">{offer.price} ر.س</p>
-                        <p className="text-zinc-500 text-sm">السعر</p>
+                  <div key={offer.id} className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-white font-semibold text-lg truncate">{offer.title}</h3>
+                          {!offer.active && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-zinc-600/50 text-zinc-400 flex items-center gap-1">
+                              <EyeOff className="w-3 h-3" />
+                              متوقف
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-3 text-sm text-zinc-400">
+                          <span>{offer.game}</span>
+                          {offer.category === 'ITEMS' && offer.stock !== null && offer.stock !== undefined && (
+                            <span className="flex items-center gap-1">
+                              <Package className="w-3.5 h-3.5" />
+                              {offer.stock > 0 ? (
+                                <span className="text-amber-400">{offer.stock} متبقي</span>
+                              ) : (
+                                <span className="text-red-400">نفذت الكمية</span>
+                              )}
+                            </span>
+                          )}
+                          {offer.allowDirectPurchase && (
+                            <span className="flex items-center gap-1 text-green-400">
+                              <ShoppingCart className="w-3.5 h-3.5" />
+                              شراء مباشر
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <Link href={`/services/${offer.id}`}>
-                        <Button variant="outline">فتح</Button>
-                      </Link>
+                      <div className="flex items-center gap-4 flex-shrink-0">
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-white">{offer.price} ر.س</p>
+                          <p className="text-zinc-500 text-sm">السعر</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Link href={`/create-offer/${offer.id}`}>
+                            <Button variant="outline" size="sm" className="gap-1.5 border-white/[0.18] text-zinc-300 hover:text-white">
+                              <Edit3 className="w-4 h-4" />
+                              تعديل
+                            </Button>
+                          </Link>
+                          <Link href={`/services/${offer.id}`}>
+                            <Button variant="outline" size="sm" className="border-white/[0.18] text-zinc-300 hover:text-white">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}

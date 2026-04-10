@@ -154,6 +154,10 @@ model Service {
   
   active            Boolean           @default(true)
   featured          Boolean           @default(false)
+  allowDirectPurchase Boolean         @default(true)
+  
+  // Stock tracking (for ITEMS category)
+  stock             Int?
   
   images            String[]
   requirements      Json?

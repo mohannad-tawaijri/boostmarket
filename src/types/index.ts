@@ -34,6 +34,8 @@ export interface Service {
   booster?: User;
   active: boolean;
   featured: boolean;
+  allowDirectPurchase: boolean;
+  stock?: number | null;
   images: string[];
   requirements?: any;
   reviews?: Review[];
@@ -47,6 +49,8 @@ export type ServiceCategory =
   | 'PLACEMENT_MATCHES'
   | 'DUOQ'
   | 'ITEMS'
+  | 'CUSTOM'
+  | 'WIN_BOOST'
   | 'OTHER';
 
 export interface Order {
@@ -185,6 +189,8 @@ export const CATEGORY_NAMES: Record<ServiceCategory, string> = {
   ACCOUNT_LEVELING: 'تلفليل الحساب',
   PLACEMENT_MATCHES: 'مباريات التصنيف',
   DUOQ: 'لعب ثنائي',
+  WIN_BOOST: 'رفع فوزات',
   ITEMS: 'بيع أغراض',
+  CUSTOM: 'مخصص',
   OTHER: 'أخرى',
 };

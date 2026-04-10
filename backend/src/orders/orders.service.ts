@@ -14,6 +14,28 @@ export class OrdersService {
       throw new NotFoundException('Service not found');
     }
 
+    if (!service.active) {
+      throw new BadRequestException('Service is not available');
+    }
+
+    // Prevent buying your own service
+    if (service.boosterId === buyerId) {
+      throw new BadRequestException('Cannot order your own service');
+    }
+
+    // Check stock for ITEMS category
+    if (service.stock !== null && service.stock <= 0) {
+      throw new BadRequestException('Out of stock');
+    }
+
+    // Decrement stock if applicable
+    if (service.stock !== null) {
+      await this.prisma.service.update({
+        where: { id: data.serviceId },
+        data: { stock: { decrement: 1 } },
+      });
+    }
+
     return this.prisma.order.create({
       data: {
         serviceId: data.serviceId || undefined,

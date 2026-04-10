@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Plus, Sparkles, Gamepad2, DollarSign, Clock, FileText, Package, ShoppingCart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { Sparkles, Gamepad2, DollarSign, Clock, FileText, Package, ShoppingCart, Trash2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GameCategory, ServiceCategory, GAME_NAMES, CATEGORY_NAMES } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import { API_URL } from "@/lib/config";
 
-export default function CreateOfferPage() {
+export default function EditOfferPage() {
   const router = useRouter();
+  const params = useParams();
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -22,45 +26,108 @@ export default function CreateOfferPage() {
     deliveryTime: "",
     stock: "",
     allowDirectPurchase: true,
+    active: true,
   });
+
+  useEffect(() => {
+    if (!params.id) return;
+    const fetchService = async () => {
+      try {
+        const response = await fetch(`${API_URL}/services/${params.id}`);
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+
+        // Verify ownership
+        if (user && data.boosterId !== user.id) {
+          router.push("/dashboard?tab=offers");
+          return;
+        }
+
+        setFormData({
+          title: data.title || "",
+          description: data.description || "",
+          game: data.game || "",
+          gameDetails: data.gameDetails || "",
+          category: data.category || "",
+          price: data.price?.toString() || "",
+          deliveryTime: data.deliveryTime || "",
+          stock: data.stock !== null && data.stock !== undefined ? data.stock.toString() : "",
+          allowDirectPurchase: data.allowDirectPurchase !== false,
+          active: data.active !== false,
+        });
+      } catch {
+        router.push("/dashboard?tab=offers");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchService();
+  }, [params.id, user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       router.push("/login");
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch(`${API_URL}/services`, {
-        method: "POST",
+      const response = await fetch(`${API_URL}/services/${params.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          ...formData,
+          title: formData.title,
+          description: formData.description,
+          game: formData.game,
+          gameDetails: formData.gameDetails,
+          category: formData.category,
           price: parseFloat(formData.price),
+          deliveryTime: formData.deliveryTime,
           stock: formData.category === 'ITEMS' && formData.stock ? parseInt(formData.stock) : null,
-          images: [],
+          allowDirectPurchase: formData.allowDirectPurchase,
+          active: formData.active,
         }),
       });
 
       if (response.ok) {
-        const service = await response.json();
-        router.push(`/services/${service.id}`);
+        router.push("/dashboard?tab=offers");
       } else {
-        alert("فشل في إنشاء العرض. يرجى المحاولة مرة أخرى.");
+        alert("فشل في تحديث العرض. يرجى المحاولة مرة أخرى.");
       }
-    } catch (error) {
-      console.error("Error creating offer:", error);
+    } catch {
       alert("حدث خطأ. يرجى المحاولة مرة أخرى.");
     } finally {
-      setLoading(false);
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_URL}/services/${params.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        router.push("/dashboard?tab=offers");
+      } else {
+        alert("فشل في حذف العرض.");
+      }
+    } catch {
+      alert("حدث خطأ. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -73,13 +140,20 @@ export default function CreateOfferPage() {
     });
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-900 py-12 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="container mx-auto px-4 max-w-4xl relative z-10">
@@ -87,26 +161,47 @@ export default function CreateOfferPage() {
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 rounded-full border border-violet-500/20 mb-4">
             <Sparkles className="w-4 h-4 text-violet-400" />
-            <span className="text-sm text-violet-300">أضف خدمتك</span>
+            <span className="text-sm text-violet-300">تعديل الخدمة</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            حوّل مهاراتك إلى <span className="text-violet-400">دخل</span>
+            عدّل <span className="text-violet-400">خدمتك</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            انشئ خدمتك الآن واستقبل طلبات من اللاعبين في ثواني
+            حدّث تفاصيل خدمتك أو غيّر السعر
           </p>
         </div>
 
         {/* Main Form Card */}
         <div className="bg-white/[0.07] rounded-2xl border border-white/[0.18] shadow-2xl overflow-hidden">
           <div className="bg-violet-600 px-8 py-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <Plus className="w-6 h-6 text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">تعديل الخدمة</h2>
+                  <p className="text-indigo-200 text-sm">حدّث البيانات</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-white">خدمة جديدة</h2>
-                <p className="text-indigo-200 text-sm">عبّي البيانات</p>
+              {/* Active/Inactive toggle */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-indigo-200">{formData.active ? 'نشط' : 'متوقف'}</span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={formData.active}
+                  onClick={() => setFormData({ ...formData, active: !formData.active })}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    formData.active ? 'bg-green-500' : 'bg-zinc-600'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      formData.active ? 'translate-x-1.5' : 'translate-x-6'
+                    }`}
+                  />
+                </button>
               </div>
             </div>
           </div>
@@ -131,7 +226,6 @@ export default function CreateOfferPage() {
 
             {/* Game & Category Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Game Selection */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
@@ -153,7 +247,6 @@ export default function CreateOfferPage() {
                 </select>
               </div>
 
-              {/* Category */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                   <Sparkles className="w-4 h-4 text-pink-400" />
@@ -204,7 +297,7 @@ export default function CreateOfferPage() {
                 onChange={handleChange}
                 required
                 rows={5}
-                placeholder="صف خدمتك بالتفصيل. ما الذي يتضمنه؟ ما هي المتطلبات؟ ما الذي يميز خدمتك؟"
+                placeholder="صف خدمتك بالتفصيل."
                 className="w-full bg-slate-700/50 border border-white/[0.18] rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-violet-500/20 resize-none"
               />
             </div>
@@ -295,31 +388,41 @@ export default function CreateOfferPage() {
               </button>
             </div>
 
-            {/* Submit Buttons */}
+            {/* Submit & Delete Buttons */}
             <div className="flex gap-4 pt-6 border-t border-white/[0.18]">
               <Button
                 type="submit"
-                disabled={loading}
-                className="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-6 rounded-xl font-semibold text-lg shadow-lg shadow-violet-500/15 "
+                disabled={saving}
+                className="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-6 rounded-xl font-semibold text-lg shadow-lg shadow-violet-500/15"
                 size="lg"
               >
-                {loading ? (
+                {saving ? (
                   <span className="flex items-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    جاري النشر...
+                    جاري الحفظ...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5" />
-                    نشر الخدمة
+                    حفظ التعديلات
                   </span>
                 )}
               </Button>
               <Button
                 type="button"
                 variant="outline"
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={saving || deleting}
+                className="px-6 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl"
+                size="lg"
+              >
+                <Trash2 className="w-5 h-5" />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => router.back()}
-                disabled={loading}
+                disabled={saving}
                 className="px-8 border-white/[0.18] text-zinc-300 hover:bg-zinc-700 hover:text-white rounded-xl"
                 size="lg"
               >
@@ -328,32 +431,46 @@ export default function CreateOfferPage() {
             </div>
           </form>
         </div>
+      </div>
 
-        {/* Tips Section */}
-        <div className="mt-8 bg-violet-900/30 rounded-2xl border border-indigo-500/20 p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-violet-600 rounded-lg">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <h3 className="font-bold text-xl text-white">نصائح للنجاح</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { icon: "✨", text: "اختر عنوان واضح ويلفت الانتباه" },
-              { icon: "📝", text: "وصّف خدمتك بالتفصيل" },
-              { icon: "💰", text: "حط سعر منافس" },
-              { icon: "⏰", text: "حط وقت تنفيذ واقعي" },
-              { icon: "📋", text: "وضّح المتطلبات من العميل" },
-              { icon: "🏆", text: "أبرز خبرتك ونسبة نجاحك" },
-            ].map((tip, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 bg-white/[0.07] rounded-xl border border-white/[0.18]">
-                <span className="text-xl">{tip.icon}</span>
-                <span className="text-zinc-300 text-sm">{tip.text}</span>
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-white/[0.18] rounded-2xl p-8 max-w-md w-full">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-red-500/20 rounded-full flex items-center justify-center">
+                <Trash2 className="w-8 h-8 text-red-400" />
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-white mb-2">حذف الخدمة؟</h3>
+              <p className="text-zinc-400 mb-6">هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.</p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 bg-red-600 hover:bg-red-500 text-white"
+                >
+                  {deleting ? (
+                    <span className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      جاري الحذف...
+                    </span>
+                  ) : (
+                    'نعم، احذف'
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleting}
+                  className="flex-1 border-white/[0.18] text-zinc-300"
+                >
+                  إلغاء
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

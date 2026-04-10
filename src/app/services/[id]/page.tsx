@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, Heart, MessageCircle, Shield, ArrowRight, CheckCircle, Gamepad2, Star } from "lucide-react";
+import { Clock, Heart, MessageCircle, Shield, ArrowRight, CheckCircle, Gamepad2, Star, ShoppingCart, Package, Edit3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Service, GAME_NAMES, CATEGORY_NAMES, GAME_IMAGES, GameCategory, ServiceCategory, Review } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
@@ -18,6 +18,7 @@ export default function ServiceDetailPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [ordering, setOrdering] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -92,12 +93,37 @@ export default function ServiceDetailPage() {
     }
   };
 
-  const handleOrderNow = () => {
+  const handleOrderNow = async () => {
     if (!user) {
       router.push("/login");
       return;
     }
-    router.push(`/checkout?serviceId=${service?.id}`);
+    if (!service) return;
+
+    setOrdering(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ serviceId: service.id }),
+      });
+
+      if (response.ok) {
+        const order = await response.json();
+        router.push(`/checkout?orderId=${order.id}`);
+      } else {
+        const data = await response.json();
+        alert(data.message || "فشل في إنشاء الطلب");
+      }
+    } catch {
+      alert("حدث خطأ. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setOrdering(false);
+    }
   };
 
   const handleContactBooster = () => {
@@ -317,33 +343,88 @@ export default function ServiceDetailPage() {
             {/* Order Card */}
             <div className="bg-white/[0.09] rounded-2xl border border-white/[0.18] p-6">
               <div className="text-center mb-6">
-                <p className="text-zinc-400 text-sm mb-1">من</p>
+                <p className="text-zinc-400 text-sm mb-1">السعر</p>
                 <div className="text-4xl font-bold text-violet-400 mb-2">
                   {service.price} ر.س
                 </div>
-                <p className="text-zinc-500 text-xs">السعر النهائي بعد الاتفاق بالمحادثة</p>
+                {service.stock !== null && service.stock !== undefined && (
+                  <div className="flex items-center justify-center gap-1.5 mt-2">
+                    <Package className="w-4 h-4 text-amber-400" />
+                    {service.stock > 0 ? (
+                      <span className="text-amber-400 text-sm font-medium">{service.stock} متبقي</span>
+                    ) : (
+                      <span className="text-red-400 text-sm font-medium">نفذت الكمية</span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {isOwnService ? (
-                <div className="text-center text-zinc-400 py-4">
-                  <p>هذا عرضك</p>
-                  <Link href="/dashboard" className="text-violet-400 hover:underline text-sm">
-                    إدارة من حسابي
+                <div className="space-y-3">
+                  <Link href={`/create-offer/${service.id}`} className="block">
+                    <Button
+                      className="w-full py-5 text-base gap-2"
+                      size="lg"
+                    >
+                      <Edit3 className="w-5 h-5" />
+                      تعديل العرض
+                    </Button>
+                  </Link>
+                  <Link href="/dashboard?tab=offers" className="block">
+                    <Button variant="outline" className="w-full border-white/[0.18] text-zinc-300 hover:text-white" size="sm">
+                      إدارة من لوحة التحكم
+                    </Button>
                   </Link>
                 </div>
               ) : (
                 <>
+                  {/* Buy Now button (if direct purchase allowed) */}
+                  {service.allowDirectPurchase !== false && (
+                    <>
+                      <Button
+                        className="w-full mb-3 py-6 text-lg"
+                        size="lg"
+                        onClick={handleOrderNow}
+                        disabled={ordering || (service.stock !== null && service.stock !== undefined && service.stock <= 0)}
+                      >
+                        {ordering ? (
+                          <span className="flex items-center gap-2">
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            جاري الطلب...
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <ShoppingCart className="w-5 h-5" />
+                            اشتري الآن
+                          </span>
+                        )}
+                      </Button>
+
+                      <div className="relative my-4">
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-full border-t border-white/[0.12]"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                          <span className="px-3 bg-white/[0.09] text-zinc-500 text-xs rounded">أو</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   <Button
-                    className="w-full mb-3 py-6 text-lg"
+                    variant={service.allowDirectPurchase !== false ? "outline" : "default"}
+                    className={`w-full mb-3 ${service.allowDirectPurchase !== false ? 'py-4 border-white/[0.18] text-zinc-300 hover:text-white' : 'py-6 text-lg'}`}
                     size="lg"
                     onClick={handleContactBooster}
                   >
                     <MessageCircle className="w-5 h-5 me-2" />
-                    اطلب عرض خاص
+                    {service.allowDirectPurchase !== false ? 'تواصل مع البوستر' : 'اطلب عرض خاص'}
                   </Button>
 
                   <p className="text-center text-zinc-500 text-xs">
-                    كلّم البوستر وناقش طلبك
+                    {service.allowDirectPurchase !== false
+                      ? 'اشتري مباشرة أو كلّم البوستر وناقش طلبك'
+                      : 'كلّم البوستر وناقش طلبك'}
                   </p>
                 </>
               )}
