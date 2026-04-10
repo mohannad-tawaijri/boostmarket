@@ -199,106 +199,113 @@ function DashboardContent() {
 
         {/* Content based on active tab */}
         {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* My Orders (as buyer) */}
-            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-white">طلباتي</h2>
-                <button onClick={() => setActiveTab('orders')} className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
-                  الكل <ArrowRight className="w-4 h-4" />
-                </button>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Orders columns — stacked, take 2/3 width */}
+            <div className="lg:col-span-2 space-y-4">
+              {/* My Orders (as buyer) */}
+              <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-base font-semibold text-white">طلباتي</h2>
+                  <button onClick={() => setActiveTab('orders')} className="text-violet-400 hover:text-violet-300 text-xs flex items-center gap-1">
+                    الكل <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                {loading ? (
+                  <div className="flex justify-center py-6">
+                    <Loader2 className="w-6 h-6 text-violet-400 animate-spin" />
+                  </div>
+                ) : myOrders.length === 0 ? (
+                  <div className="flex items-center gap-3 py-4 text-zinc-400 text-sm">
+                    <ShoppingBag className="w-5 h-5 flex-shrink-0" />
+                    <span>ما طلبت شي بعد —</span>
+                    <Link href="/services" className="text-violet-400 hover:underline">استعرض الخدمات</Link>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-white/[0.07]">
+                    {myOrders.slice(0, 4).map((order) => (
+                      <Link key={order.id} href={`/orders/${order.id}`} className="flex items-center justify-between py-3 hover:bg-white/[0.04] rounded-lg px-2 -mx-2 transition-colors group">
+                        <div className="min-w-0">
+                          <p className="text-white text-sm font-medium truncate group-hover:text-violet-300 transition-colors">{order.service?.title || 'خدمة'}</p>
+                          <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0 ms-3">
+                          {getStatusBadge(order.status)}
+                          <span className="text-zinc-400 text-sm w-16 text-left">{order.price} ر.س</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-              {loading ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
+
+              {/* Customer Orders (as seller) */}
+              <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-base font-semibold text-white">طلبات العملاء</h2>
+                  <button onClick={() => setActiveTab('customer-orders')} className="text-violet-400 hover:text-violet-300 text-xs flex items-center gap-1">
+                    الكل <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-              ) : myOrders.length === 0 ? (
-                <div className="text-center py-8">
-                  <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">ما طلبت شي بعد</p>
-                  <Link href="/services">
-                    <Button variant="outline" size="sm" className="mt-3">استعرض الخدمات</Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {myOrders.slice(0, 3).map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.07] rounded-lg">
-                      <div>
-                        <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
-                        <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
-                      </div>
-                      <div className="text-right">
-                        {getStatusBadge(order.status)}
-                        <p className="text-zinc-400 text-sm mt-1">{order.price} ر.س</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                {loading ? (
+                  <div className="flex justify-center py-6">
+                    <Loader2 className="w-6 h-6 text-violet-400 animate-spin" />
+                  </div>
+                ) : customerOrders.length === 0 ? (
+                  <div className="flex items-center gap-3 py-4 text-zinc-400 text-sm">
+                    <DollarSign className="w-5 h-5 flex-shrink-0" />
+                    <span>ما جاك أي طلب بعد —</span>
+                    <Link href="/create-offer" className="text-violet-400 hover:underline">أضف خدمة</Link>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-white/[0.07]">
+                    {customerOrders.slice(0, 4).map((order) => (
+                      <Link key={order.id} href={`/orders/${order.id}`} className="flex items-center justify-between py-3 hover:bg-white/[0.04] rounded-lg px-2 -mx-2 transition-colors group">
+                        <div className="min-w-0">
+                          <p className="text-white text-sm font-medium truncate group-hover:text-violet-300 transition-colors">{order.service?.title || 'خدمة'}</p>
+                          <p className="text-zinc-500 text-xs">{order.buyer?.name || ''} · {new Date(order.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0 ms-3">
+                          {getStatusBadge(order.status)}
+                          <span className="text-green-400 text-sm w-16 text-left">{order.price} ر.س</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Customer Orders (as seller) */}
-            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-white">طلبات العملاء</h2>
-                <button onClick={() => setActiveTab('customer-orders')} className="text-violet-400 hover:text-violet-300 text-sm flex items-center gap-1">
-                  الكل <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-              {loading ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 text-violet-400 animate-spin" />
-                </div>
-              ) : customerOrders.length === 0 ? (
-                <div className="text-center py-8">
-                  <DollarSign className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">ما جاك أي طلب بعد</p>
-                  <Link href="/create-offer">
-                    <Button variant="outline" size="sm" className="mt-3">أضف خدمة</Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {customerOrders.slice(0, 3).map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-3 bg-white/[0.07] rounded-lg">
-                      <div>
-                        <p className="text-white font-medium text-sm">{order.service?.title || 'Service'}</p>
-                        <p className="text-zinc-500 text-xs">{new Date(order.createdAt).toLocaleDateString()}</p>
-                      </div>
-                      <div className="text-right">
-                        {getStatusBadge(order.status)}
-                        <p className="text-green-400 text-sm mt-1">{order.price} ر.س</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">اختصارات</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <Link href="/services" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
-                  <ShoppingBag className="w-8 h-8 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">استعرض الخدمات</p>
-                  <p className="text-zinc-500 text-sm">شوف خدمات البوست</p>
+            {/* Quick Actions — sidebar, 1/3 width */}
+            <div className="bg-white/[0.09] border border-white/[0.15] rounded-xl p-5 h-fit">
+              <h2 className="text-base font-semibold text-white mb-4">اختصارات</h2>
+              <div className="space-y-2">
+                <Link href="/services" className="flex items-center gap-3 p-3 bg-white/[0.07] rounded-lg hover:bg-white/[0.11] transition-all group">
+                  <ShoppingBag className="w-5 h-5 text-violet-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-white text-sm font-medium">استعرض الخدمات</p>
+                    <p className="text-zinc-500 text-xs">شوف خدمات البوست</p>
+                  </div>
                 </Link>
-                <Link href="/create-offer" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
-                  <Plus className="w-8 h-8 text-purple-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">أضف خدمة</p>
-                  <p className="text-zinc-500 text-sm">ابدأ تبيع</p>
+                <Link href="/create-offer" className="flex items-center gap-3 p-3 bg-white/[0.07] rounded-lg hover:bg-white/[0.11] transition-all group">
+                  <Plus className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-white text-sm font-medium">أضف خدمة</p>
+                    <p className="text-zinc-500 text-xs">ابدأ تبيع</p>
+                  </div>
                 </Link>
-                <Link href="/orders" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
-                  <Clock className="w-8 h-8 text-yellow-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">طلباتي</p>
-                  <p className="text-zinc-500 text-sm">تابع طلباتك</p>
+                <Link href="/orders" className="flex items-center gap-3 p-3 bg-white/[0.07] rounded-lg hover:bg-white/[0.11] transition-all group">
+                  <Clock className="w-5 h-5 text-yellow-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-white text-sm font-medium">طلباتي</p>
+                    <p className="text-zinc-500 text-xs">تابع طلباتك</p>
+                  </div>
                 </Link>
-                <Link href="/profile" className="p-4 bg-white/[0.07] rounded-lg hover:bg-white/[0.09] transition-all group">
-                  <MessageSquare className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <p className="text-white font-medium">الرسائل</p>
-                  <p className="text-zinc-500 text-sm">ردّ على رسائلك</p>
+                <Link href="/messages" className="flex items-center gap-3 p-3 bg-white/[0.07] rounded-lg hover:bg-white/[0.11] transition-all group">
+                  <MessageSquare className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-white text-sm font-medium">الرسائل</p>
+                    <p className="text-zinc-500 text-xs">ردّ على رسائلك</p>
+                  </div>
                 </Link>
               </div>
             </div>
