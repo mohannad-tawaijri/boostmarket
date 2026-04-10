@@ -212,7 +212,7 @@ export default function OrdersPage() {
               <p className="text-zinc-400 mb-6">
                 {filter === 'all' 
                   ? "ما طلبت شي بعد" 
-                  : "ما فيه طلبات بهالفلتر"}
+                  : "ما في طلبات بهذه الحالة"}
               </p>
               <Link href="/services">
                 <Button>استعرض الخدمات</Button>
