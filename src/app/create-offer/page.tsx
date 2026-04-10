@@ -87,10 +87,10 @@ export default function CreateOfferPage() {
             <span className="text-sm text-violet-300">أضف خدمتك</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            ابدأ تبيع <span className="text-violet-400">مهاراتك</span>
+            حوّل مهاراتك إلى <span className="text-violet-400">دخل</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            أضف خدمة بوست وابدأ تكسب
+            انشئ خدمتك الآن واستقبل طلبات من اللاعبين في ثواني
           </p>
         </div>
 
