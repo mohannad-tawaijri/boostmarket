@@ -14,7 +14,18 @@ export class ServicesService {
 
     return this.prisma.service.create({
       data: {
-        ...data,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        game: data.game,
+        gameDetails: data.gameDetails || null,
+        price: data.price,
+        deliveryTime: data.deliveryTime,
+        tags: data.tags || [],
+        images: data.images || [],
+        requirements: data.requirements || null,
+        stock: data.stock ?? null,
+        allowDirectPurchase: data.allowDirectPurchase !== false,
         boosterId,
       },
       include: {
@@ -148,9 +159,22 @@ export class ServicesService {
       throw new ForbiddenException('You can only update your own services');
     }
 
+    // Whitelist allowed fields to prevent mass assignment
+    const safeData: Record<string, any> = {};
+    const allowedFields = [
+      'title', 'description', 'category', 'game', 'gameDetails',
+      'price', 'deliveryTime', 'tags', 'images', 'requirements',
+      'active', 'stock', 'allowDirectPurchase',
+    ];
+    for (const key of allowedFields) {
+      if (data[key] !== undefined) {
+        safeData[key] = data[key];
+      }
+    }
+
     return this.prisma.service.update({
       where: { id },
-      data,
+      data: safeData,
     });
   }
 

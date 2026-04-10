@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CreateServiceDto, UpdateServiceDto } from './dto';
 
 @Controller('services')
 export class ServicesController {
@@ -51,13 +52,13 @@ export class ServicesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Request() req, @Body() createData: any) {
+  create(@Request() req, @Body() createData: CreateServiceDto) {
     return this.servicesService.create(req.user.id, createData);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Request() req, @Body() updateData: any) {
+  update(@Param('id') id: string, @Request() req, @Body() updateData: UpdateServiceDto) {
     return this.servicesService.update(id, req.user.id, updateData);
   }
 

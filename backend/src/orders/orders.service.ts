@@ -23,17 +23,19 @@ export class OrdersService {
       throw new BadRequestException('Cannot order your own service');
     }
 
-    // Check stock for ITEMS category
-    if (service.stock !== null && service.stock <= 0) {
-      throw new BadRequestException('Out of stock');
-    }
-
-    // Decrement stock if applicable
+    // Atomic stock check + decrement to prevent race conditions
     if (service.stock !== null) {
-      await this.prisma.service.update({
-        where: { id: data.serviceId },
+      const updated = await this.prisma.service.updateMany({
+        where: {
+          id: data.serviceId,
+          stock: { gt: 0 },
+        },
         data: { stock: { decrement: 1 } },
       });
+
+      if (updated.count === 0) {
+        throw new BadRequestException('Out of stock');
+      }
     }
 
     return this.prisma.order.create({
@@ -109,8 +111,22 @@ export class OrdersService {
       where: { id },
       include: {
         service: true,
-        buyer: true,
-        booster: true,
+        buyer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
+        booster: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
         payment: true,
         review: {
           select: { id: true, rating: true, comment: true },
@@ -130,6 +146,11 @@ export class OrdersService {
   }
 
   async updateStatus(id: string, userId: string, status: string) {
+    const allowedStatuses = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'DISPUTED'];
+    if (!allowedStatuses.includes(status)) {
+      throw new BadRequestException('Invalid status');
+    }
+
     const order = await this.prisma.order.findUnique({
       where: { id },
       include: { payment: true },
