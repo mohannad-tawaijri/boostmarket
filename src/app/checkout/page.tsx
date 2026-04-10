@@ -100,6 +100,74 @@ function CheckoutContent() {
     }
   }, [order]);
 
+  // Inject dark-theme overrides after Moyasar's own CDN CSS loads
+  const injectDarkStyles = () => {
+    const id = 'mysr-dark-override';
+    if (document.getElementById(id)) return;
+    const s = document.createElement('style');
+    s.id = id;
+    s.textContent = `
+      .mysr-form { color-scheme: dark; }
+
+      .mysr-form label,
+      .mysr-form .control-label,
+      .mysr-form .col-form-label,
+      .mysr-form legend,
+      .mysr-form .form-label {
+        color: #d4d4d8 !important;
+        font-size: 0.85rem !important;
+      }
+
+      .mysr-form input[type="text"],
+      .mysr-form input[type="email"],
+      .mysr-form input[type="tel"],
+      .mysr-form input[type="number"],
+      .mysr-form select,
+      .mysr-form .form-control {
+        background-color: #1e1e2a !important;
+        border: 1px solid rgba(255,255,255,0.18) !important;
+        border-radius: 0.6rem !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+      }
+      .mysr-form input::placeholder { color: #71717a !important; }
+      .mysr-form input:focus,
+      .mysr-form select:focus,
+      .mysr-form .form-control:focus {
+        border-color: #7c3aed !important;
+        box-shadow: 0 0 0 2px rgba(124,58,237,0.3) !important;
+        outline: none !important;
+      }
+
+      .mysr-form select option { background-color: #1e1e2a !important; color: #fff !important; }
+
+      .mysr-form .help-block,
+      .mysr-form .form-text,
+      .mysr-form small { color: #a1a1aa !important; }
+
+      .mysr-form .text-danger,
+      .mysr-form .invalid-feedback { color: #f87171 !important; }
+
+      .mysr-form .form-group,
+      .mysr-form .mb-3 { margin-bottom: 1rem !important; }
+
+      .mysr-form button[type="submit"] {
+        background: #7c3aed !important;
+        border-color: #7c3aed !important;
+        border-radius: 0.75rem !important;
+        color: #fff !important;
+        font-size: 1rem !important;
+        padding: 0.75rem !important;
+        width: 100% !important;
+      }
+      .mysr-form button[type="submit"]:hover { background: #6d28d9 !important; }
+
+      .mysr-form .mysr-powered-by,
+      .mysr-form .powered-by { color: #71717a !important; font-size: 0.75rem !important; }
+    `;
+    document.head.appendChild(s);
+  };
+
   // Init Moyasar form once SDK + order are both ready
   useEffect(() => {
     if (!moyasarReady || !order || !formRef.current || initialized.current) return;
@@ -124,6 +192,9 @@ function CheckoutContent() {
         console.log('Payment completed', payment);
       },
     });
+
+    // Inject after a short delay to ensure Moyasar's CSS has loaded
+    setTimeout(injectDarkStyles, 300);
   }, [moyasarReady, order, orderId]);
 
   // ── Loading state ──────────────────────────────────────────────
@@ -180,88 +251,6 @@ function CheckoutContent() {
 
               {/* Moyasar form container */}
               <div ref={formRef} className="mysr-form" />
-              <style jsx global>{`
-                /* ── labels ── */
-                .mysr-form label,
-                .mysr-form .form-label,
-                .mysr-form legend,
-                .mysr-form .control-label,
-                .mysr-form .mysr-label {
-                  color: #d4d4d8 !important;
-                  font-size: 0.875rem !important;
-                }
-
-                /* ── text inputs & selects ── */
-                .mysr-form input,
-                .mysr-form select,
-                .mysr-form textarea,
-                .mysr-form .form-control,
-                .mysr-form .mysr-input {
-                  background-color: rgba(255, 255, 255, 0.08) !important;
-                  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-                  border-radius: 0.625rem !important;
-                  color: #ffffff !important;
-                  padding: 0.625rem 1rem !important;
-                }
-                .mysr-form input:focus,
-                .mysr-form select:focus,
-                .mysr-form .form-control:focus {
-                  border-color: #7c3aed !important;
-                  outline: none !important;
-                  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25) !important;
-                }
-                .mysr-form input::placeholder,
-                .mysr-form textarea::placeholder {
-                  color: #71717a !important;
-                }
-
-                /* select dropdown options */
-                .mysr-form select option {
-                  background-color: #1c1c24 !important;
-                  color: #ffffff !important;
-                }
-
-                /* ── helper / error text ── */
-                .mysr-form .help-block,
-                .mysr-form small,
-                .mysr-form .text-muted,
-                .mysr-form .form-text {
-                  color: #a1a1aa !important;
-                }
-                .mysr-form .text-danger,
-                .mysr-form .invalid-feedback {
-                  color: #f87171 !important;
-                }
-
-                /* ── card icons row / payment method tabs ── */
-                .mysr-form .mysr-payment-method,
-                .mysr-form .payment-method-option {
-                  background-color: rgba(255, 255, 255, 0.06) !important;
-                  border-color: rgba(255, 255, 255, 0.15) !important;
-                  color: #d4d4d8 !important;
-                }
-
-                /* ── submit button override to match our brand ── */
-                .mysr-form button[type="submit"],
-                .mysr-form .mysr-btn-primary {
-                  background-color: #7c3aed !important;
-                  border-color: #7c3aed !important;
-                  border-radius: 0.75rem !important;
-                  font-size: 1rem !important;
-                  padding: 0.75rem !important;
-                }
-                .mysr-form button[type="submit"]:hover,
-                .mysr-form .mysr-btn-primary:hover {
-                  background-color: #6d28d9 !important;
-                }
-
-                /* ── powered-by / footer text ── */
-                .mysr-form .mysr-powered-by,
-                .mysr-form .powered-by {
-                  color: #71717a !important;
-                  font-size: 0.75rem !important;
-                }
-              `}</style>
 
               {!moyasarReady && (
                 <div className="flex items-center justify-center py-12 gap-3">
