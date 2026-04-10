@@ -147,17 +147,20 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       
       // Don't show notifications if user is on the messages page
       const isOnMessagesPage = typeof window !== 'undefined' && window.location.pathname === '/messages';
-      
+      const popupsEnabled = localStorage.getItem('showMessagePopups') !== 'false';
+
       if (!isOnMessagesPage) {
-        // Show in-app toast notification
-        showMessageNotification({
-          senderName: senderName,
-          senderAvatar: notification.from?.avatar,
-          message: messageContent,
-          conversationId: notification.conversationId,
-          senderId: notification.from?.id || '',
-        });
-        
+        // Show in-app toast notification (if user hasn't disabled it)
+        if (popupsEnabled) {
+          showMessageNotification({
+            senderName: senderName,
+            senderAvatar: notification.from?.avatar,
+            message: messageContent,
+            conversationId: notification.conversationId,
+            senderId: notification.from?.id || '',
+          });
+        }
+
         // Also show browser notification if permitted and page is not focused
         if (Notification.permission === 'granted') {
           try {

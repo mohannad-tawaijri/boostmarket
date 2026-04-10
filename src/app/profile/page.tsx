@@ -33,6 +33,7 @@ interface UserPreferences {
   notifyOrders: boolean;
   notifyMessages: boolean;
   notifyMarketing: boolean;
+  showMessagePopups: boolean;
   showProfile: boolean;
   showOnlineStatus: boolean;
   showReadReceipts: boolean;
@@ -75,6 +76,7 @@ export default function ProfilePage() {
     notifyOrders: true,
     notifyMessages: true,
     notifyMarketing: false,
+    showMessagePopups: true,
     showProfile: true,
     showOnlineStatus: true,
     showReadReceipts: true,
@@ -98,15 +100,19 @@ export default function ProfilePage() {
             bio: data.bio || '',
           });
           setAvatarUrl(data.avatar || null);
+          const showPopups = data.showMessagePopups ?? true;
           setPreferences({
             notifyEmail: data.notifyEmail ?? true,
             notifyOrders: data.notifyOrders ?? true,
             notifyMessages: data.notifyMessages ?? true,
             notifyMarketing: data.notifyMarketing ?? false,
+            showMessagePopups: showPopups,
             showProfile: data.showProfile ?? true,
             showOnlineStatus: data.showOnlineStatus ?? true,
             showReadReceipts: data.showReadReceipts ?? true,
           });
+          // Store in localStorage so socket context can read it
+          localStorage.setItem('showMessagePopups', String(showPopups));
         }
       } catch {
         // Fallback to context data
@@ -315,6 +321,9 @@ export default function ProfilePage() {
 
     const newValue = !preferences[key];
     setPreferences((prev) => ({ ...prev, [key]: newValue }));
+    if (key === 'showMessagePopups') {
+      localStorage.setItem('showMessagePopups', String(newValue));
+    }
 
     try {
       const res = await fetch(`${API_URL}/users/profile`, {
@@ -329,10 +338,12 @@ export default function ProfilePage() {
       if (!res.ok) {
         // Revert on failure
         setPreferences((prev) => ({ ...prev, [key]: !newValue }));
+        if (key === 'showMessagePopups') localStorage.setItem('showMessagePopups', String(!newValue));
         showToast('فشل في حفظ التفضيل', 'error');
       }
     } catch {
       setPreferences((prev) => ({ ...prev, [key]: !newValue }));
+      if (key === 'showMessagePopups') localStorage.setItem('showMessagePopups', String(!newValue));
       showToast('حدث خطأ في الاتصال', 'error');
     }
   };
@@ -596,10 +607,27 @@ export default function ProfilePage() {
                     <p className="text-zinc-400">أدر كيفية تلقي الإشعارات</p>
                   </div>
 
-                  <div className="p-8 text-center">
-                    <Bell className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-white mb-2">قريباً</h3>
-                    <p className="text-zinc-400 text-sm max-w-sm mx-auto">نعمل على إضافة إشعارات البريد الإلكتروني وتنبيهات الطلبات. سيتم تفعيل هذه الخيارات قريباً.</p>
+                  <div className="space-y-4">
+                    {([
+                      { key: 'showMessagePopups' as const, label: 'إشعارات الرسائل المنبثقة', description: 'عرض إشعار منبثق عند استلام رسالة جديدة' },
+                      { key: 'notifyMessages' as const, label: 'إشعارات المتصفح', description: 'السماح بإشعارات المتصفح للرسائل الجديدة' },
+                    ]).map((item) => (
+                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/[0.07] rounded-lg">
+                        <div>
+                          <p className="text-white font-medium">{item.label}</p>
+                          <p className="text-zinc-500 text-sm">{item.description}</p>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={preferences[item.key]}
+                            onChange={() => handlePreferenceToggle(item.key)}
+                          />
+                          <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
