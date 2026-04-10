@@ -280,6 +280,7 @@ export default function CreateOfferPage() {
               </div>
               <button
                 type="button"
+                dir="ltr"
                 role="switch"
                 aria-checked={formData.allowDirectPurchase}
                 onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
@@ -289,7 +290,7 @@ export default function CreateOfferPage() {
               >
                 <span
                   className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    formData.allowDirectPurchase ? 'translate-x-1.5' : 'translate-x-6'
+                    formData.allowDirectPurchase ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>

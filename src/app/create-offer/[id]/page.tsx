@@ -189,6 +189,7 @@ export default function EditOfferPage() {
                 <span className="text-sm text-indigo-200">{formData.active ? 'نشط' : 'متوقف'}</span>
                 <button
                   type="button"
+                  dir="ltr"
                   role="switch"
                   aria-checked={formData.active}
                   onClick={() => setFormData({ ...formData, active: !formData.active })}
@@ -198,7 +199,7 @@ export default function EditOfferPage() {
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      formData.active ? 'translate-x-1.5' : 'translate-x-6'
+                      formData.active ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -373,6 +374,7 @@ export default function EditOfferPage() {
               </div>
               <button
                 type="button"
+                dir="ltr"
                 role="switch"
                 aria-checked={formData.allowDirectPurchase}
                 onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
@@ -382,7 +384,7 @@ export default function EditOfferPage() {
               >
                 <span
                   className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    formData.allowDirectPurchase ? 'translate-x-1.5' : 'translate-x-6'
+                    formData.allowDirectPurchase ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
