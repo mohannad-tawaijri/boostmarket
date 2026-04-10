@@ -181,24 +181,85 @@ function CheckoutContent() {
               {/* Moyasar form container */}
               <div ref={formRef} className="mysr-form" />
               <style jsx global>{`
+                /* ── labels ── */
                 .mysr-form label,
                 .mysr-form .form-label,
-                .mysr-form legend {
-                  color: #e4e4e7 !important;
+                .mysr-form legend,
+                .mysr-form .control-label,
+                .mysr-form .mysr-label {
+                  color: #d4d4d8 !important;
+                  font-size: 0.875rem !important;
                 }
+
+                /* ── text inputs & selects ── */
                 .mysr-form input,
-                .mysr-form .StripeElement,
-                .mysr-form .form-control {
-                  background-color: rgba(255, 255, 255, 0.07) !important;
-                  border-color: rgba(255, 255, 255, 0.18) !important;
+                .mysr-form select,
+                .mysr-form textarea,
+                .mysr-form .form-control,
+                .mysr-form .mysr-input {
+                  background-color: rgba(255, 255, 255, 0.08) !important;
+                  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                  border-radius: 0.625rem !important;
                   color: #ffffff !important;
+                  padding: 0.625rem 1rem !important;
                 }
-                .mysr-form input::placeholder {
+                .mysr-form input:focus,
+                .mysr-form select:focus,
+                .mysr-form .form-control:focus {
+                  border-color: #7c3aed !important;
+                  outline: none !important;
+                  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25) !important;
+                }
+                .mysr-form input::placeholder,
+                .mysr-form textarea::placeholder {
                   color: #71717a !important;
                 }
+
+                /* select dropdown options */
+                .mysr-form select option {
+                  background-color: #1c1c24 !important;
+                  color: #ffffff !important;
+                }
+
+                /* ── helper / error text ── */
                 .mysr-form .help-block,
-                .mysr-form small {
+                .mysr-form small,
+                .mysr-form .text-muted,
+                .mysr-form .form-text {
                   color: #a1a1aa !important;
+                }
+                .mysr-form .text-danger,
+                .mysr-form .invalid-feedback {
+                  color: #f87171 !important;
+                }
+
+                /* ── card icons row / payment method tabs ── */
+                .mysr-form .mysr-payment-method,
+                .mysr-form .payment-method-option {
+                  background-color: rgba(255, 255, 255, 0.06) !important;
+                  border-color: rgba(255, 255, 255, 0.15) !important;
+                  color: #d4d4d8 !important;
+                }
+
+                /* ── submit button override to match our brand ── */
+                .mysr-form button[type="submit"],
+                .mysr-form .mysr-btn-primary {
+                  background-color: #7c3aed !important;
+                  border-color: #7c3aed !important;
+                  border-radius: 0.75rem !important;
+                  font-size: 1rem !important;
+                  padding: 0.75rem !important;
+                }
+                .mysr-form button[type="submit"]:hover,
+                .mysr-form .mysr-btn-primary:hover {
+                  background-color: #6d28d9 !important;
+                }
+
+                /* ── powered-by / footer text ── */
+                .mysr-form .mysr-powered-by,
+                .mysr-form .powered-by {
+                  color: #71717a !important;
+                  font-size: 0.75rem !important;
                 }
               `}</style>
 
