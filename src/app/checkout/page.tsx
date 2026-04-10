@@ -28,6 +28,49 @@ function formatExpiry(v: string) {
   return digits;
 }
 
+type CardType = 'mada' | 'visa' | 'mastercard' | 'amex' | null;
+
+// Common mada BIN prefixes (6-digit)
+const MADA_BINS = [
+  '588845','440647','440795','446404','457865','968208','457997','968201',
+  '524130','968209','531196','504300','968211','636120','417633','468540',
+  '468541','468542','468543','968206','446393','409201','458456','484783',
+  '462220','455708','410621','588848','588850','446672','403024','543357',
+  '434107','407197','407395','529415','535825','543085','524514','529741',
+  '537767','535989','536023','585265','588983','588982','589005','508160',
+  '531095','530906','532013','605141','968203','968204','968205','968207',
+  '968212','968210','968202','968213','584847',
+];
+
+function detectCardType(number: string): CardType {
+  const digits = number.replace(/\s/g, '');
+  if (digits.length < 2) return null;
+
+  // Check mada first (Saudi debit — specific BIN list)
+  const bin6 = digits.slice(0, 6);
+  if (MADA_BINS.includes(bin6)) return 'mada';
+
+  // AMEX: starts with 34 or 37
+  if (/^3[47]/.test(digits)) return 'amex';
+
+  // Visa: starts with 4
+  if (/^4/.test(digits)) return 'visa';
+
+  // Mastercard: 51-55 or 2221-2720
+  const two = parseInt(digits.slice(0, 2));
+  const four = parseInt(digits.slice(0, 4));
+  if ((two >= 51 && two <= 55) || (four >= 2221 && four <= 2720)) return 'mastercard';
+
+  return null;
+}
+
+const CARD_LABELS: Record<string, { label: string; bg: string }> = {
+  mada: { label: 'mada', bg: 'bg-green-600' },
+  visa: { label: 'VISA', bg: 'bg-blue-700' },
+  mastercard: { label: 'Mastercard', bg: 'bg-red-600' },
+  amex: { label: 'AMEX', bg: 'bg-sky-600' },
+};
+
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -42,6 +85,10 @@ function CheckoutContent() {
   const [cvc, setCvc] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  const rawDigits = cardNumber.replace(/\s/g, '');
+  const detectedCard = detectCardType(rawDigits);
 
   useEffect(() => {
     if (!orderId) router.replace('/services');
@@ -66,13 +113,58 @@ function CheckoutContent() {
     })();
   }, [orderId, router]);
 
+  const validateFields = (): boolean => {
+    const errors: Record<string, string> = {};
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      errors.name = 'أدخل الاسم على البطاقة';
+    } else if (trimmedName.length < 3) {
+      errors.name = 'الاسم قصير جداً';
+    } else if (trimmedName.length > 50) {
+      errors.name = 'الاسم طويل جداً (50 حرف كحد أقصى)';
+    }
+
+    if (rawDigits.length < 15) {
+      errors.card = 'رقم البطاقة غير مكتمل';
+    } else if (rawDigits.length > 16) {
+      errors.card = 'رقم البطاقة طويل جداً';
+    }
+
+    const expiryParts = expiry.replace(/\s/g, '').split('/');
+    const mm = parseInt(expiryParts[0]);
+    const yy = parseInt(expiryParts[1]);
+    if (!mm || !yy || isNaN(mm) || isNaN(yy)) {
+      errors.expiry = 'أدخل تاريخ الانتهاء';
+    } else if (mm < 1 || mm > 12) {
+      errors.expiry = 'الشهر يجب أن يكون بين 01 و 12';
+    } else {
+      const now = new Date();
+      const expDate = new Date(2000 + yy, mm);
+      if (expDate <= now) {
+        errors.expiry = 'البطاقة منتهية الصلاحية';
+      }
+    }
+
+    if (cvc.length < 3) {
+      errors.cvc = 'رمز الأمان يجب أن يكون 3 أرقام';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!order) return;
+
+    if (!validateFields()) return;
+
     setSubmitting(true);
     setPayError(null);
+    setFieldErrors({});
 
-    const rawNumber = cardNumber.replace(/\s/g, '');
+    const rawNumber = rawDigits;
     const [mm, yy] = expiry.replace(/\s/g, '').split('/').map(s => s.trim());
     const callbackBase = window.location.origin;
 
@@ -167,39 +259,46 @@ function CheckoutContent() {
                   <label className={labelClass}>الاسم على البطاقة</label>
                   <input
                     type="text"
-                    required
                     dir="ltr"
                     value={name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => setName(e.target.value.slice(0, 50))}
                     placeholder="MOHAMMED ALI"
-                    className={inputClass + ' text-left'}
+                    className={inputClass + ' text-left' + (fieldErrors.name ? ' border-red-500/60' : '')}
                     autoComplete="cc-name"
                   />
+                  {fieldErrors.name && <p className="text-red-400 text-xs mt-1">{fieldErrors.name}</p>}
                 </div>
 
                 {/* Card Number */}
                 <div>
-                  <label className={labelClass}>رقم البطاقة</label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-sm font-medium text-zinc-300">رقم البطاقة</label>
+                    {detectedCard && (
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${CARD_LABELS[detectedCard].bg} text-white animate-in fade-in`}>
+                        {CARD_LABELS[detectedCard].label}
+                      </span>
+                    )}
+                  </div>
                   <div className="relative">
                     <input
                       type="text"
-                      required
                       inputMode="numeric"
                       dir="ltr"
                       value={cardNumber}
                       onChange={e => setCardNumber(formatCardNumber(e.target.value))}
                       placeholder="1234 5678 9101 1121"
                       maxLength={19}
-                      className={inputClass + ' text-left pl-4 pr-28'}
+                      className={inputClass + ' text-left pl-4 pr-28' + (fieldErrors.card ? ' border-red-500/60' : '')}
                       autoComplete="cc-number"
                     />
-                    {/* Card network badges */}
+                    {/* Dim badges for undetected, highlight only the detected one */}
                     <div className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center gap-1 pointer-events-none">
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-green-600 text-white">mada</span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-700 text-white">VISA</span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white">MC</span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white transition-opacity ${detectedCard === 'mada' ? 'bg-green-600' : detectedCard ? 'bg-zinc-700 opacity-40' : 'bg-green-600/70'}`}>mada</span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white transition-opacity ${detectedCard === 'visa' ? 'bg-blue-700' : detectedCard ? 'bg-zinc-700 opacity-40' : 'bg-blue-700/70'}`}>VISA</span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-white transition-opacity ${detectedCard === 'mastercard' ? 'bg-red-600' : detectedCard ? 'bg-zinc-700 opacity-40' : 'bg-red-600/70'}`}>MC</span>
                     </div>
                   </div>
+                  {fieldErrors.card && <p className="text-red-400 text-xs mt-1">{fieldErrors.card}</p>}
                 </div>
 
                 {/* Expiry + CVC */}
@@ -208,31 +307,31 @@ function CheckoutContent() {
                     <label className={labelClass}>تاريخ الانتهاء</label>
                     <input
                       type="text"
-                      required
                       inputMode="numeric"
                       dir="ltr"
                       value={expiry}
                       onChange={e => setExpiry(formatExpiry(e.target.value))}
                       placeholder="MM / YY"
                       maxLength={7}
-                      className={inputClass + ' text-left'}
+                      className={inputClass + ' text-left' + (fieldErrors.expiry ? ' border-red-500/60' : '')}
                       autoComplete="cc-exp"
                     />
+                    {fieldErrors.expiry && <p className="text-red-400 text-xs mt-1">{fieldErrors.expiry}</p>}
                   </div>
                   <div>
                     <label className={labelClass}>رمز الأمان (CVC)</label>
                     <input
                       type="text"
-                      required
                       inputMode="numeric"
                       dir="ltr"
                       value={cvc}
                       onChange={e => setCvc(e.target.value.replace(/\D/g, '').slice(0, 3))}
                       placeholder="123"
                       maxLength={3}
-                      className={inputClass + ' text-left'}
+                      className={inputClass + ' text-left' + (fieldErrors.cvc ? ' border-red-500/60' : '')}
                       autoComplete="cc-csc"
                     />
+                    {fieldErrors.cvc && <p className="text-red-400 text-xs mt-1">{fieldErrors.cvc}</p>}
                   </div>
                 </div>
 
