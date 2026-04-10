@@ -273,10 +273,10 @@ export default function CreateOfferPage() {
             <button
               type="button"
               onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
-              className={`flex items-center justify-between w-full p-4 rounded-xl border transition-colors cursor-pointer ${
+              className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all cursor-pointer hover:scale-[1.01] hover:shadow-lg ${
                 formData.allowDirectPurchase
-                  ? 'bg-violet-600/10 border-violet-500/40'
-                  : 'bg-slate-700/30 border-white/[0.18]'
+                  ? 'bg-violet-600/10 border-violet-500/40 hover:border-violet-400/60'
+                  : 'bg-slate-700/30 border-white/[0.18] hover:border-white/30 hover:bg-slate-700/50'
               }`}
             >
               <div className="flex items-center gap-3">

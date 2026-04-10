@@ -191,10 +191,10 @@ export default function EditOfferPage() {
                 role="switch"
                 aria-checked={formData.active}
                 onClick={() => setFormData({ ...formData, active: !formData.active })}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-colors border ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all border hover:scale-105 ${
                   formData.active
-                    ? 'bg-green-500/20 border-green-400/40 text-green-300'
-                    : 'bg-zinc-700/50 border-zinc-500/40 text-zinc-400'
+                    ? 'bg-green-500/20 border-green-400/40 text-green-300 hover:bg-green-500/30'
+                    : 'bg-zinc-700/50 border-zinc-500/40 text-zinc-400 hover:bg-zinc-700/70'
                 }`}
               >
                 <span className={`w-2 h-2 rounded-full ${formData.active ? 'bg-green-400' : 'bg-zinc-500'}`} />
@@ -363,10 +363,10 @@ export default function EditOfferPage() {
             <button
               type="button"
               onClick={() => setFormData({ ...formData, allowDirectPurchase: !formData.allowDirectPurchase })}
-              className={`flex items-center justify-between w-full p-4 rounded-xl border transition-colors cursor-pointer ${
+              className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all cursor-pointer hover:scale-[1.01] hover:shadow-lg ${
                 formData.allowDirectPurchase
-                  ? 'bg-violet-600/10 border-violet-500/40'
-                  : 'bg-slate-700/30 border-white/[0.18]'
+                  ? 'bg-violet-600/10 border-violet-500/40 hover:border-violet-400/60'
+                  : 'bg-slate-700/30 border-white/[0.18] hover:border-white/30 hover:bg-slate-700/50'
               }`}
             >
               <div className="flex items-center gap-3">
