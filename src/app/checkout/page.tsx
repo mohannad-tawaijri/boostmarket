@@ -168,10 +168,11 @@ function CheckoutContent() {
                   <input
                     type="text"
                     required
+                    dir="ltr"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    placeholder="مثال: MOHAMMED ALI"
-                    className={inputClass}
+                    placeholder="MOHAMMED ALI"
+                    className={inputClass + ' text-left'}
                     autoComplete="cc-name"
                   />
                 </div>
@@ -184,17 +185,19 @@ function CheckoutContent() {
                       type="text"
                       required
                       inputMode="numeric"
+                      dir="ltr"
                       value={cardNumber}
                       onChange={e => setCardNumber(formatCardNumber(e.target.value))}
                       placeholder="1234 5678 9101 1121"
                       maxLength={19}
-                      className={inputClass + ' pe-28'}
+                      className={inputClass + ' text-left pl-4 pr-28'}
                       autoComplete="cc-number"
                     />
-                    <div className="absolute top-1/2 -translate-y-1/2 end-4 flex items-center gap-1.5 pointer-events-none">
-                      <img src="https://cdn.moyasar.com/images/mada.png" alt="mada" className="h-5 object-contain" />
-                      <img src="https://cdn.moyasar.com/images/visa.svg" alt="visa" className="h-4 object-contain" />
-                      <img src="https://cdn.moyasar.com/images/mastercard.svg" alt="mc" className="h-5 object-contain" />
+                    {/* Card network badges */}
+                    <div className="absolute top-1/2 -translate-y-1/2 right-3 flex items-center gap-1 pointer-events-none">
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-green-600 text-white">mada</span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-700 text-white">VISA</span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white">MC</span>
                     </div>
                   </div>
                 </div>
@@ -207,11 +210,12 @@ function CheckoutContent() {
                       type="text"
                       required
                       inputMode="numeric"
+                      dir="ltr"
                       value={expiry}
                       onChange={e => setExpiry(formatExpiry(e.target.value))}
                       placeholder="MM / YY"
                       maxLength={7}
-                      className={inputClass}
+                      className={inputClass + ' text-left'}
                       autoComplete="cc-exp"
                     />
                   </div>
@@ -221,11 +225,12 @@ function CheckoutContent() {
                       type="text"
                       required
                       inputMode="numeric"
+                      dir="ltr"
                       value={cvc}
                       onChange={e => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
                       placeholder="123"
                       maxLength={4}
-                      className={inputClass}
+                      className={inputClass + ' text-left'}
                       autoComplete="cc-csc"
                     />
                   </div>
