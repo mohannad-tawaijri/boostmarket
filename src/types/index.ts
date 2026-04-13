@@ -50,7 +50,6 @@ export type ServiceCategory =
   | 'DUOQ'
   | 'ITEMS'
   | 'CUSTOM'
-  | 'WIN_BOOST'
   | 'OTHER';
 
 export interface Order {
@@ -189,7 +188,7 @@ export const CATEGORY_NAMES: Record<ServiceCategory, string> = {
   ACCOUNT_LEVELING: 'تلفليل الحساب',
   PLACEMENT_MATCHES: 'مباريات التصنيف',
   DUOQ: 'لعب ثنائي',
-  WIN_BOOST: 'رفع فوزات',
+
   ITEMS: 'بيع أغراض',
   CUSTOM: 'مخصص',
   OTHER: 'أخرى',

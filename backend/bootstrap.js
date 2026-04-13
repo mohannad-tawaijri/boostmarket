@@ -22,11 +22,27 @@ async function bootstrap() {
     console.log('    + stock column OK');
 
     await prisma.$executeRawUnsafe(`
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "googleId" TEXT;
+    `);
+    console.log('    + googleId column OK');
+
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "authProvider" TEXT NOT NULL DEFAULT 'local';
+    `);
+    console.log('    + authProvider column OK');
+
+    // Update any services using WIN_BOOST to OTHER
+    await prisma.$executeRawUnsafe(`
+      UPDATE "services" SET "category" = 'OTHER' WHERE "category" = 'WIN_BOOST';
+    `);
+    console.log('    + migrated WIN_BOOST services to OTHER');
+
+    await prisma.$executeRawUnsafe(`
       DELETE FROM "_prisma_migrations" WHERE "migration_name" = '20260410000000_add_user_service_fields';
     `);
     console.log('    + cleaned stale migration record');
 
-    console.log('==> [bootstrap.js] All columns added successfully!');
+    console.log('==> [bootstrap.js] All done!');
   } catch (err) {
     console.error('==> [bootstrap.js] ERROR:', err.message);
   } finally {
