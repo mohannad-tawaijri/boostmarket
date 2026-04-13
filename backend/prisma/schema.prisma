@@ -71,6 +71,10 @@ model User {
   avatar            String?
   bio               String?
   verified          Boolean   @default(false)
+
+  // OAuth providers
+  googleId          String?   @unique
+  authProvider      String?   // 'local' | 'google'
   
   // Notification preferences
   notifyEmail       Boolean   @default(true)

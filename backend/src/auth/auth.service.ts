@@ -162,6 +162,71 @@ export class AuthService {
     return this.usersService.findOne(userId);
   }
 
+  /**
+   * Google OAuth sign-in/sign-up.
+   * If a user exists with the googleId, return them.
+   * If a user exists with the same email (local account), link googleId to it.
+   * Otherwise create a new user (no password, authProvider='google').
+   */
+  async validateOrCreateGoogleUser(googleUser: {
+    googleId: string;
+    email: string;
+    name: string;
+    avatar?: string;
+  }) {
+    // 1. Check by googleId
+    let user = await this.prisma.user.findUnique({
+      where: { googleId: googleUser.googleId },
+    });
+
+    // 2. Fallback: check by email (link existing local account)
+    if (!user) {
+      const byEmail = await this.prisma.user.findUnique({
+        where: { email: googleUser.email },
+      });
+
+      if (byEmail) {
+        user = await this.prisma.user.update({
+          where: { id: byEmail.id },
+          data: {
+            googleId: googleUser.googleId,
+            authProvider: byEmail.authProvider || 'local',
+            avatar: byEmail.avatar || googleUser.avatar,
+            verified: true,
+          },
+        });
+      }
+    }
+
+    // 3. Create new user
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          email: googleUser.email,
+          name: googleUser.name,
+          googleId: googleUser.googleId,
+          authProvider: 'google',
+          avatar: googleUser.avatar,
+          verified: true,
+        },
+      });
+    }
+
+    const accessToken = this.generateAccessToken(user.id, user.email);
+    const refreshToken = await this.generateRefreshToken(user.id);
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        isAdmin: user.role === 'ADMIN',
+      },
+      token: accessToken,
+      refreshToken,
+    };
+  }
+
   private generateAccessToken(userId: string, email: string): string {
     return this.jwtService.sign({ sub: userId, email });
   }
