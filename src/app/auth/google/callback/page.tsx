@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Logo from "@/components/logo";
 
-export default function GoogleCallbackPage() {
+function GoogleCallbackContent() {
   const router = useRouter();
   const params = useSearchParams();
   const { login } = useAuth();
@@ -41,13 +41,26 @@ export default function GoogleCallbackPage() {
   }, [params, router, login]);
 
   return (
+    <div className="flex items-center gap-3 text-zinc-300">
+      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+      <span>جاري تسجيل الدخول عبر Google...</span>
+    </div>
+  );
+}
+
+export default function GoogleCallbackPage() {
+  return (
     <div className="min-h-screen bg-zinc-900 flex items-center justify-center px-4">
       <div className="flex flex-col items-center gap-6">
         <Logo size="lg" />
-        <div className="flex items-center gap-3 text-zinc-300">
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          <span>جاري تسجيل الدخول عبر Google...</span>
-        </div>
+        <Suspense fallback={
+          <div className="flex items-center gap-3 text-zinc-300">
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span>جاري تسجيل الدخول عبر Google...</span>
+          </div>
+        }>
+          <GoogleCallbackContent />
+        </Suspense>
       </div>
     </div>
   );
