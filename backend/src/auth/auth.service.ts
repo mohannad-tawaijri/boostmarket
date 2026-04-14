@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { UsersService } from '../users/users.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { MailService } from '../mail/mail.service';
 import { RegisterDto, LoginDto } from './dto';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     private prisma: PrismaService,
+    private mailService: MailService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -178,6 +180,96 @@ export class AuthService {
 
   async validateUser(userId: string) {
     return this.usersService.findOne(userId);
+  }
+
+  /**
+   * Request a password reset. Always returns the same response (200) to avoid
+   * leaking which emails are registered. If the email matches a local-auth
+   * account, a reset token is generated and emailed via SMTP.
+   */
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const genericResponse = {
+      message:
+        'إذا كان البريد الإلكتروني مسجلاً لدينا، فسنرسل رابط إعادة التعيين خلال لحظات.',
+    };
+
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user || !user.password) {
+      // Don't reveal whether the account exists or is Google-only.
+      return genericResponse;
+    }
+
+    // Invalidate any outstanding unused tokens for this user.
+    await this.prisma.passwordResetToken.deleteMany({
+      where: { userId: user.id, usedAt: null },
+    });
+
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto
+      .createHash('sha256')
+      .update(rawToken)
+      .digest('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+    await this.prisma.passwordResetToken.create({
+      data: {
+        tokenHash,
+        userId: user.id,
+        expiresAt,
+      },
+    });
+
+    const frontendUrl =
+      this.configService.get<string>('FRONTEND_URL') ||
+      'https://boostmarket.app';
+    const resetUrl = `${frontendUrl.replace(/\/$/, '')}/reset-password/${rawToken}`;
+
+    await this.mailService.sendPasswordResetEmail(user.email, user.name, resetUrl);
+
+    return genericResponse;
+  }
+
+  /**
+   * Complete the password reset using a valid token.
+   */
+  async resetPassword(
+    rawToken: string,
+    newPassword: string,
+  ): Promise<{ message: string }> {
+    const tokenHash = crypto
+      .createHash('sha256')
+      .update(rawToken)
+      .digest('hex');
+
+    const record = await this.prisma.passwordResetToken.findUnique({
+      where: { tokenHash },
+    });
+
+    if (!record || record.usedAt || record.expiresAt < new Date()) {
+      throw new BadRequestException(
+        'الرابط غير صالح أو منتهي الصلاحية. يرجى طلب رابط جديد.',
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: record.userId },
+        data: { password: hashedPassword },
+      }),
+      this.prisma.passwordResetToken.update({
+        where: { id: record.id },
+        data: { usedAt: new Date() },
+      }),
+      // Revoke any active refresh tokens for security.
+      this.prisma.refreshToken.updateMany({
+        where: { userId: record.userId, revoked: false },
+        data: { revoked: true },
+      }),
+    ]);
+
+    return { message: 'تم إعادة تعيين كلمة المرور بنجاح.' };
   }
 
   /**
