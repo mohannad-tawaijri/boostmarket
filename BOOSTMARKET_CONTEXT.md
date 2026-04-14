@@ -7,9 +7,8 @@ BoostMarket is an Arabic-first gaming services marketplace where players connect
 **Project Path:** `c:\Users\mohan\Desktop\projects\boostmarket`  
 **GitHub:** `https://github.com/mohannad-tawaijri/boostmarket.git` (branch: `main`)  
 **Production URLs:**
-- Frontend: `https://boost-rosy-rho.vercel.app`
+- Frontend: `https://boostmarket.app`
 - Backend API: `https://boost-api-16ta.onrender.com`
-- Custom Domain: `https://boostmarket.app`
 
 ---
 
@@ -399,7 +398,7 @@ GameCategory: LEAGUE_OF_LEGENDS | VALORANT | CS2 | DOTA2 | OVERWATCH | APEX_LEGE
 DATABASE_URL          — PostgreSQL connection string
 JWT_SECRET            — JWT signing secret
 JWT_REFRESH_SECRET    — Refresh token signing secret
-FRONTEND_URL          — https://boost-rosy-rho.vercel.app
+FRONTEND_URL          — https://boostmarket.app
 CLOUDINARY_CLOUD_NAME — Cloudinary cloud name
 CLOUDINARY_API_KEY    — Cloudinary API key
 CLOUDINARY_API_SECRET — Cloudinary API secret

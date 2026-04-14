@@ -12,7 +12,6 @@ async function bootstrap() {
   // Enable CORS for specific origins only
   const allowedOrigins = [
     process.env.FRONTEND_URL || 'http://localhost:3000',
-    'https://boost-rosy-rho.vercel.app',
     'https://boostmarket.app',
     'https://www.boostmarket.app',
   ];

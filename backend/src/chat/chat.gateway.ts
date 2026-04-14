@@ -15,7 +15,7 @@ import { ChatService } from './chat.service';
   cors: {
     origin: [
       process.env.FRONTEND_URL || 'http://localhost:3000',
-      'https://boost-rosy-rho.vercel.app',
+      'https://boostmarket.app',
     ],
     credentials: true,
   },
