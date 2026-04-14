@@ -80,7 +80,10 @@ export class MailService {
                   مرحباً ${safeName}،
                 </p>
                 <p style="color:#a1a1aa;line-height:1.8;font-size:15px;margin:8px 0;">
-                  تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحسابك في BoostMarket. اضغط على الزر أدناه لإعادة التعيين. الرابط صالح لمدة ساعة واحدة فقط.
+                  تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحسابك في BoostMarket.
+                </p>
+                <p style="color:#a1a1aa;line-height:1.8;font-size:15px;margin:8px 0;">
+                  اضغط على الزر أدناه لإعادة التعيين. الرابط صالح لمدة ساعة واحدة فقط.
                 </p>
               </td>
             </tr>
