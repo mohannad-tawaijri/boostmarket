@@ -1,44 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as nodemailer from 'nodemailer';
+import axios from 'axios';
 
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
-  private transporter: nodemailer.Transporter | null = null;
 
-  constructor(private configService: ConfigService) {
-    this.initTransporter();
-  }
+  constructor(private configService: ConfigService) {}
 
-  private initTransporter() {
-    const host = this.configService.get<string>('SMTP_HOST');
-    const port = parseInt(this.configService.get<string>('SMTP_PORT', '587'), 10);
-    const user = this.configService.get<string>('SMTP_USER');
-    const pass = this.configService.get<string>('SMTP_PASSWORD');
-    const secure = this.configService.get<string>('SMTP_SECURE', 'false') === 'true';
+  async sendPasswordResetEmail(to: string, name: string, resetUrl: string) {
+    const apiKey = this.configService.get<string>('RESEND_API_KEY');
 
-    if (!host || !user || !pass) {
+    if (!apiKey) {
       this.logger.warn(
-        'SMTP env vars not fully configured (SMTP_HOST, SMTP_USER, SMTP_PASSWORD). Emails will be logged only.',
+        'RESEND_API_KEY not configured. Logging reset link to console only.',
       );
+      this.logger.log(`[MAIL DISABLED] Password reset link for ${to}: ${resetUrl}`);
       return;
     }
 
-    this.transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure, // true for 465, false for other ports (uses STARTTLS on 587)
-      auth: { user, pass },
-    });
-  }
-
-  async sendPasswordResetEmail(to: string, name: string, resetUrl: string) {
-    const from =
-      this.configService.get<string>('MAIL_FROM') ||
-      'BoostMarket <help@boostmarket.app>';
-
-    const subject = 'إعادة تعيين كلمة المرور - BoostMarket';
     const html = this.buildResetEmailHtml(name, resetUrl);
     const text =
       `مرحباً ${name || ''},\n\n` +
@@ -47,22 +27,34 @@ export class MailService {
       `إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة.\n\n` +
       `فريق BoostMarket`;
 
-    if (!this.transporter) {
-      this.logger.log(`[MAIL DISABLED] Password reset link for ${to}: ${resetUrl}`);
-      return;
-    }
-
     try {
-      const info = await this.transporter.sendMail({
-        from,
-        to,
-        subject,
-        text,
-        html,
-      });
-      this.logger.log(`Password reset email sent to ${to} (id=${info.messageId})`);
-    } catch (err) {
-      this.logger.error(`Failed to send password reset email to ${to}`, err as Error);
+      const response = await axios.post(
+        'https://api.resend.com/emails',
+        {
+          from: 'BoostMarket <help@boostmarket.app>',
+          to: [to],
+          subject: 'إعادة تعيين كلمة المرور - BoostMarket',
+          html,
+          text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      this.logger.log(
+        `Password reset email sent to ${to} via Resend (id=${response.data?.id})`,
+      );
+    } catch (err: any) {
+      const detail =
+        err?.response?.data
+          ? JSON.stringify(err.response.data)
+          : err?.message;
+      this.logger.error(
+        `Failed to send password reset email to ${to}: ${detail}`,
+      );
       // Do not throw — keep endpoint responses uniform to avoid email enumeration
     }
   }
