@@ -50,8 +50,15 @@ export class AuthService {
 
     // Find user
     const user = await this.usersService.findByEmail(email);
-    if (!user || !user.password) {
+    if (!user) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Google-only account (no password set)
+    if (!user.password) {
+      throw new UnauthorizedException(
+        'هذا الحساب مسجّل عبر Google. سجّل الدخول باستخدام زر Google.',
+      );
     }
 
     // Verify password
@@ -137,8 +144,20 @@ export class AuthService {
 
   async changePassword(userId: string, currentPassword: string, newPassword: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user || !user.password) {
+    if (!user) {
       throw new UnauthorizedException('Unable to change password');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Google user without a password — let them set one (no current password needed)
+    if (!user.password) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { password: hashedPassword },
+      });
+      await this.revokeAllUserTokens(userId);
+      return { message: 'تم تعيين كلمة المرور بنجاح' };
     }
 
     const isCurrentValid = await bcrypt.compare(currentPassword, user.password);
@@ -146,7 +165,6 @@ export class AuthService {
       throw new UnauthorizedException('كلمة المرور الحالية غير صحيحة');
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
     await this.prisma.user.update({
       where: { id: userId },
       data: { password: hashedPassword },

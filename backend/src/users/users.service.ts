@@ -38,6 +38,8 @@ export class UsersService {
         avatar: true,
         bio: true,
         verified: true,
+        password: true,
+        authProvider: true,
         notifyEmail: true,
         notifyOrders: true,
         notifyMessages: true,
@@ -58,7 +60,8 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    const { password, ...rest } = user;
+    return { ...rest, hasPassword: !!password };
   }
 
   async findPublicProfile(id: string) {

@@ -56,6 +56,7 @@ export default function ProfilePage() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [toast, setToast] = useState<ToastState | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [hasPassword, setHasPassword] = useState(true);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const avatarMenuRef = useRef<HTMLDivElement>(null);
 
@@ -100,6 +101,7 @@ export default function ProfilePage() {
             bio: data.bio || '',
           });
           setAvatarUrl(data.avatar || null);
+          setHasPassword(data.hasPassword ?? true);
           const showPopups = data.showMessagePopups ?? true;
           setPreferences({
             notifyEmail: data.notifyEmail ?? true,
@@ -301,8 +303,9 @@ export default function ProfilePage() {
       });
 
       if (res.ok) {
-        showToast('تم تغيير كلمة المرور بنجاح', 'success');
+        showToast(hasPassword ? 'تم تغيير كلمة المرور بنجاح' : 'تم تعيين كلمة المرور بنجاح', 'success');
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setHasPassword(true);
       } else {
         const data = await res.json();
         showToast(data.message || 'فشل في تغيير كلمة المرور', 'error');
@@ -535,26 +538,34 @@ export default function ProfilePage() {
               {activeSection === 'security' && (
                 <form onSubmit={handlePasswordSubmit} className="space-y-6">
                   <div className="pb-6 border-b border-white/[0.15]">
-                    <h2 className="text-xl font-semibold text-white mb-2">تغيير كلمة المرور</h2>
-                    <p className="text-zinc-400">حدّث كلمة مرورك للحفاظ على أمان حسابك</p>
+                    <h2 className="text-xl font-semibold text-white mb-2">
+                      {hasPassword ? 'تغيير كلمة المرور' : 'تعيين كلمة مرور'}
+                    </h2>
+                    <p className="text-zinc-400">
+                      {hasPassword
+                        ? 'حدّث كلمة مرورك للحفاظ على أمان حسابك'
+                        : 'حسابك مسجّل عبر Google. عيّن كلمة مرور لتتمكن من تسجيل الدخول بالبريد الإلكتروني أيضاً.'}
+                    </p>
                   </div>
 
                   <div className="space-y-4">
-                    <div>
-                      <label htmlFor="currentPassword" className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الحالية</label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
-                        <input
-                          id="currentPassword"
-                          type="password"
-                          name="currentPassword"
-                          value={passwordData.currentPassword}
-                          onChange={handlePasswordChange}
-                          required
-                          className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                        />
+                    {hasPassword && (
+                      <div>
+                        <label htmlFor="currentPassword" className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الحالية</label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" aria-hidden="true" />
+                          <input
+                            id="currentPassword"
+                            type="password"
+                            name="currentPassword"
+                            value={passwordData.currentPassword}
+                            onChange={handlePasswordChange}
+                            required
+                            className="w-full bg-white/[0.07] border border-white/[0.18] rounded-lg pl-10 pr-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     <div>
                       <label htmlFor="newPassword" className="block text-sm font-medium text-zinc-300 mb-2">كلمة المرور الجديدة</label>
@@ -594,7 +605,7 @@ export default function ProfilePage() {
                   <div className="flex justify-end">
                     <Button type="submit" disabled={saving} className="gap-2">
                       {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                      تحديث كلمة المرور
+                      {hasPassword ? 'تحديث كلمة المرور' : 'تعيين كلمة المرور'}
                     </Button>
                   </div>
                 </form>
