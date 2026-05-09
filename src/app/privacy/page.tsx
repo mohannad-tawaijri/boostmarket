@@ -63,7 +63,7 @@ export default function PrivacyPage() {
           <div>
             <h2 className="text-lg font-semibold text-white mb-3">حقوقك</h2>
             <p>
-              يمكنك تنزيل أو حذف بياناتك في أي وقت. راسلنا على <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a> وسنتعامل مع الأمر خلال أيام عمل قليلة. إذا كنت في الاتحاد الأوروبي، لديك مجموعة حقوق GDPR الكاملة — الوصول، التصحيح، المحو، النقل، وكل شيء.
+              يمكنك تنزيل أو حذف بياناتك في أي وقت. راسلنا على <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">help@boostmarket.app</a> وسنتعامل مع الأمر خلال أيام عمل قليلة. إذا كنت في الاتحاد الأوروبي، لديك مجموعة حقوق GDPR الكاملة — الوصول، التصحيح، المحو، النقل، وكل شيء.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
 
           <div className="pt-4 border-t border-white/[0.15]">
             <p className="text-zinc-500 text-sm">
-              أسئلة؟ تواصل معنا على <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a>
+              أسئلة؟ تواصل معنا على <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">help@boostmarket.app</a>
             </p>
           </div>
         </div>

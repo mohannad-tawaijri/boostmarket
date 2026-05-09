@@ -25,30 +25,9 @@ export default function CookiesPage() {
 
           <div>
             <h2 className="text-lg font-semibold text-white mb-3">ملفات تعريف الارتباط الأساسية</h2>
-            <p className="mb-3">هذه تبقي الموقع يعمل. لا يمكنك إلغاء الاشتراك فيها دون أن يتعطل الموقع.</p>
-            <div className="rounded-lg border border-white/[0.15] overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/[0.15] text-zinc-300">
-                    <th className="text-right px-4 py-2.5 font-medium">ملف تعريف الارتباط</th>
-                    <th className="text-right px-4 py-2.5 font-medium">الغرض</th>
-                    <th className="text-right px-4 py-2.5 font-medium">المدة</th>
-                  </tr>
-                </thead>
-                <tbody className="text-zinc-400">
-                  <tr className="border-b border-white/[0.15]/40">
-                    <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">session_token</td>
-                    <td className="px-4 py-2.5">يبقيك مسجل الدخول</td>
-                    <td className="px-4 py-2.5">7 أيام</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2.5 font-mono text-xs text-zinc-300">csrf_token</td>
-                    <td className="px-4 py-2.5">يمنع تزوير الطلبات عبر المواقع</td>
-                    <td className="px-4 py-2.5">الجلسة</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <p>
+              هذه تبقي الموقع يعمل — تحافظ على تسجيل دخولك وتحمي حسابك من الطلبات المزوّرة. لا يمكنك إلغاء الاشتراك فيها دون أن يتعطل الموقع.
+            </p>
           </div>
 
           <div>
@@ -76,7 +55,7 @@ export default function CookiesPage() {
 
           <div className="pt-4 border-t border-white/[0.15]">
             <p className="text-zinc-500 text-sm">
-              أسئلة؟ <a href="mailto:privacy@boostmarket.com" className="text-violet-400 hover:underline">privacy@boostmarket.com</a>
+              أسئلة؟ <a href="mailto:help@boostmarket.app" className="text-violet-400 hover:underline">help@boostmarket.app</a>
             </p>
           </div>
         </div>
