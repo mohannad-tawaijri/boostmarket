@@ -42,7 +42,6 @@ export default function Home() {
             {[
               "ندعم جميع الألعاب",
               "فلوسك محمية",
-              "التسليم خلال 24 ساعة",
               "تواصل مباشر مع البوستر",
             ].map((item, i) => (
               <span key={i} className="flex items-center gap-1.5">
