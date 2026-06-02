@@ -80,9 +80,12 @@ export class PaymentService {
       throw new BadRequestException('orderId and token are required');
     }
 
-    const secretKey = process.env.MOYASAR_SECRET_KEY;
-    if (!secretKey) {
-      this.logger.error('MOYASAR_SECRET_KEY not configured');
+    // Token payments must be authenticated with the *publishable* key — Moyasar
+    // scopes a token to the key that created it (the frontend's publishable key),
+    // so charging it with the secret key is rejected as "token is invalid".
+    const publishableKey = process.env.MOYASAR_PUBLISHABLE_KEY;
+    if (!publishableKey) {
+      this.logger.error('MOYASAR_PUBLISHABLE_KEY not configured');
       throw new BadRequestException('Payment gateway not configured');
     }
 
@@ -124,7 +127,7 @@ export class PaymentService {
       method: 'POST',
       headers: {
         Authorization:
-          'Basic ' + Buffer.from(`${secretKey}:`).toString('base64'),
+          'Basic ' + Buffer.from(`${publishableKey}:`).toString('base64'),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
