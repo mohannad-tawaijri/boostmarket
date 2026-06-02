@@ -24,11 +24,12 @@ export default function ServiceCard({ service }: { service: Service }) {
   const gameName = GAME_NAMES[service.game as GameCategory] || service.game;
   const gameImage = GAME_IMAGES[service.game as GameCategory] || '';
 
-  const reviews = service.reviews || [];
-  const averageRating = reviews.length > 0 
-    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length 
-    : 0;
-  const reviewCount = reviews.length;
+  // Show the seller's overall rating (across all their services), not just this
+  // service's reviews — otherwise the same seller appears rated on one card and
+  // "بائع جديد" on another. This matches the rating shown on the service detail page.
+  const boosterProfile = service.booster?.boosterProfile;
+  const averageRating = boosterProfile?.rating ?? 0;
+  const reviewCount = boosterProfile?.completedOrders ?? 0;
 
   return (
     <Link href={`/services/${service.id}`} className="block group">
@@ -77,11 +78,13 @@ export default function ServiceCard({ service }: { service: Service }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-zinc-200 truncate">{service.booster?.name || "Pro Booster"}</p>
-              {reviewCount > 0 ? (
+              {averageRating > 0 ? (
                 <div className="flex items-center gap-1">
                   <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
                   <span className="text-xs text-amber-400 font-medium">{averageRating.toFixed(1)}</span>
-                  <span className="text-xs text-zinc-600">({reviewCount})</span>
+                  {reviewCount > 0 && (
+                    <span className="text-xs text-zinc-600">({reviewCount})</span>
+                  )}
                 </div>
               ) : (
                 <p className="text-xs text-zinc-600">بائع جديد</p>

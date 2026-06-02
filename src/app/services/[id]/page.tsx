@@ -207,13 +207,13 @@ export default function ServiceDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#111114] via-transparent to-transparent"></div>
         
         <div className="container mx-auto px-4 pt-6 relative z-10">
-          <button 
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-4"
+          <Link
+            href="/services"
+            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-4 w-fit"
           >
             <ArrowRight className="w-5 h-5" />
             العودة للخدمات
-          </button>
+          </Link>
           
           <div className="flex items-center gap-3">
             <span className="px-4 py-1.5 bg-white/20 rounded-full text-sm font-medium text-white border border-white/20">

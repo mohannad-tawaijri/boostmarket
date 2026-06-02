@@ -166,6 +166,9 @@ function CheckoutContent() {
 
     const rawNumber = rawDigits;
     const [mm, yy] = expiry.replace(/\s/g, '').split('/').map(s => s.trim());
+    // Moyasar requires a callback_url on the token (used for the 3-D Secure
+    // redirect). It must point back to our payment callback page.
+    const callbackUrl = `${window.location.origin}/payment/callback?orderId=${orderId}`;
 
     try {
       // 1) Tokenize the card with Moyasar using the *publishable* key. The PAN/CVC
@@ -182,11 +185,15 @@ function CheckoutContent() {
           cvc,
           month: mm,
           year: yy ? '20' + yy : yy,
+          callback_url: callbackUrl,
         }),
       });
       const tokenData = await tokenRes.json();
       if (!tokenRes.ok || !tokenData?.id) {
-        const tMsg = tokenData?.message || tokenData?.errors?.join?.(', ') || 'فشل التحقق من البطاقة، تحقق من البيانات';
+        const errs = tokenData?.errors && typeof tokenData.errors === 'object' && !Array.isArray(tokenData.errors)
+          ? Object.entries(tokenData.errors).map(([f, m]) => `${f}: ${Array.isArray(m) ? m.join(', ') : m}`).join(' — ')
+          : null;
+        const tMsg = errs || tokenData?.message || 'فشل التحقق من البطاقة، تحقق من البيانات';
         setPayError(typeof tMsg === 'string' ? tMsg : 'فشل التحقق من البطاقة');
         return;
       }
