@@ -166,58 +166,41 @@ function CheckoutContent() {
 
     const rawNumber = rawDigits;
     const [mm, yy] = expiry.replace(/\s/g, '').split('/').map(s => s.trim());
-    // Moyasar requires a callback_url on the token (used for the 3-D Secure
-    // redirect). It must point back to our payment callback page.
     const callbackUrl = `${window.location.origin}/payment/callback?orderId=${orderId}`;
 
     try {
-      // 1) Tokenize the card with Moyasar using the *publishable* key. The PAN/CVC
-      //    go straight to Moyasar and never touch our backend.
-      const tokenRes = await fetch('https://api.moyasar.com/v1/tokens', {
+      // Create the payment directly with Moyasar (publishable key). The PAN/CVC
+      // go straight to Moyasar and never touch our server. Moyasar handles 3-D
+      // Secure via the returned transaction_url. The order is only settled
+      // server-side at /payment/verify, which re-fetches the payment from Moyasar
+      // and refuses to mark it paid unless the charged amount matches the order —
+      // so a tampered amount here can never fulfil an order.
+      const res = await fetch('https://api.moyasar.com/v1/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Basic ' + btoa((process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY || '') + ':'),
         },
         body: JSON.stringify({
-          name,
-          number: rawNumber,
-          cvc,
-          month: mm,
-          year: yy ? '20' + yy : yy,
+          amount: Math.round(order.price * 100),
+          currency: 'SAR',
+          description: `${order.service.title} - ${order.service.game}`,
           callback_url: callbackUrl,
+          metadata: { order_id: orderId },
+          source: {
+            type: 'creditcard',
+            name,
+            number: rawNumber,
+            cvc,
+            month: mm,
+            year: yy ? '20' + yy : yy,
+          },
         }),
-      });
-      const tokenData = await tokenRes.json();
-      if (!tokenRes.ok || !tokenData?.id) {
-        const errs = tokenData?.errors && typeof tokenData.errors === 'object' && !Array.isArray(tokenData.errors)
-          ? Object.entries(tokenData.errors).map(([f, m]) => `${f}: ${Array.isArray(m) ? m.join(', ') : m}`).join(' — ')
-          : null;
-        const tMsg = errs || tokenData?.message || 'فشل التحقق من البطاقة، تحقق من البيانات';
-        setPayError(typeof tMsg === 'string' ? tMsg : 'فشل التحقق من البطاقة');
-        return;
-      }
-
-      // 2) Create the charge on our backend. The amount is fixed from the order
-      //    on the server, so it can't be tampered with from the client.
-      const authToken = localStorage.getItem('authToken');
-      const res = await fetch(`${API_URL}/payment/create-charge`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-        },
-        body: JSON.stringify({ orderId, token: tokenData.id }),
       });
       const data = await res.json();
 
-      if (!res.ok) {
-        setPayError(data?.message || data?.error || 'فشل الدفع، حاول مرة أخرى');
-        return;
-      }
-
       if (data.source?.transaction_url) {
-        // 3DS redirect
+        // 3-D Secure redirect
         window.location.href = data.source.transaction_url;
         return;
       }
@@ -227,7 +210,11 @@ function CheckoutContent() {
         return;
       }
 
-      setPayError('تعذّر إتمام الدفع. حاول مرة أخرى');
+      const errs = data?.errors && typeof data.errors === 'object' && !Array.isArray(data.errors)
+        ? Object.entries(data.errors).map(([f, m]) => `${f}: ${Array.isArray(m) ? m.join(', ') : m}`).join(' — ')
+        : null;
+      const msg = data?.source?.message || errs || data?.message || 'فشل الدفع، تحقق من بيانات البطاقة';
+      setPayError(typeof msg === 'string' ? msg : 'فشل الدفع، تحقق من بيانات البطاقة');
     } catch {
       setPayError('حدث خطأ في الاتصال، حاول مرة أخرى');
     } finally {
