@@ -11,6 +11,19 @@ export class ReviewsService {
     rating: number;
     comment?: string;
   }) {
+    // Validate rating — without this a client could submit an out-of-range or
+    // non-integer rating and skew the booster's average (e.g. rating: 9999).
+    const rating = Number(data.rating);
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+      throw new BadRequestException('Rating must be an integer between 1 and 5');
+    }
+    const comment =
+      typeof data.comment === 'string' ? data.comment.slice(0, 1000) : undefined;
+
+    if (!data.orderId || typeof data.orderId !== 'string') {
+      throw new BadRequestException('orderId is required');
+    }
+
     const order = await this.prisma.order.findUnique({
       where: { id: data.orderId },
       include: { service: true },
@@ -42,8 +55,8 @@ export class ReviewsService {
         orderId: data.orderId,
         reviewerId,
         boosterId: order.service?.boosterId || order.boosterId,
-        rating: data.rating,
-        comment: data.comment,
+        rating,
+        comment,
       },
     });
 

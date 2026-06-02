@@ -9,9 +9,11 @@ import {
   Response,
   HttpCode,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import {
   RegisterDto,
@@ -29,11 +31,14 @@ export class AuthController {
     private configService: ConfigService,
   ) {}
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
 
+  // Tight limit to slow credential brute-forcing / stuffing.
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
@@ -51,12 +56,15 @@ export class AuthController {
     return this.authService.logout(refreshToken);
   }
 
+  // Limit to curb password-reset email spam / enumeration probing.
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() dto: ForgotPasswordDto) {
     return this.authService.forgotPassword(dto.email);
   }
 
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   resetPassword(@Body() dto: ResetPasswordDto) {
@@ -94,24 +102,36 @@ export class AuthController {
 
   /**
    * Google OAuth callback. Passport attaches the verified profile to req.user.
-   * We issue our own JWT + refresh token, then redirect back to the frontend
-   * with the tokens so the client can finalize login.
+   * We issue our own JWT + refresh token, but instead of putting them in the
+   * redirect URL (where they leak into history, logs and Referer headers) we
+   * hand back a short-lived one-time code that the frontend exchanges for the
+   * tokens via POST.
    */
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(@Request() req, @Response() res) {
     const result = await this.authService.validateOrCreateGoogleUser(req.user);
+    const code = this.authService.createOAuthExchangeCode(result);
 
     const frontendUrl =
       this.configService.get<string>('FRONTEND_URL') ||
       'http://localhost:3000';
 
-    const params = new URLSearchParams({
-      token: result.token,
-      refreshToken: result.refreshToken,
-      user: JSON.stringify(result.user),
-    });
+    return res.redirect(`${frontendUrl}/auth/google/callback?code=${code}`);
+  }
 
-    return res.redirect(`${frontendUrl}/auth/google/callback?${params.toString()}`);
+  /**
+   * Exchange a one-time OAuth code for the issued tokens. The code is single-use
+   * and expires after a couple of minutes.
+   */
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @Post('google/exchange')
+  @HttpCode(HttpStatus.OK)
+  googleExchange(@Body('code') code: string) {
+    const result = this.authService.consumeOAuthExchangeCode(code);
+    if (!result) {
+      throw new UnauthorizedException('Invalid or expired code');
+    }
+    return result;
   }
 }

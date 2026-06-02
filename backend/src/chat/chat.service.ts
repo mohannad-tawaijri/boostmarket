@@ -343,6 +343,16 @@ export class ChatService {
     });
   }
 
+  /** Returns true if the user is a participant of the conversation. */
+  async isParticipant(conversationId: string, userId: string): Promise<boolean> {
+    if (!conversationId || !userId) return false;
+    const participant = await this.prisma.conversationParticipant.findFirst({
+      where: { conversationId, userId },
+      select: { id: true },
+    });
+    return !!participant;
+  }
+
   async getUserPrivacy(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },

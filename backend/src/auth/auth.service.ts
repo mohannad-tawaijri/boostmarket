@@ -8,8 +8,23 @@ import { PrismaService } from '../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
 import { RegisterDto, LoginDto } from './dto';
 
+export interface AuthResult {
+  user: { id: string; email: string; name: string; isAdmin: boolean };
+  token: string;
+  refreshToken: string;
+}
+
 @Injectable()
 export class AuthService {
+  // Short-lived, single-use codes used to hand OAuth results to the frontend
+  // without ever putting tokens in a redirect URL. Held in memory; entries
+  // live only ~2 minutes and are consumed within seconds of issuance.
+  private readonly oauthExchangeCodes = new Map<
+    string,
+    { data: AuthResult; expiresAt: number }
+  >();
+  private readonly OAUTH_CODE_TTL_MS = 2 * 60 * 1000;
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -17,6 +32,31 @@ export class AuthService {
     private prisma: PrismaService,
     private mailService: MailService,
   ) {}
+
+  /** Store an OAuth result and return a one-time code referencing it. */
+  createOAuthExchangeCode(data: AuthResult): string {
+    const code = crypto.randomBytes(32).toString('hex');
+    const now = Date.now();
+    this.oauthExchangeCodes.set(code, {
+      data,
+      expiresAt: now + this.OAUTH_CODE_TTL_MS,
+    });
+    // Opportunistic cleanup of expired entries.
+    for (const [key, value] of this.oauthExchangeCodes) {
+      if (value.expiresAt < now) this.oauthExchangeCodes.delete(key);
+    }
+    return code;
+  }
+
+  /** Consume a one-time OAuth code, returning the result exactly once. */
+  consumeOAuthExchangeCode(code: string): AuthResult | null {
+    if (!code) return null;
+    const entry = this.oauthExchangeCodes.get(code);
+    if (!entry) return null;
+    this.oauthExchangeCodes.delete(code); // single use
+    if (entry.expiresAt < Date.now()) return null;
+    return entry.data;
+  }
 
   async register(registerDto: RegisterDto) {
     const { email, password, name } = registerDto;
@@ -86,20 +126,33 @@ export class AuthService {
   }
 
   async refreshTokens(refreshToken: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
     // Find the refresh token in the database
     const storedToken = await this.prisma.refreshToken.findUnique({
       where: { token: refreshToken },
       include: { user: true },
     });
 
-    if (!storedToken || storedToken.revoked || storedToken.expiresAt < new Date()) {
-      if (storedToken) {
-        // Revoke the token if it was found but expired
-        await this.prisma.refreshToken.update({
-          where: { id: storedToken.id },
-          data: { revoked: true },
-        });
-      }
+    if (!storedToken) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
+
+    // Reuse detection: a *revoked* token presented again means it was already
+    // rotated out (or stolen and replayed). Treat it as a compromise and revoke
+    // the whole token family so an attacker holding an old token is locked out.
+    if (storedToken.revoked) {
+      await this.revokeAllUserTokens(storedToken.userId);
+      throw new UnauthorizedException('Refresh token reuse detected');
+    }
+
+    if (storedToken.expiresAt < new Date()) {
+      await this.prisma.refreshToken.update({
+        where: { id: storedToken.id },
+        data: { revoked: true },
+      });
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
 

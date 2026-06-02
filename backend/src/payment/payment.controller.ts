@@ -26,14 +26,37 @@ export class PaymentController {
     return this.paymentService.createPayment(req.user.id, createData);
   }
 
+  /**
+   * Create a Moyasar charge from a single-use card token (requires auth).
+   * The amount is fixed server-side from the order — the client only supplies
+   * the order id and the tokenized card.
+   */
+  @Post('create-charge')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  createCharge(
+    @Request() req,
+    @Body() body: { orderId: string; token: string },
+  ) {
+    return this.paymentService.createCharge(req.user.id, {
+      orderId: body?.orderId,
+      token: body?.token,
+    });
+  }
+
   /** Called from frontend after Moyasar redirects back (requires auth) */
   @Post('verify')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   verifyPayment(
-    @Body() body: { paymentId: string; orderId?: string; status: string },
+    @Request() req,
+    @Body() body: { paymentId: string },
   ) {
-    return this.paymentService.verifyMoyasarPayment(body);
+    // Only paymentId is trusted from the client; the order, amount and status
+    // are resolved authoritatively from Moyasar inside the service.
+    return this.paymentService.verifyMoyasarPayment(req.user.id, {
+      paymentId: body?.paymentId,
+    });
   }
 
   /**

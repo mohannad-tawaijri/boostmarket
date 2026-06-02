@@ -93,10 +93,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('joinConversation')
-  handleJoinConversation(
+  async handleJoinConversation(
     @ConnectedSocket() client: Socket,
     @MessageBody() conversationId: string,
   ) {
+    const userId = client.data.userId;
+    if (!userId || !conversationId) return;
+
+    // Only allow joining a conversation room the user actually belongs to.
+    // Without this check, any authenticated socket could subscribe to and
+    // eavesdrop on an arbitrary conversation by guessing its id.
+    const isParticipant = await this.chatService.isParticipant(
+      conversationId,
+      userId,
+    );
+    if (!isParticipant) {
+      console.warn(
+        `Socket ${client.id} (user ${userId}) denied join to conversation ${conversationId}`,
+      );
+      return;
+    }
+
     client.join(`conversation:${conversationId}`);
     console.log(`Socket ${client.id} joined conversation ${conversationId}`);
   }

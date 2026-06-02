@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { API_URL } from "@/lib/config";
 import Logo from "@/components/logo";
 
 function GoogleCallbackContent() {
@@ -15,9 +16,7 @@ function GoogleCallbackContent() {
     if (handledRef.current) return;
     handledRef.current = true;
 
-    const token = params.get("token");
-    const refreshToken = params.get("refreshToken");
-    const userRaw = params.get("user");
+    const code = params.get("code");
     const error = params.get("error");
 
     if (error) {
@@ -25,19 +24,35 @@ function GoogleCallbackContent() {
       return;
     }
 
-    if (!token || !refreshToken || !userRaw) {
+    if (!code) {
       router.replace("/login?error=google_auth_failed");
       return;
     }
 
-    try {
-      const user = JSON.parse(userRaw);
-      login(token, refreshToken, user);
-      router.replace("/");
-    } catch (e) {
-      console.error("Failed to parse Google auth callback", e);
-      router.replace("/login?error=google_auth_failed");
-    }
+    // Exchange the one-time code for tokens (tokens are never placed in the URL).
+    (async () => {
+      try {
+        const res = await fetch(`${API_URL}/auth/google/exchange`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
+        if (!res.ok) {
+          router.replace("/login?error=google_auth_failed");
+          return;
+        }
+        const data = await res.json();
+        if (!data?.token || !data?.refreshToken || !data?.user) {
+          router.replace("/login?error=google_auth_failed");
+          return;
+        }
+        login(data.token, data.refreshToken, data.user);
+        router.replace("/");
+      } catch (e) {
+        console.error("Failed to complete Google auth", e);
+        router.replace("/login?error=google_auth_failed");
+      }
+    })();
   }, [params, router, login]);
 
   return (

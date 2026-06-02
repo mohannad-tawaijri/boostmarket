@@ -166,33 +166,48 @@ function CheckoutContent() {
 
     const rawNumber = rawDigits;
     const [mm, yy] = expiry.replace(/\s/g, '').split('/').map(s => s.trim());
-    const callbackBase = window.location.origin;
 
     try {
-      const res = await fetch('https://api.moyasar.com/v1/payments', {
+      // 1) Tokenize the card with Moyasar using the *publishable* key. The PAN/CVC
+      //    go straight to Moyasar and never touch our backend.
+      const tokenRes = await fetch('https://api.moyasar.com/v1/tokens', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Basic ' + btoa((process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY || '') + ':'),
         },
         body: JSON.stringify({
-          amount: Math.round(order.price * 100),
-          currency: 'SAR',
-          description: `${order.service.title} - ${order.service.game}`,
-          callback_url: `${callbackBase}/payment/callback?orderId=${orderId}`,
-          metadata: { order_id: orderId },
-          source: {
-            type: 'creditcard',
-            name,
-            number: rawNumber,
-            cvc,
-            month: mm,
-            year: yy ? '20' + yy : yy,
-          },
+          name,
+          number: rawNumber,
+          cvc,
+          month: mm,
+          year: yy ? '20' + yy : yy,
         }),
       });
+      const tokenData = await tokenRes.json();
+      if (!tokenRes.ok || !tokenData?.id) {
+        const tMsg = tokenData?.message || tokenData?.errors?.join?.(', ') || 'فشل التحقق من البطاقة، تحقق من البيانات';
+        setPayError(typeof tMsg === 'string' ? tMsg : 'فشل التحقق من البطاقة');
+        return;
+      }
 
+      // 2) Create the charge on our backend. The amount is fixed from the order
+      //    on the server, so it can't be tampered with from the client.
+      const authToken = localStorage.getItem('authToken');
+      const res = await fetch(`${API_URL}/payment/create-charge`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
+        body: JSON.stringify({ orderId, token: tokenData.id }),
+      });
       const data = await res.json();
+
+      if (!res.ok) {
+        setPayError(data?.message || data?.error || 'فشل الدفع، حاول مرة أخرى');
+        return;
+      }
 
       if (data.source?.transaction_url) {
         // 3DS redirect
@@ -205,8 +220,7 @@ function CheckoutContent() {
         return;
       }
 
-      const msg = data.source?.message || data.message || data.errors?.join(', ') || 'فشل الدفع، تحقق من بيانات البطاقة';
-      setPayError(msg);
+      setPayError('تعذّر إتمام الدفع. حاول مرة أخرى');
     } catch {
       setPayError('حدث خطأ في الاتصال، حاول مرة أخرى');
     } finally {
