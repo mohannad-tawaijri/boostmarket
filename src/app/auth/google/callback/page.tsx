@@ -67,7 +67,7 @@ export default function GoogleCallbackPage() {
   return (
     <div className="min-h-screen bg-zinc-900 flex items-center justify-center px-4">
       <div className="flex flex-col items-center gap-6">
-        <Logo size="lg" />
+        <Logo lockup size="lg" />
         <Suspense fallback={
           <div className="flex items-center gap-3 text-zinc-300">
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

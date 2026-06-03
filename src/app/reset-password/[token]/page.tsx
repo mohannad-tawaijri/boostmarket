@@ -66,9 +66,7 @@ export default function ResetPasswordPage() {
     >
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block mb-6">
-            <Logo size="lg" />
-          </Link>
+          <Logo lockup size="lg" className="mb-6" />
           <h1 className="text-3xl font-bold text-white mb-2">
             تعيين كلمة مرور جديدة
           </h1>

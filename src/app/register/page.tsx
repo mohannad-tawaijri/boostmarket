@@ -85,7 +85,7 @@ export default function RegisterPage() {
       <div className="max-w-md w-full relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 flex justify-center">
-          <Logo size="lg" />
+          <Logo lockup size="lg" />
         </div>
 
         {/* Register Card */}
