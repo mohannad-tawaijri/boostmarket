@@ -22,7 +22,7 @@ export default function Logo({ size = "md", showText = true, lockup = false, cla
           width={w}
           height={h}
           priority
-          className="h-auto max-w-full transition-transform duration-200 ease-out group-hover:scale-[1.03] drop-shadow-[0_0_16px_rgba(56,189,248,0.18)]"
+          className="h-auto max-w-full transition-transform duration-200 ease-out group-hover:scale-[1.03] drop-shadow-[0_0_16px_rgba(139,92,246,0.22)]"
         />
       </Link>
     );
@@ -51,14 +51,14 @@ export default function Logo({ size = "md", showText = true, lockup = false, cla
           alt="BoostMarket"
           fill
           sizes="56px"
-          className="object-contain drop-shadow-[0_0_8px_rgba(56,189,248,0.25)]"
+          className="object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]"
         />
       </div>
 
       {/* Wordmark — neon blue "Boost" + orange "Market" to match the mark */}
       {showText && (
         <span className={`${s.text} font-extrabold tracking-tight leading-none select-none`}>
-          <span className="text-sky-400" style={{ textShadow: "0 0 10px rgba(56,189,248,0.45)" }}>
+          <span className="text-violet-400" style={{ textShadow: "0 0 10px rgba(139,92,246,0.5)" }}>
             Boost
           </span>
           <span className="text-orange-500" style={{ textShadow: "0 0 10px rgba(249,115,22,0.45)" }}>
