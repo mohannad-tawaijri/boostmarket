@@ -47,7 +47,7 @@ export default function Logo({ size = "md", showText = true, lockup = false, cla
         "transition-transform duration-200 ease-out",
       ].join(" ")}>
         <Image
-          src="/logo-icon.png"
+          src="/logo-mark.png"
           alt="BoostMarket"
           fill
           sizes="56px"
